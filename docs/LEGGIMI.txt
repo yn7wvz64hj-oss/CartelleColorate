@@ -1,5 +1,5 @@
-﻿CARTELLECOLORATE 0.10.0-beta.1
-Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
+﻿CARTELLECOLORATE 1.0.0
+Prima release ufficiale gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
 1. Estrai tutto lo ZIP.
@@ -87,7 +87,8 @@ Windows 11, Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host
 e VBScript funzionanti. I componenti possono essere disabilitati su alcuni
 PC. Le cartelle devono essere reali e scrivibili. La pipetta puo' non leggere
 schermate protette. Non sono supportate raccolte virtuali o cambi ricorsivi.
-La release e' beta: serve ancora verificare l'uso su PC e monitor diversi.
+Prima release ufficiale 1.0, verificata automaticamente nelle 15 lingue.
+Esplora file e l'effetto vetro seguono anche le impostazioni del PC.
 Il pacchetto non e' firmato digitalmente. Se antivirus o criteri aziendali
 lo bloccano, non disattivare le protezioni: controlla il sorgente e segnala
 il messaggio al manutentore del repository dal quale hai scaricato lo ZIP.
@@ -152,3 +153,8 @@ Non mescolare file PNG e cartelle nello stesso trascinamento.
 Nel menu ⋯ > Preset completi trovi la ricerca per nome o codice HEX.
 I preferiti sono mostrati per primi. Le anteprime vengono caricate progressivamente
 e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfaccia.
+
+RELEASE UFFICIALE 1.0
+Questa release comprende tutte le funzioni della versione 0.10, con installazione
+e aggiornamento che mantengono colori, preset, preferenze e backup esistenti.
+Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.0.0

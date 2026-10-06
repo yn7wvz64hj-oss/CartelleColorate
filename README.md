@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate per Windows — 0.10.0-beta.1](downloads/CartelleColorate-0.10.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate 1.0 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.0.0/CartelleColorate-1.0.0-windows.zip). La [pagina della prima release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.0.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.0.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -74,7 +74,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 0.10.0-beta.1: versione beta.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
+**Versione 1.0: prima release ufficiale.** Verifiche automatiche nelle 15 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 

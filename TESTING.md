@@ -93,3 +93,11 @@ Verificati localmente attivazione del materiale DWM con superfici semitrasparent
 - Ricerca senza corrispondenze, ricerca senza distinzione maiuscole/minuscole, preferiti in cima.
 - Anteprima progressiva effettivamente generata e stessa immagine riutilizzata dalla cache.
 - Verifiche eseguite sulle finestre reali nelle 15 lingue.
+
+## Prima release ufficiale 1.0
+
+Il pacchetto 1.0 mantiene i sorgenti applicativi della 0.10. La suite completa
+viene eseguita nuovamente sulla versione ufficiale. PublishRelease.ps1 -VerifyOnly
+verifica lo ZIP destinato agli utenti, VERSION, manifest, corrispondenza dei sorgenti
+e guida installabile. Il job di pubblicazione parte solo dopo i test Windows riusciti,
+crea una release non prerelease e riscarica entrambi gli allegati per confrontarli.

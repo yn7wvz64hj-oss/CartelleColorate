@@ -1,5 +1,13 @@
 # Note di versione
 
+## 1.0.0 — 6 ottobre 2026
+
+- Prima release ufficiale, basata sulle funzioni verificate della 0.10.
+- Pacchetto Windows 1.0.0, documentazione e note della release aggiornati.
+- Pubblicazione della release v1.0.0 dopo il superamento dei test Windows, con ZIP e checksum verificati anche dopo il download degli allegati.
+- Installazione compatibile con i dati delle versioni precedenti.
+
+
 ## 0.10.0-beta.1 — 6 ottobre 2026
 
 - Caricamento PNG tramite trascinamento, senza cambiare la cartella selezionata.
