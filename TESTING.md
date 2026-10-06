@@ -83,3 +83,13 @@ Verificati localmente attivazione del materiale DWM con superfici semitrasparent
 - Rifiuto di percorsi ZIP estranei e rollback dopo un errore simulato di scrittura.
 - Finestre dei preset e del ripeti e menu del backup nelle 15 lingue.
 - GitHub Actions, solo sul runner isolato: creazione del vero menu HKCU, nomi con &, avvio Rapido.vbs, worker su cartella Unicode, applicazione del PNG con simbolo e annullamento.
+
+## Verifiche della versione 0.10
+
+- PNG caricato in background con anteprima congelata e cartella selezionata invariata.
+- PNG danneggiato: anteprima e scelta precedenti conservate, Applica riabilitato.
+- Trascinamenti misti rifiutati senza modificare la selezione.
+- Ritorno al colore durante la lettura: l’immagine obsoleta non sostituisce la scelta.
+- Ricerca senza corrispondenze, ricerca senza distinzione maiuscole/minuscole, preferiti in cima.
+- Anteprima progressiva effettivamente generata e stessa immagine riutilizzata dalla cache.
+- Verifiche eseguite sulle finestre reali nelle 15 lingue.

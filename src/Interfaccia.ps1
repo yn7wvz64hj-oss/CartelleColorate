@@ -111,7 +111,7 @@ $script:glassEnabled=$false
        </Grid>
       </StackPanel>
       <StackPanel Grid.Column="2">
-       <Border Height="80" CornerRadius="14" Background="{DynamicResource Input}" Margin="0,0,0,8"><Viewbox Margin="8"><Grid Width="256" Height="256" FlowDirection="LeftToRight">
+       <Border x:Name="ImageDrop" Height="80" ToolTip="{DynamicResource L_pngTitle}" CornerRadius="14" Background="{DynamicResource Input}" Margin="0,0,0,8"><Viewbox Margin="8"><Grid Width="256" Height="256" FlowDirection="LeftToRight">
          <Path x:Name="FolderFront" Fill="#4A90E2" Data="M 52,10 L 192,10 L 192,139 L 204,152 L 204,208 L 52,208 Z"/>
          <Path x:Name="FolderBack" Fill="#60A0E6" Data="M 52,10 L 101,47 L 101,245 L 52,208 Z"/>
          <Image x:Name="UploadedPreview" Visibility="Collapsed" Stretch="Uniform" Margin="8"/><Border x:Name="BadgePreview" Visibility="Collapsed" Width="64" Height="64" CornerRadius="32" Background="#F5F8FF" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,8"><TextBlock x:Name="BadgeGlyph" FontSize="38" FontFamily="Segoe UI Symbol" Foreground="#233755" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
@@ -144,7 +144,7 @@ $script:glassEnabled=$false
 $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
 $ui=@{}
-foreach ($id in @('Root','MainScroll','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder','AppearanceButton','AppearanceName','PaletteTools','Undo','SearchToggle','SearchRow','SearchText','CollectionFilter','RecentArea','RecentColors','BadgePreview','BadgeGlyph')) { $ui[$id]=$window.FindName($id) }
+foreach ($id in @('ImageDrop','Root','MainScroll','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder','AppearanceButton','AppearanceName','PaletteTools','Undo','SearchToggle','SearchRow','SearchText','CollectionFilter','RecentArea','RecentColors','BadgePreview','BadgeGlyph')) { $ui[$id]=$window.FindName($id) }
 $script:pngSelection=$null
 $ui.ColorPlane.Cursor=[Windows.Input.Cursors]::None
 $ui.ColorPlane.ForceCursor=$true
@@ -174,7 +174,7 @@ function Update-Pointer {
     [Windows.Controls.Canvas]::SetTop($ui.ColorPointer,((1-$script:brightness)*$ui.ColorPlane.ActualHeight-7))
 }
 function Update-Preview([string]$HexValue) {
-    $script:pngSelection=$null; $ui.UploadedPreview.Visibility='Collapsed'
+    $script:pngRequest=$null; $script:pngSelection=$null; $ui.UploadedPreview.Visibility='Collapsed'
     $ui.FolderFront.Visibility='Visible'; $ui.FolderBack.Visibility='Visible'
     $ui.UseColor.Visibility='Collapsed'; $ui.Save.IsEnabled=$true; $ui.Upload.Content=(T 'upload')
     $ui.FolderFront.Fill=Brush $HexValue; $c=[Drawing.ColorTranslator]::FromHtml($HexValue)
@@ -352,9 +352,10 @@ $ui.PaletteTools.Add_Click({
     }; $ui.PaletteTools.ContextMenu=$menu; $menu.IsOpen=$true
 })
 function Set-PngPreview([string]$Path) {
+    $script:pngRequest=$null
     $image=[Windows.Media.Imaging.BitmapImage]::new()
     $image.BeginInit(); $image.CacheOption=[Windows.Media.Imaging.BitmapCacheOption]::OnLoad
-    $image.UriSource=[Uri]::new($Path); $image.EndInit(); $image.Freeze()
+    $image.DecodePixelWidth=256; $image.UriSource=[Uri]::new($Path); $image.EndInit(); $image.Freeze()
     $ui.UploadedPreview.Source=$image; $ui.UploadedPreview.Visibility='Visible'
     $ui.FolderFront.Visibility='Collapsed'; $ui.FolderBack.Visibility='Collapsed'
     $script:pngSelection=$Path; $ui.UseColor.Visibility='Visible'; $ui.Save.IsEnabled=$false
@@ -363,7 +364,7 @@ function Set-PngPreview([string]$Path) {
 $ui.Upload.Add_Click({
     $dialog=[Microsoft.Win32.OpenFileDialog]::new()
     $dialog.Filter=(T 'pngFilter'); $dialog.Title=(T 'pngTitle')
-    if ($dialog.ShowDialog($window)) { try { Set-PngPreview $dialog.FileName } catch { Show-Status (T 'pngError') } }
+    if ($dialog.ShowDialog($window)) { try { Start-PngPreview $dialog.FileName } catch { Show-Status (T 'pngError') } }
 })
 $ui.UseColor.Add_Click({ try { Update-Preview (Valid-Hex) } catch { Show-Status $_.Exception.Message } })
 [xml]$lensXaml=@'

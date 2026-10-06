@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate per Windows — 0.9.0-beta.1](downloads/CartelleColorate-0.9.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate per Windows — 0.10.0-beta.1](downloads/CartelleColorate-0.10.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -25,6 +25,10 @@ Italiano, English, 简体中文, Español, हिन्दी, العربية, P
 La schermata iniziale propone la lingua di Windows, se supportata, oppure l’inglese. Il pulsante con il globo cambia la lingua in qualsiasi momento, aggiornando anche il menu del tasto destro. Arabo e urdu hanno disposizione da destra a sinistra; colori, codici HEX e nomi personali vengono conservati. Le traduzioni sono incluse nel pacchetto e funzionano senza Internet.
 
 ## Funzioni
+
+- Trascina un PNG sull’anteprima (o nella finestra) per personalizzare l’icona; la cartella selezionata resta la stessa. Le cartelle trascinate continuano a cambiare la selezione, anche in gruppo.
+- Cerca i preset completi per nome o codice HEX; i preferiti sono in cima.
+- Anteprime dei preset progressive e memorizzate, caricamento dei PNG in background e anteprime ridotte senza modificare il file originale.
 
 - Backup della libreria in un unico file `.ccbackup`: colori, raccolte, preset con PNG, preferiti, recenti e preferenze. L’importazione conserva i dati esistenti, gestisce i nomi duplicati e non applica icone alle cartelle del nuovo PC.
 - Preset preferiti nel menu del tasto destro, in una tendina con anteprime. Dal menu ⋯ → Preset completi, seleziona un preset e premi **Tasto destro ★**; premi ancora per rimuoverlo.
@@ -70,7 +74,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 0.9.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
+**Versione 0.10.0-beta.1: versione beta.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 

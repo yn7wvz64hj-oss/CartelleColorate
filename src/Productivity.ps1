@@ -81,11 +81,22 @@ function Show-ProductList([string]$Mode) {
     $dialog=New-ProductWindow (T $Mode) 550 480
     $grid=[Windows.Controls.Grid]::new(); $grid.Margin=[Windows.Thickness]::new(16); foreach ($height in @('*','Auto')) { $row=[Windows.Controls.RowDefinition]::new(); $row.Height=[Windows.GridLengthConverter]::new().ConvertFromString($height); $grid.RowDefinitions.Add($row) }
     $list=[Windows.Controls.ListBox]::new(); $list.HorizontalContentAlignment='Stretch'; $list.Background=[Windows.Media.Brushes]::Transparent; $list.Foreground=$window.Resources['Text']; $list.BorderThickness=[Windows.Thickness]::new(0)
+    $rowStyle=[Windows.Style]::new([Windows.Controls.ListBoxItem],$window.Resources[[Windows.Controls.ListBoxItem]]); $rowStyle.Setters.Add([Windows.Setter]::new([Windows.FrameworkElement]::MaxWidthProperty,[double]::PositiveInfinity)); $list.ItemContainerStyle=$rowStyle
+    $list.Template=[Windows.Markup.XamlReader]::Parse('<ControlTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" TargetType="ListBox"><ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><ItemsPresenter/></ScrollViewer></ControlTemplate>')
+    [Windows.Controls.VirtualizingPanel]::SetIsVirtualizing($list,$true); [Windows.Controls.VirtualizingPanel]::SetVirtualizationMode($list,[Windows.Controls.VirtualizationMode]::Recycling)
+
     $template='<DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"><Grid Margin="4,6"><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Image Source="{Binding Image}" Width="32" Height="32"/><StackPanel Grid.Column="1"><TextBlock Text="{Binding Title}" FontWeight="SemiBold"/><TextBlock Text="{Binding Detail}" FontSize="11" Foreground="{DynamicResource Secondary}" TextWrapping="Wrap"/></StackPanel></Grid></DataTemplate>'
     $list.ItemTemplate=[Windows.Markup.XamlReader]::Parse($template); $surface=[Windows.Controls.Border]::new(); $surface.Background=$window.Resources['Card']; $surface.BorderBrush=$window.Resources['Line']; $surface.BorderThickness=[Windows.Thickness]::new(1); $surface.CornerRadius=[Windows.CornerRadius]::new(12); $surface.Padding=[Windows.Thickness]::new(6); $surface.Child=$list; $grid.Children.Add($surface)|Out-Null
     $buttons=[Windows.Controls.WrapPanel]::new(); $buttons.Margin=[Windows.Thickness]::new(0,12,0,0); [Windows.Controls.Grid]::SetRow($buttons,1); $grid.Children.Add($buttons)|Out-Null
     $empty=[Windows.Controls.TextBlock]::new(); $empty.Text=T 'emptyList'; $empty.HorizontalAlignment='Center'; $empty.VerticalAlignment='Center'; $empty.Foreground=$window.Resources['Secondary']; $empty.IsHitTestVisible=$false; $grid.Children.Add($empty)|Out-Null
-    $script:productList=@{Window=$dialog;List=$list;Mode=$Mode;Empty=$empty}; Refresh-ProductList
+    $search=$null
+    if ($Mode -eq 'presets') {
+        $header=[Windows.Controls.RowDefinition]::new(); $header.Height=[Windows.GridLength]::Auto; $grid.RowDefinitions.Insert(0,$header)
+        [Windows.Controls.Grid]::SetRow($surface,1); [Windows.Controls.Grid]::SetRow($empty,1); [Windows.Controls.Grid]::SetRow($buttons,2)
+        $search=[Windows.Controls.TextBox]::new(); $search.ToolTip=T 'searchPresets'; [Windows.Automation.AutomationProperties]::SetName($search,(T 'searchPresets')); $search.Margin=[Windows.Thickness]::new(0); $searchGrid=[Windows.Controls.Grid]::new(); $searchGrid.Margin=[Windows.Thickness]::new(0,0,0,10); $searchGrid.Children.Add($search)|Out-Null; $hint=[Windows.Controls.TextBlock]::new(); $hint.Text=T 'searchPresets'; $hint.Foreground=$window.Resources['Secondary']; $hint.Margin=[Windows.Thickness]::new(12,0,12,0); $hint.VerticalAlignment='Center'; $hint.IsHitTestVisible=$false; $searchGrid.Children.Add($hint)|Out-Null; $grid.Children.Add($searchGrid)|Out-Null
+        $search.Add_TextChanged({ param($sender,$e) $sender.Parent.Children[1].Visibility=if ($sender.Text) { 'Collapsed' } else { 'Visible' }; if ($script:productList) { Refresh-ProductList $false } })
+    }
+    $script:productList=@{Window=$dialog;List=$list;Mode=$Mode;Empty=$empty;Search=$search}; Refresh-ProductList
     $actions=switch($Mode) { 'presets' { @('loadPreset','savePreset','pinPreset','renamePreset','deletePreset') } 'history' { @('undoSelected') } 'redo' { @('redoSelected') } 'managed' { @('openFolder','restoreOriginal') } }
     foreach ($action in $actions) { $button=[Windows.Controls.Button]::new(); $button.Content=T $action; $button.Tag=$action; $button.Margin=[Windows.Thickness]::new(0,0,6,6); $button.Padding=[Windows.Thickness]::new(10,7,10,7); $buttons.Children.Add($button)|Out-Null
         $button.Add_Click({ param($sender,$e) try {
@@ -104,16 +115,24 @@ function Show-ProductList([string]$Mode) {
         } catch { [Windows.MessageBox]::Show($_.Exception.Message,$script:productList.Window.Title)|Out-Null } })
     }
     $dialog.Content=$grid
-    if ($UITest -and $script:productDialogTest) { $dialog.Add_ContentRendered({ if ($script:productDialogAction -and $script:productList.Mode -eq 'presets') { $script:productList.List.SelectedIndex=0; foreach ($button in $script:productList.Window.Content.Children[1].Children) { if ($button.Tag -eq $script:productDialogAction) { $button.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)); break } } }; $script:productDialogCount=$script:productList.List.Items.Count; $script:productList.Window.Close() }) }
-    try { [void]$dialog.ShowDialog() } finally { $script:productList=$null }
+    if ($UITest -and $script:productDialogTest) { $dialog.Add_ContentRendered({ if ($script:productList.Mode -eq 'presets') { Test-RefinementList }; if ($script:productDialogAction -and $script:productList.Mode -eq 'presets') { $script:productList.List.SelectedIndex=0; if ($script:productDialogId) { foreach ($row in $script:productList.List.Items) { if ($row.Value.Id -eq $script:productDialogId) { $script:productList.List.SelectedItem=$row; break } } }; foreach ($button in $script:productList.Window.Content.Children[1].Children) { if ($button.Tag -eq $script:productDialogAction) { $button.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)); break } } }; $script:productDialogCount=$script:productList.List.Items.Count; $script:productList.Window.Close() }) }
+    try { [void]$dialog.ShowDialog() } finally { if ($script:presetPreviewTimer) { $script:presetPreviewTimer.Stop() }; $script:productList=$null }
 }
-function Refresh-ProductList {
+function Refresh-ProductList([bool]$Reload=$true) {
     $items=@(); switch ($script:productList.Mode) {
-        'presets' { foreach ($p in @(Read-ProductList 'preset.json')) { $image=$null; $icon=$null; $source=$null; $bitmap=$null; try { if ($p.Png) { $source=[Drawing.Image]::FromFile($p.Png) } else { $path=Join-Path $root ('preset-preview-'+$p.Hex.TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon $p.Hex $path }; $icon=[Drawing.Icon]::new($path,256,256); $source=$icon.ToBitmap() }; $bitmap=Render-PreparedImage $source 1 0 0 $false $p.Badge $p.BadgeHex; $image=Convert-ProductBitmap $bitmap } catch {} finally { if ($bitmap) { $bitmap.Dispose() }; if ($source) { $source.Dispose() }; if ($icon) { $icon.Dispose() } }; $items+=[pscustomobject]@{Title=$(if ($p.Favorite) { '★ '+$p.Name } else { $p.Name });Detail=$p.Hex+' · '+(T $p.Badge);Image=$image;Value=$p} } }
+        'presets' {
+            if ($Reload -or $null -eq $script:productList.Presets) { $script:productList.Presets=@(Read-ProductList 'preset.json' | Sort-Object @{Expression={[bool]$_.Favorite};Descending=$true},Name) }; $query=$script:productList.Search.Text.Trim()
+            foreach ($p in $script:productList.Presets) {
+                if ($query -and $p.Name.IndexOf($query,[StringComparison]::CurrentCultureIgnoreCase) -lt 0 -and $p.Hex.IndexOf($query,[StringComparison]::OrdinalIgnoreCase) -lt 0) { continue }
+                $items+=[pscustomobject]@{Title=$(if ($p.Favorite) { '★ '+$p.Name } else { $p.Name });Detail=$p.Hex+' · '+(T $p.Badge);Image=$null;Value=$p}
+            }
+        }
         { $_ -in @('history','redo') } { $history=if ($script:productList.Mode -eq 'redo') { @(Read-RepeatActivities) } else { @(Read-FolderActivities) }; foreach ($h in $history) { $title=if ($h.Records.Count -gt 1) { T 'folderCount' @($h.Records.Count) } else { [IO.Path]::GetFileName($h.Records[0].Current) }; $items+=[pscustomobject]@{Title=$title+' · '+(T $h.Kind);Detail=([DateTime]::Parse($h.Date).ToLocalTime().ToString('g'))+' · '+$h.Records[0].Current;Image=$null;Value=$h} } }
         'managed' { foreach ($f in @(Read-PersonalizedFolders | Sort-Object Name)) { $image=$null; try { $image=Read-IconFrame $f.Icon 32 } catch {}; $items+=[pscustomobject]@{Title=$f.Name;Detail=$f.Path;Image=$image;Value=$f} } }
-    }; $script:productList.List.ItemsSource=[object[]]$items
+    }; $rows=[Collections.ObjectModel.ObservableCollection[object]]::new(); foreach ($row in $items) { $rows.Add($row) }; $script:productList.List.ItemsSource=$rows
     $script:productList.Empty.Visibility=if ($items.Count) { 'Collapsed' } else { 'Visible' }
+    if ($script:productList.Mode -eq 'presets') { Start-PresetPreviews }
+
 }
 function Update-BadgePreview {
     $ui.BadgePreview.Visibility=if ($script:badge -eq 'none') { 'Collapsed' } else { 'Visible' }; $ui.BadgeGlyph.FontFamily='Segoe UI Symbol'; $ui.BadgeGlyph.Text=Get-BadgeGlyph $script:badge; $ui.BadgeGlyph.Foreground=Brush $script:badgeHex
@@ -179,8 +198,16 @@ function Initialize-ProductInterface {
     $script:appearance=Read-AppearancePreference
     $script:badgeHex='#233755'; $script:themeMode=if ($Theme -ne 'System') { $Theme } else { [string](Read-ProductSetting 'theme' 'System') }; if ($script:themeMode -notin @('System','Light','Dark')) { $script:themeMode='System' }; $script:glassOpacity=[Math]::Max(0,[Math]::Min(100,[double](Read-ProductSetting 'glassOpacity' 55))); $script:glassDepth=[Math]::Max(0,[Math]::Min(100,[double](Read-ProductSetting 'glassDepth' 50))); $script:productVersion=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'VERSION')).Trim()
     $window.AllowDrop=$true
-    $window.Add_PreviewDragOver({ param($sender,$e) if ($e.Data.GetDataPresent([Windows.DataFormats]::FileDrop)) { $e.Effects=[Windows.DragDropEffects]::Copy; $e.Handled=$true } })
-    $window.Add_PreviewDrop({ param($sender,$e) if (!$e.Data.GetDataPresent([Windows.DataFormats]::FileDrop)) { return }; $e.Handled=$true; try { $paths=[string[]]$e.Data.GetData([Windows.DataFormats]::FileDrop); Select-ProductFolders $paths; Show-Toast (T 'folderCount' @($paths.Count)) } catch { Show-Status $_.Exception.Message } })
+    $window.Add_PreviewDragOver({ param($sender,$e)
+        if (!$e.Data.GetDataPresent([Windows.DataFormats]::FileDrop)) { return }
+        $paths=[string[]]$e.Data.GetData([Windows.DataFormats]::FileDrop)
+        $e.Effects=if (Test-ProductDrop $paths) { [Windows.DragDropEffects]::Copy } else { [Windows.DragDropEffects]::None }; $e.Handled=$true
+    })
+    $window.Add_PreviewDrop({ param($sender,$e)
+        if (!$e.Data.GetDataPresent([Windows.DataFormats]::FileDrop)) { return }; $e.Handled=$true
+        try { Invoke-ProductDrop ([string[]]$e.Data.GetData([Windows.DataFormats]::FileDrop)) } catch { Show-Status $_.Exception.Message }
+    })
+    Initialize-PngLoader
     $script:themeTimer=[Windows.Threading.DispatcherTimer]::new(); $script:themeTimer.Interval=[TimeSpan]::FromSeconds(3); $script:themeTimer.Add_Tick({ if ($script:themeMode -eq 'System') { try { $value=(Get-ItemPropertyValue 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' -Name AppsUseLightTheme) -eq 0; if ($value -ne $script:dark) { Update-ProductTheme } } catch {} } }); if (!$UITest -and !$Preview) { $script:themeTimer.Start() }
     $script:updateTimer=[Windows.Threading.DispatcherTimer]::new(); $script:updateTimer.Interval=[TimeSpan]::FromMilliseconds(150); $script:updateTimer.Add_Tick({ if (!$script:updateTask.IsCompleted) { return }; $script:updateTimer.Stop(); try { $remote=$script:updateTask.GetAwaiter().GetResult().Trim(); $new=Test-NewProductVersion $remote $script:productVersion; $text=if ($new) { (T 'updateAvailable')+' '+$remote } else { T 'upToDate' }; if ($new) { $script:availableVersion=$remote }; if ($script:updateLabel) { $script:updateLabel.Text=$text; $script:updateDownload.IsEnabled=$new }; if (!$script:updateQuiet -or $new) { Show-Toast $text } } catch { if ($script:updateLabel) { $script:updateLabel.Text=T 'updateError' }; if (!$script:updateQuiet) { Show-Status (T 'updateError') } } finally { $script:updateClient.Dispose(); $script:updateClient=$null } })
     $window.Add_Closed({ $script:themeTimer.Stop(); $script:updateTimer.Stop(); if ($script:updateClient) { $script:updateClient.CancelPendingRequests(); $script:updateClient.Dispose() } })
@@ -207,7 +234,9 @@ function Test-ProductInterface([string]$Png) {
     try {
         $preset=Save-CompletePreset 'UI preset' '#AC1234' $Png 'music' '#11CC33'; Apply-CompletePreset $preset
         if ($script:pngSelection -ne $preset.Png -or $script:badge -ne 'music' -or $ui.BadgeGlyph.Text -ne '♫') { throw 'Preset application failed' }
+        $null=Save-CompletePreset 'UI color preset' '#00AACC' '' 'check' '#123456'
         Show-ProductList 'presets'; if ($script:productDialogCount -lt 1) { throw 'Preset dialog empty' }
+        Test-PngDropInterface $Png
         Show-BadgePicker; if ($script:badge -ne 'heart' -or $script:badgeHex -ne '#CC2255') { throw 'Badge picker failed' }
         Show-IconSizes; if ($script:productSizeCount -ne 4) { throw 'Size preview missing' }
         Show-VisualSettings; if ($script:glassOpacity -ne 45 -or $script:glassDepth -ne 75 -or (Read-ProductSetting 'glassOpacity' 0) -ne '45') { throw 'Glass preference failed' }

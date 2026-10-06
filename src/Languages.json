@@ -150,7 +150,8 @@
         "backupSaved": "Backup salvato.",
         "backupLoaded": "Backup importato. I dati esistenti sono conservati.",
         "backupInvalid": "Backup danneggiato o non compatibile.",
-        "presetMissing": "Questo preset non è più disponibile."
+        "presetMissing": "Questo preset non è più disponibile.",
+        "searchPresets": "Cerca preset"
       }
     },
     {
@@ -302,7 +303,8 @@
         "backupSaved": "Backup saved.",
         "backupLoaded": "Backup imported. Existing data is preserved.",
         "backupInvalid": "Backup is damaged or incompatible.",
-        "presetMissing": "This preset is no longer available."
+        "presetMissing": "This preset is no longer available.",
+        "searchPresets": "Search presets"
       }
     },
     {
@@ -454,7 +456,8 @@
         "backupSaved": "备份已保存。",
         "backupLoaded": "备份已导入，原有数据已保留。",
         "backupInvalid": "备份损坏或不兼容。",
-        "presetMissing": "此预设已不可用。"
+        "presetMissing": "此预设已不可用。",
+        "searchPresets": "搜索预设"
       }
     },
     {
@@ -606,7 +609,8 @@
         "backupSaved": "Copia guardada.",
         "backupLoaded": "Copia importada. Se conservan los datos existentes.",
         "backupInvalid": "La copia está dañada o es incompatible.",
-        "presetMissing": "Este estilo ya no está disponible."
+        "presetMissing": "Este estilo ya no está disponible.",
+        "searchPresets": "Buscar preajustes"
       }
     },
     {
@@ -758,7 +762,8 @@
         "backupSaved": "बैकअप सहेजा गया।",
         "backupLoaded": "बैकअप आयात हुआ। मौजूदा डेटा सुरक्षित है।",
         "backupInvalid": "बैकअप खराब या असंगत है।",
-        "presetMissing": "यह प्रीसेट अब उपलब्ध नहीं है।"
+        "presetMissing": "यह प्रीसेट अब उपलब्ध नहीं है।",
+        "searchPresets": "प्रीसेट खोजें"
       }
     },
     {
@@ -910,7 +915,8 @@
         "backupSaved": "تم حفظ النسخة.",
         "backupLoaded": "تم الاستيراد مع الاحتفاظ بالبيانات الحالية.",
         "backupInvalid": "النسخة تالفة أو غير متوافقة.",
-        "presetMissing": "هذا الإعداد لم يعد متاحًا."
+        "presetMissing": "هذا الإعداد لم يعد متاحًا.",
+        "searchPresets": "البحث عن الإعدادات"
       }
     },
     {
@@ -1062,7 +1068,8 @@
         "backupSaved": "Cópia guardada.",
         "backupLoaded": "Cópia importada. Os dados existentes foram mantidos.",
         "backupInvalid": "A cópia está danificada ou é incompatível.",
-        "presetMissing": "Esta predefinição já não está disponível."
+        "presetMissing": "Esta predefinição já não está disponível.",
+        "searchPresets": "Pesquisar predefinições"
       }
     },
     {
@@ -1214,7 +1221,8 @@
         "backupSaved": "ব্যাকআপ সংরক্ষিত।",
         "backupLoaded": "ব্যাকআপ আমদানি হয়েছে। আগের তথ্য অক্ষত।",
         "backupInvalid": "ব্যাকআপ ক্ষতিগ্রস্ত বা অসামঞ্জস্যপূর্ণ।",
-        "presetMissing": "এই প্রিসেট আর পাওয়া যাচ্ছে না।"
+        "presetMissing": "এই প্রিসেট আর পাওয়া যাচ্ছে না।",
+        "searchPresets": "প্রিসেট খুঁজুন"
       }
     },
     {
@@ -1366,7 +1374,8 @@
         "backupSaved": "Копия сохранена.",
         "backupLoaded": "Копия импортирована. Текущие данные сохранены.",
         "backupInvalid": "Копия повреждена или несовместима.",
-        "presetMissing": "Этот стиль больше недоступен."
+        "presetMissing": "Этот стиль больше недоступен.",
+        "searchPresets": "Поиск стилей"
       }
     },
     {
@@ -1518,7 +1527,8 @@
         "backupSaved": "Sauvegarde enregistrée.",
         "backupLoaded": "Sauvegarde importée. Les données existantes sont conservées.",
         "backupInvalid": "Sauvegarde endommagée ou incompatible.",
-        "presetMissing": "Ce préréglage n’est plus disponible."
+        "presetMissing": "Ce préréglage n’est plus disponible.",
+        "searchPresets": "Rechercher des préréglages"
       }
     },
     {
@@ -1670,7 +1680,8 @@
         "backupSaved": "Sicherung gespeichert.",
         "backupLoaded": "Sicherung importiert. Vorhandene Daten bleiben erhalten.",
         "backupInvalid": "Sicherung beschädigt oder inkompatibel.",
-        "presetMissing": "Diese Vorlage ist nicht mehr verfügbar."
+        "presetMissing": "Diese Vorlage ist nicht mehr verfügbar.",
+        "searchPresets": "Vorlagen suchen"
       }
     },
     {
@@ -1822,7 +1833,8 @@
         "backupSaved": "バックアップを保存しました。",
         "backupLoaded": "読み込みました。既存のデータは保持されます。",
         "backupInvalid": "バックアップが破損しているか非対応です。",
-        "presetMissing": "このプリセットは利用できません。"
+        "presetMissing": "このプリセットは利用できません。",
+        "searchPresets": "プリセットを検索"
       }
     },
     {
@@ -1974,7 +1986,8 @@
         "backupSaved": "백업을 저장했습니다.",
         "backupLoaded": "백업을 가져왔습니다. 기존 데이터는 유지됩니다.",
         "backupInvalid": "백업이 손상되었거나 호환되지 않습니다.",
-        "presetMissing": "이 프리셋은 더 이상 사용할 수 없습니다."
+        "presetMissing": "이 프리셋은 더 이상 사용할 수 없습니다.",
+        "searchPresets": "프리셋 검색"
       }
     },
     {
@@ -2126,7 +2139,8 @@
         "backupSaved": "Cadangan disimpan.",
         "backupLoaded": "Cadangan diimpor. Data lama dipertahankan.",
         "backupInvalid": "Cadangan rusak atau tidak kompatibel.",
-        "presetMissing": "Preset ini tidak lagi tersedia."
+        "presetMissing": "Preset ini tidak lagi tersedia.",
+        "searchPresets": "Cari preset"
       }
     },
     {
@@ -2278,7 +2292,8 @@
         "backupSaved": "بیک اپ محفوظ ہوا۔",
         "backupLoaded": "بیک اپ درآمد ہوا۔ موجودہ ڈیٹا محفوظ ہے۔",
         "backupInvalid": "بیک اپ خراب یا غیر موافق ہے۔",
-        "presetMissing": "یہ پیش سیٹ اب دستیاب نہیں۔"
+        "presetMissing": "یہ پیش سیٹ اب دستیاب نہیں۔",
+        "searchPresets": "پری سیٹ تلاش کریں"
       }
     }
   ]

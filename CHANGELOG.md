@@ -1,5 +1,13 @@
 # Note di versione
 
+## 0.10.0-beta.1 — 6 ottobre 2026
+
+- Caricamento PNG tramite trascinamento, senza cambiare la cartella selezionata.
+- Ricerca nei preset per nome e HEX, con preferiti in cima.
+- Caricamento PNG in background; risultati obsoleti ignorati e anteprima precedente conservata in caso di errore.
+- Anteprime dei preset progressive e cache limitata a 256 immagini; file originali conservati.
+- Test del caricamento asincrono, PNG danneggiati, trascinamenti misti, ricerca e riutilizzo delle anteprime nelle 15 lingue.
+
 ## 0.9.0-beta.1 — 6 ottobre 2026
 
 - Backup portatile della libreria con PNG incorporati, fusione dei dati, gestione delle collisioni e rollback degli errori.

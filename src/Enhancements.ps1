@@ -148,7 +148,7 @@ function Test-EnhancementBackend {
 function Test-EnhancementInterface {
     $script:productDialogTest=$true
     try {
-        $presets=@(Read-ProductList 'preset.json'); if (!$presets.Count) { throw 'Missing UI preset fixture' }; $id=$presets[0].Id; $wasFavorite=[bool]$presets[0].Favorite; $script:productDialogAction='pinPreset'; Show-ProductList 'presets'; $script:productDialogAction=$null
+        $presets=@(Read-ProductList 'preset.json'); if (!$presets.Count) { throw 'Missing UI preset fixture' }; $id=$presets[0].Id; $wasFavorite=[bool]$presets[0].Favorite; $script:productDialogId=$id; $script:productDialogAction='pinPreset'; Show-ProductList 'presets'; $script:productDialogAction=$null
         $changed=@(Read-ProductList 'preset.json' | Where-Object { $_.Id -eq $id })[0]; if ([bool]$changed.Favorite -eq $wasFavorite) { throw 'Favorite UI button failed' }
         if ($script:productDialogCount -lt 1) { throw 'Favorite preset dialog failed' }; Show-ProductList 'redo'
         Show-LibraryBackup; if ($ui.PaletteTools.ContextMenu.Items.Count -ne 2 -or $ui.PaletteTools.ContextMenu.Items[0].Header -ne (T 'exportBackup')) { throw 'Backup menu failed' }; $ui.PaletteTools.ContextMenu.IsOpen=$false
@@ -156,5 +156,114 @@ function Test-EnhancementInterface {
         try { Save-LanguagePreference $code; Save-Colors; $backup=Join-Path $root 'ui-library.ccbackup'; Export-LibraryBackup $backup; $script:collection.Clear(); Save-Colors; Import-LibraryBackup $backup; Reload-LibraryInterface
             if ((@($script:collection | ForEach-Object { $_.Name }) -join '|') -ne $originalNames -or $script:activeLanguage.code -ne $code -or $ui.LanguageName.Text -ne $script:activeLanguage.nativeName) { throw 'Backup reload loses library or language' }
         } finally { if ($null -ne $savedSettings) { [IO.File]::WriteAllBytes($settingsPath,$savedSettings) } elseif ([IO.File]::Exists($settingsPath)) { [IO.File]::Delete($settingsPath) }; $script:activeLanguage=$script:languageMap[$code]; Apply-InterfaceLanguage }
-    } finally { $script:productDialogTest=$false; $script:productDialogAction=$null }
+    } finally { $script:productDialogTest=$false; $script:productDialogAction=$null; $script:productDialogId=$null }
+}
+
+# Small previews are cached per source revision; one uncached preset is drawn per idle tick.
+function Start-PresetPreviews {
+    if (!$script:presetPreviewCache) { $script:presetPreviewCache=@{} }
+    if (!$script:presetPreviewTimer) {
+        $script:presetPreviewTimer=[Windows.Threading.DispatcherTimer]::new([Windows.Threading.DispatcherPriority]::Background)
+        $script:presetPreviewTimer.Interval=[TimeSpan]::FromMilliseconds(25)
+        $script:presetPreviewTimer.Add_Tick({ Invoke-PresetPreviewTick })
+    }
+    $script:presetPreviewIndex=0; $script:presetPreviewTimer.Start()
+}
+function Invoke-PresetPreviewTick {
+    if (!$script:productList -or $script:productList.Mode -ne 'presets') { $script:presetPreviewTimer.Stop(); return }
+    $list=$script:productList.List
+    if ($script:presetPreviewIndex -ge $list.Items.Count) { $script:presetPreviewTimer.Stop(); return }
+    $index=$script:presetPreviewIndex; $script:presetPreviewIndex++; $row=$list.Items[$index]; $p=$row.Value
+    $stamp=if ($p.Png -and [IO.File]::Exists($p.Png)) { [IO.File]::GetLastWriteTimeUtc($p.Png).Ticks.ToString()+':'+[IO.FileInfo]::new($p.Png).Length } else { '' }
+    $key=($p | ConvertTo-Json -Compress)+$stamp
+    if (!$script:presetPreviewCache.ContainsKey($key)) {
+        $source=$null; $bitmap=$null; $stream=$null; $icon=$null; $image=$null
+        try {
+            if ($p.Png) {
+                $small=[Windows.Media.Imaging.BitmapImage]::new(); $small.BeginInit(); $small.CacheOption='OnLoad'; $small.DecodePixelWidth=256; $small.UriSource=[Uri]::new($p.Png); $small.EndInit(); $small.Freeze()
+                $stream=[IO.MemoryStream]::new(); $encoder=[Windows.Media.Imaging.PngBitmapEncoder]::new(); $encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($small)); $encoder.Save($stream); $stream.Position=0; $source=[Drawing.Image]::FromStream($stream)
+            } else {
+                $path=Join-Path $root ('preset-preview-'+$p.Hex.TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon $p.Hex $path }; $small=Read-IconFrame $path 256; $stream=[IO.MemoryStream]::new(); $encoder=[Windows.Media.Imaging.PngBitmapEncoder]::new(); $encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($small)); $encoder.Save($stream); $stream.Position=0; $source=[Drawing.Image]::FromStream($stream)
+            }
+            $bitmap=Render-PreparedImage $source 1 0 0 $false $p.Badge $p.BadgeHex; $image=Convert-ProductBitmap $bitmap
+        } catch {} finally { if ($bitmap) { $bitmap.Dispose() }; if ($source) { $source.Dispose() }; if ($icon) { $icon.Dispose() }; if ($stream) { $stream.Dispose() } }
+        if ($script:presetPreviewCache.Count -ge 256) { $script:presetPreviewCache.Clear() }; $script:presetPreviewCache[$key]=$image
+    }
+    $updated=[pscustomobject]@{Title=$row.Title;Detail=$row.Detail;Image=$script:presetPreviewCache[$key];Value=$p}
+    $selected=$list.SelectedIndex -eq $index; $list.ItemsSource[$index]=$updated; if ($selected) { $list.SelectedItem=$updated }
+
+}
+function Test-ProductDrop([string[]]$Paths) {
+    if (!$Paths.Count) { return $false }
+    if ($Paths.Count -eq 1 -and [IO.File]::Exists($Paths[0]) -and [IO.Path]::GetExtension($Paths[0]) -ieq '.png') { return $true }
+    foreach ($path in $Paths) { if (![IO.Directory]::Exists($path)) { return $false } }; return $true
+}
+function Invoke-ProductDrop([string[]]$Paths) {
+    if (!(Test-ProductDrop $Paths)) { throw (T 'folderInvalid') }
+    if ($Paths.Count -eq 1 -and [IO.File]::Exists($Paths[0])) { Start-PngPreview $Paths[0] }
+    else { Select-ProductFolders $Paths; Show-Toast (T 'folderCount' @($script:batchTargets.Count)) }
+}
+function Initialize-PngLoader {
+    $script:pngLoaderScript={
+        param($Path)
+        Add-Type -AssemblyName PresentationCore,WindowsBase
+        $stream=[IO.File]::OpenRead($Path)
+        try {
+            $signature=New-Object byte[] 8; if ($stream.Read($signature,0,8) -ne 8 -or [BitConverter]::ToString($signature) -ne '89-50-4E-47-0D-0A-1A-0A') { throw 'Invalid PNG' }; $stream.Position=0
+            $header=New-Object byte[] 24; if ($stream.Read($header,0,24) -ne 24) { throw 'Invalid PNG' }; $width=[double]$header[16]*16777216+$header[17]*65536+$header[18]*256+$header[19]; $height=[double]$header[20]*16777216+$header[21]*65536+$header[22]*256+$header[23]; if ($width -lt 1 -or $height -lt 1 -or $width*$height -gt 64000000) { throw 'Invalid PNG dimensions' }; $stream.Position=0
+            $image=[Windows.Media.Imaging.BitmapImage]::new(); $image.BeginInit(); $image.CacheOption='OnLoad'; if ($width -ge $height) { $image.DecodePixelWidth=256 } else { $image.DecodePixelHeight=256 }; $image.StreamSource=$stream; $image.EndInit(); $image.Freeze(); return $image
+        } finally { $stream.Dispose() }
+    }
+    $script:pngLoadTimer=[Windows.Threading.DispatcherTimer]::new([Windows.Threading.DispatcherPriority]::Background); $script:pngLoadTimer.Interval=[TimeSpan]::FromMilliseconds(40)
+    $script:pngLoadTimer.Add_Tick({ Complete-PngPreview })
+    $window.Add_Closed({ $script:pngLoadTimer.Stop(); if ($script:pngLoadPowerShell) { $script:pngLoadPowerShell.Dispose(); $script:pngLoadPowerShell=$null } })
+}
+function Start-PngPreview([string]$Path) {
+    if (![IO.File]::Exists($Path)) { throw (T 'pngError') }
+    $script:pngRequest=$Path
+    if (!$script:pngLoadPowerShell) {
+        $script:pngLoadingPath=$Path; $script:pngLoadPowerShell=[Management.Automation.PowerShell]::Create()
+        $null=$script:pngLoadPowerShell.AddScript($script:pngLoaderScript.ToString()).AddArgument($Path); $script:pngLoadHandle=$script:pngLoadPowerShell.BeginInvoke()
+    }
+    $ui.Apply.IsEnabled=$false; $script:pngLoadTimer.Start()
+}
+function Complete-PngPreview {
+    if (!$script:pngLoadPowerShell -or !$script:pngLoadHandle.IsCompleted) { return }
+    $image=$null; $errorLoading=$false
+    try { $result=$script:pngLoadPowerShell.EndInvoke($script:pngLoadHandle); if ($script:pngLoadPowerShell.HadErrors -or !$result.Count) { $errorLoading=$true } else { $image=$result[0].PSObject.BaseObject } } catch { $errorLoading=$true }
+    finally { $script:pngLoadPowerShell.Dispose(); $script:pngLoadPowerShell=$null }
+    if ($script:pngRequest -and $script:pngRequest -ne $script:pngLoadingPath) { Start-PngPreview $script:pngRequest; return }
+    $script:pngLoadTimer.Stop(); $ui.Apply.IsEnabled=$true
+    if (!$script:pngRequest) { return }
+    if ($errorLoading) { $script:pngRequest=$null; Show-Status (T 'pngError'); return }
+    $ui.UploadedPreview.Source=$image; $ui.UploadedPreview.Visibility='Visible'; $ui.FolderFront.Visibility='Collapsed'; $ui.FolderBack.Visibility='Collapsed'
+    $script:pngSelection=$script:pngLoadingPath; $script:pngRequest=$null; $ui.UseColor.Visibility='Visible'; $ui.Save.IsEnabled=$false; $ui.Upload.Content=T 'changePng'; $ui.Status.Visibility='Collapsed'
+}
+function Test-RefinementList {
+    $search=$script:productList.Search; $search.Text='missing-'+[Guid]::NewGuid().ToString('N')
+    if ($script:productList.List.Items.Count -ne 0 -or $script:productList.Empty.Visibility -ne 'Visible') { throw 'Preset empty search failed' }
+    $search.Text=''; $list=$script:productList.List; $seenNormal=$false
+    foreach ($row in $list.Items) { if (!$row.Value.Favorite) { $seenNormal=$true } elseif ($seenNormal) { throw 'Favorites are not first' } }
+    if ($list.Items.Count) {
+        $name=$list.Items[0].Value.Name; $search.Text=$name.ToUpperInvariant(); if (!$list.Items.Count) { throw 'Case insensitive search failed' }
+        $search.Text=''; for ($i=0; $i -lt $list.Items.Count; $i++) { Invoke-PresetPreviewTick }; foreach ($entry in $list.Items) { if (!$entry.Image) { throw 'Preset thumbnail missing' } }; if (!$list.Items[0].Image) { throw 'Progressive preview missing' }
+        $first=$list.Items[0].Image; Refresh-ProductList; Invoke-PresetPreviewTick; if (![object]::ReferenceEquals($first,$list.Items[0].Image)) { throw 'Preset thumbnail cache missed' }
+    }
+}
+function Test-PngDropInterface([string]$Png) {
+    $original=$script:currentFolder; $batch=@($script:batchTargets); $originalSource=$ui.UploadedPreview.Source
+    Invoke-ProductDrop @($Png)
+    $timeout=[DateTime]::UtcNow.AddSeconds(15)
+    while ($script:pngLoadPowerShell -and [DateTime]::UtcNow -lt $timeout) { [Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Background); Start-Sleep -Milliseconds 15 }
+    if ($script:pngLoadPowerShell -or $script:pngSelection -ne $Png -or !$ui.Apply.IsEnabled -or !$ui.UploadedPreview.Source.IsFrozen -or $script:currentFolder -ne $original) { throw ('Asynchronous PNG drop failed: pending='+[bool]$script:pngLoadPowerShell+' selection='+$script:pngSelection+' frozen='+$ui.UploadedPreview.Source.IsFrozen+' enabled='+$ui.Apply.IsEnabled+' status='+$ui.Status.Text) }
+    $source=$ui.UploadedPreview.Source; $invalid=Join-Path $root 'invalid.png'; [IO.File]::WriteAllText($invalid,'bad image'); Invoke-ProductDrop @($invalid)
+    $timeout=[DateTime]::UtcNow.AddSeconds(15)
+    while ($script:pngLoadPowerShell -and [DateTime]::UtcNow -lt $timeout) { [Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Background); Start-Sleep -Milliseconds 15 }
+    if ($script:pngLoadPowerShell -or ![object]::ReferenceEquals($source,$ui.UploadedPreview.Source) -or $script:pngSelection -ne $Png -or !$ui.Apply.IsEnabled) { throw 'Invalid PNG replaces current preview' }
+    $rejected=$false; try { Invoke-ProductDrop @($Png,$original) } catch { $rejected=$true }; if (!$rejected -or $script:currentFolder -ne $original -or @($script:batchTargets).Count -ne $batch.Count) { throw 'Mixed PNG drop changes target' }
+    Start-PngPreview $Png; $ui.UseColor.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+    $timeout=[DateTime]::UtcNow.AddSeconds(15)
+    while ($script:pngLoadPowerShell -and [DateTime]::UtcNow -lt $timeout) { [Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Background); Start-Sleep -Milliseconds 15 }
+    if ($script:pngSelection -or !$ui.Apply.IsEnabled) { throw 'Stale asynchronous preview replaces chosen color' }
+    Set-PngPreview $Png
 }

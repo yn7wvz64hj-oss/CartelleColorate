@@ -1,4 +1,4 @@
-﻿CARTELLECOLORATE 0.9.0-beta.1
+﻿CARTELLECOLORATE 0.10.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -141,3 +141,14 @@ nome ma contenuto diverso. Importare di nuovo lo stesso backup non li duplica.
 Le preferenze importate sono applicate subito; il menu del tasto destro si aggiorna.
 La cronologia e i backup delle icone originali restano sul PC cui appartengono:
 il backup della libreria non rinomina né personalizza automaticamente cartelle.
+
+FUNZIONI DELLA VERSIONE 0.10
+Trascina un singolo PNG sull’anteprima per caricarlo; puoi anche usare il pulsante
+Carica PNG. L’immagine viene letta in background e il file originale è conservato.
+La cartella selezionata rimane la stessa. Se il PNG è danneggiato, l’anteprima
+precedente rimane disponibile. Applica torna disponibile quando termina la lettura.
+Trascinare una o più cartelle continua a selezionarle per la modifica.
+Non mescolare file PNG e cartelle nello stesso trascinamento.
+Nel menu ⋯ > Preset completi trovi la ricerca per nome o codice HEX.
+I preferiti sono mostrati per primi. Le anteprime vengono caricate progressivamente
+e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfaccia.
