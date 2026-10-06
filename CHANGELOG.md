@@ -1,5 +1,13 @@
 # Note di versione
 
+## 0.9.0-beta.1 — 6 ottobre 2026
+
+- Backup portatile della libreria con PNG incorporati, fusione dei dati, gestione delle collisioni e rollback degli errori.
+- Preset preferiti in una tendina del menu di Windows, con icone e applicazione rapida tramite worker nascosto.
+- Ripetizione delle modifiche annullate, compresa la rinomina, con protezione dalle modifiche successive.
+- Preferiti conservati durante l’aggiornamento dei preset.
+- Nuovi comandi nelle 15 lingue e test completo del menu Windows nel runner isolato.
+
 ## 0.8.0-beta.1 — 6 ottobre 2026
 
 - Preset completi con copie indipendenti dei PNG e contrassegni colorati.

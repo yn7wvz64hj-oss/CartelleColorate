@@ -22,6 +22,11 @@ jobs:
           cscript.exe //Nologo work/launcher-check/CartelleColorate/Avvio.vbs --self-test
           if ($LASTEXITCODE -ne 0) { throw 'Avvio VBS fallito.' }
           if (!(Test-Path work/launcher-check/CartelleColorate/test-data/verifica-avvio.txt)) { throw 'Il launcher non ha eseguito il test.' }
+      - name: Verifica preset nel menu di Windows
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/TestPresetMenu.ps1 -Package work/launcher-check/CartelleColorate
+          if ($LASTEXITCODE -ne 0) { throw 'Preset nel menu non funzionante.' }
       - name: Verifica fonte degli aggiornamenti
         shell: powershell
         run: |

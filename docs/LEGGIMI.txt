@@ -1,4 +1,4 @@
-﻿CARTELLECOLORATE 0.8.0-beta.1
+﻿CARTELLECOLORATE 0.9.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -123,3 +123,21 @@ Il tema del sistema segue anche i cambiamenti di Windows mentre l’app è apert
 Chiudere le impostazioni senza salvare annulla la loro anteprima.
 Gli aggiornamenti non vengono installati automaticamente: il pulsante Scarica
 apre lo ZIP nel browser. Estrai il pacchetto ed esegui Installa.cmd per aggiornare.
+
+FUNZIONI DELLA VERSIONE 0.9
+Preset nel tasto destro: apri ⋯ > Preset completi, seleziona un preset e premi
+Tasto destro ★. La stella indica i preferiti. Premi di nuovo per rimuoverlo.
+Nel menu Cambia colore appare la tendina Preset preferiti con le anteprime.
+Scegli un preset per applicare insieme colore, PNG e simbolo senza aprire l’app.
+La modifica si può annullare e ripetere dalla cronologia.
+Ripeti: apri ⋯ > Ripeti, seleziona una modifica annullata e premi Ripeti selezionata.
+Vale anche per nomi e gruppi di cartelle. Se una cartella è cambiata, l’app non
+sovrascrive le nuove modifiche. L’icona viene aggiornata con la stessa notifica rapida.
+Backup: dal menu ⋯ > Backup della libreria scegli Esporta o Importa.
+Il singolo file .ccbackup comprende colori, raccolte, preset, PNG dei preset,
+preferiti, recenti e preferenze. Puoi importarlo anche su un altro PC.
+L’importazione conserva i dati esistenti e rinomina i preset che hanno lo stesso
+nome ma contenuto diverso. Importare di nuovo lo stesso backup non li duplica.
+Le preferenze importate sono applicate subito; il menu del tasto destro si aggiorna.
+La cronologia e i backup delle icone originali restano sul PC cui appartengono:
+il backup della libreria non rinomina né personalizza automaticamente cartelle.

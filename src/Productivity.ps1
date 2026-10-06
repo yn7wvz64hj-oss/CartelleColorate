@@ -10,8 +10,8 @@ function Save-CompletePreset([string]$Name,[string]$Hex,[string]$Png,[string]$Ba
     if (!$Name.Trim() -or $Hex -notmatch '^#[0-9A-Fa-f]{6}$' -or $BadgeHex -notmatch '^#[0-9A-Fa-f]{6}$') { throw (T 'colorInvalid') }
     $items=@(Read-ProductList 'preset.json'); $existing=@($items | Where-Object { $_.Name -eq $Name.Trim() }); $id=if ($existing.Count) { $existing[0].Id } else { [Guid]::NewGuid().ToString('N') }
     $asset=''; if ($Png) { $image=[Drawing.Image]::FromFile($Png); try { $asset=Join-Path $root ('preset-'+[Guid]::NewGuid().ToString('N')+'.png'); $image.Save($asset,[Drawing.Imaging.ImageFormat]::Png) } finally { $image.Dispose() } }
-    $preset=[pscustomobject]@{Id=$id;Name=$Name.Trim();Hex=$Hex.ToUpperInvariant();Png=$asset;Badge=$Badge;BadgeHex=$BadgeHex.ToUpperInvariant()}
-    Write-AdvancedJson (Join-Path $root 'preset.json') (@($items | Where-Object { $_.Id -ne $id })+@($preset)); return $preset
+    $preset=[pscustomobject]@{Id=$id;Name=$Name.Trim();Hex=$Hex.ToUpperInvariant();Png=$asset;OriginName=$(if ($existing.Count) { [string]$existing[0].OriginName } else { '' });Badge=$Badge;BadgeHex=$BadgeHex.ToUpperInvariant();Favorite=$(if ($existing.Count) { [bool]$existing[0].Favorite } else { $false })}
+    Write-AdvancedJson (Join-Path $root 'preset.json') (@($items | Where-Object { $_.Id -ne $id })+@($preset)); Sync-PresetMenu; return $preset
 }
 function Get-SnapshotSignature($Snapshot) {
     $sha=[Security.Cryptography.SHA256]::Create(); try { return [Convert]::ToBase64String($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes(($Snapshot | ConvertTo-Json -Compress -Depth 12)))) } finally { $sha.Dispose() }
@@ -30,7 +30,7 @@ function Remove-ActivityForRecord($Record) {
     $records=if ($Record.Batch) { @($Record.Batch) } else { @($Record) }; $signature=Get-SnapshotSignature $records
     foreach ($entry in @(Read-FolderActivities)) { if ((Get-SnapshotSignature @($entry.Records)) -eq $signature) { [IO.File]::Delete((Join-Path $root ('cronologia/'+$entry.Id+'.json'))); break } }
 }
-function Restore-FolderActivity($Activity) {
+function Restore-FolderActivity($Activity,[bool]$Repeat=$false) {
     if ($Activity.Id -notmatch '^[a-f0-9]{32}$' -or @($Activity.Records).Count -ne @($Activity.After).Count) { throw (T 'backupError') }
     $i=0; foreach ($record in $Activity.Records) {
         if (![IO.Directory]::Exists($record.Current) -or (Get-SnapshotSignature (New-FolderUndo $record.Current)) -ne $Activity.After[$i]) { throw (T 'historyConflict') }
@@ -39,9 +39,10 @@ function Restore-FolderActivity($Activity) {
     $rollback=@($Activity.Records | ForEach-Object { New-FolderUndo $_.Current }); $done=@()
     try { foreach ($record in $Activity.Records) { $done+=Restore-UndoRecord $record } }
     catch { for ($j=0;$j -lt $done.Count;$j++) { $rollback[$j].Current=$done[$j]; try { $null=Restore-UndoRecord $rollback[$j] } catch {} }; throw }
-    [IO.File]::Delete((Join-Path $root ('cronologia/'+$Activity.Id+'.json')))
+    for ($j=0;$j -lt $rollback.Count;$j++) { $rollback[$j].Current=$done[$j] }; Save-ReversibleActivity $Activity $rollback $Repeat
+    [IO.File]::Delete((Join-Path $root ($(if ($Repeat) { 'ripeti/' } else { 'cronologia/' })+$Activity.Id+'.json')))
     $last=Join-Path $root 'ultima-modifica.json'; if ([IO.File]::Exists($last)) { try { $saved=Get-Content -LiteralPath $last -Raw -Encoding UTF8 | ConvertFrom-Json; $records=if ($saved.Batch) { @($saved.Batch) } else { @($saved) }; if ((Get-SnapshotSignature $records) -eq (Get-SnapshotSignature @($Activity.Records))) { [IO.File]::Delete($last) } } catch {} }
-    return $done
+    if ($Repeat) { Save-FolderUndo ([pscustomobject]@{Batch=$rollback}) }; return $done
 }
 function Read-PersonalizedFolders {
     foreach ($file in (Get-ChildItem -LiteralPath $root -Filter '*.json' -File)) {
@@ -85,15 +86,17 @@ function Show-ProductList([string]$Mode) {
     $buttons=[Windows.Controls.WrapPanel]::new(); $buttons.Margin=[Windows.Thickness]::new(0,12,0,0); [Windows.Controls.Grid]::SetRow($buttons,1); $grid.Children.Add($buttons)|Out-Null
     $empty=[Windows.Controls.TextBlock]::new(); $empty.Text=T 'emptyList'; $empty.HorizontalAlignment='Center'; $empty.VerticalAlignment='Center'; $empty.Foreground=$window.Resources['Secondary']; $empty.IsHitTestVisible=$false; $grid.Children.Add($empty)|Out-Null
     $script:productList=@{Window=$dialog;List=$list;Mode=$Mode;Empty=$empty}; Refresh-ProductList
-    $actions=switch($Mode) { 'presets' { @('loadPreset','savePreset','renamePreset','deletePreset') } 'history' { @('undoSelected') } 'managed' { @('openFolder','restoreOriginal') } }
+    $actions=switch($Mode) { 'presets' { @('loadPreset','savePreset','pinPreset','renamePreset','deletePreset') } 'history' { @('undoSelected') } 'redo' { @('redoSelected') } 'managed' { @('openFolder','restoreOriginal') } }
     foreach ($action in $actions) { $button=[Windows.Controls.Button]::new(); $button.Content=T $action; $button.Tag=$action; $button.Margin=[Windows.Thickness]::new(0,0,6,6); $button.Padding=[Windows.Thickness]::new(10,7,10,7); $buttons.Children.Add($button)|Out-Null
         $button.Add_Click({ param($sender,$e) try {
             $selected=$script:productList.List.SelectedItem; if (!$selected -and $sender.Tag -ne 'savePreset') { return }
             switch ([string]$sender.Tag) {
                 'loadPreset' { Apply-CompletePreset $selected.Value; $script:productList.Window.Close(); Show-Toast (T 'loadPreset') }
                 'savePreset' { $name=Show-AdvancedText (T 'presetName'); if ($name) { $null=Save-CompletePreset $name (Valid-Hex) $script:pngSelection $script:badge $script:badgeHex; Refresh-ProductList } }
-                'renamePreset' { $name=Show-AdvancedText (T 'presetName') $selected.Value.Name; if ($name) { $items=@(Read-ProductList 'preset.json'); if (@($items | Where-Object { $_.Id -ne $selected.Value.Id -and $_.Name -eq $name }).Count) { throw (T 'nameExists') }; foreach ($p in $items) { if ($p.Id -eq $selected.Value.Id) { $p.Name=$name } }; Write-AdvancedJson (Join-Path $root 'preset.json') $items; Refresh-ProductList } }
-                'deletePreset' { Write-AdvancedJson (Join-Path $root 'preset.json') @(Read-ProductList 'preset.json' | Where-Object { $_.Id -ne $selected.Value.Id }); Refresh-ProductList }
+                'pinPreset' { Set-PresetFavorite $selected.Value.Id; Refresh-ProductList }
+                'redoSelected' { $paths=@(Restore-FolderActivity $selected.Value $true); if ($paths.Count) { Select-ProductFolders $paths }; Refresh-ProductList; Show-Toast (T 'redo') }
+                'renamePreset' { $name=Show-AdvancedText (T 'presetName') $selected.Value.Name; if ($name) { $items=@(Read-ProductList 'preset.json'); if (@($items | Where-Object { $_.Id -ne $selected.Value.Id -and $_.Name -eq $name }).Count) { throw (T 'nameExists') }; foreach ($p in $items) { if ($p.Id -eq $selected.Value.Id) { $p.Name=$name } }; Write-AdvancedJson (Join-Path $root 'preset.json') $items; Sync-PresetMenu; Refresh-ProductList } }
+                'deletePreset' { Write-AdvancedJson (Join-Path $root 'preset.json') @(Read-ProductList 'preset.json' | Where-Object { $_.Id -ne $selected.Value.Id }); Sync-PresetMenu; Refresh-ProductList }
                 'undoSelected' { $paths=@(Restore-FolderActivity $selected.Value); if ($paths.Count) { Select-ProductFolders $paths }; Refresh-ProductList; Show-Toast (T 'restored') }
                 'openFolder' { Start-Process -FilePath explorer.exe -ArgumentList ('"'+$selected.Value.Path+'"') }
                 'restoreOriginal' { $path=$selected.Value.Path; $before=New-FolderUndo $path; Restore-Folder $path; Save-FolderUndo $before; Save-FolderActivity $before 'restoreOriginal'; Refresh-ProductList; Update-UndoButton; Show-Toast (T 'restored') }
@@ -101,13 +104,13 @@ function Show-ProductList([string]$Mode) {
         } catch { [Windows.MessageBox]::Show($_.Exception.Message,$script:productList.Window.Title)|Out-Null } })
     }
     $dialog.Content=$grid
-    if ($UITest -and $script:productDialogTest) { $dialog.Add_ContentRendered({ $script:productDialogCount=$script:productList.List.Items.Count; $script:productList.Window.Close() }) }
+    if ($UITest -and $script:productDialogTest) { $dialog.Add_ContentRendered({ if ($script:productDialogAction -and $script:productList.Mode -eq 'presets') { $script:productList.List.SelectedIndex=0; foreach ($button in $script:productList.Window.Content.Children[1].Children) { if ($button.Tag -eq $script:productDialogAction) { $button.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)); break } } }; $script:productDialogCount=$script:productList.List.Items.Count; $script:productList.Window.Close() }) }
     try { [void]$dialog.ShowDialog() } finally { $script:productList=$null }
 }
 function Refresh-ProductList {
     $items=@(); switch ($script:productList.Mode) {
-        'presets' { foreach ($p in @(Read-ProductList 'preset.json')) { $image=$null; $icon=$null; $source=$null; $bitmap=$null; try { if ($p.Png) { $source=[Drawing.Image]::FromFile($p.Png) } else { $path=Join-Path $root ('preset-preview-'+$p.Hex.TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon $p.Hex $path }; $icon=[Drawing.Icon]::new($path,256,256); $source=$icon.ToBitmap() }; $bitmap=Render-PreparedImage $source 1 0 0 $false $p.Badge $p.BadgeHex; $image=Convert-ProductBitmap $bitmap } catch {} finally { if ($bitmap) { $bitmap.Dispose() }; if ($source) { $source.Dispose() }; if ($icon) { $icon.Dispose() } }; $items+=[pscustomobject]@{Title=$p.Name;Detail=$p.Hex+' · '+(T $p.Badge);Image=$image;Value=$p} } }
-        'history' { foreach ($h in @(Read-FolderActivities)) { $title=if ($h.Records.Count -gt 1) { T 'folderCount' @($h.Records.Count) } else { [IO.Path]::GetFileName($h.Records[0].Current) }; $items+=[pscustomobject]@{Title=$title+' · '+(T $h.Kind);Detail=([DateTime]::Parse($h.Date).ToLocalTime().ToString('g'))+' · '+$h.Records[0].Current;Image=$null;Value=$h} } }
+        'presets' { foreach ($p in @(Read-ProductList 'preset.json')) { $image=$null; $icon=$null; $source=$null; $bitmap=$null; try { if ($p.Png) { $source=[Drawing.Image]::FromFile($p.Png) } else { $path=Join-Path $root ('preset-preview-'+$p.Hex.TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon $p.Hex $path }; $icon=[Drawing.Icon]::new($path,256,256); $source=$icon.ToBitmap() }; $bitmap=Render-PreparedImage $source 1 0 0 $false $p.Badge $p.BadgeHex; $image=Convert-ProductBitmap $bitmap } catch {} finally { if ($bitmap) { $bitmap.Dispose() }; if ($source) { $source.Dispose() }; if ($icon) { $icon.Dispose() } }; $items+=[pscustomobject]@{Title=$(if ($p.Favorite) { '★ '+$p.Name } else { $p.Name });Detail=$p.Hex+' · '+(T $p.Badge);Image=$image;Value=$p} } }
+        { $_ -in @('history','redo') } { $history=if ($script:productList.Mode -eq 'redo') { @(Read-RepeatActivities) } else { @(Read-FolderActivities) }; foreach ($h in $history) { $title=if ($h.Records.Count -gt 1) { T 'folderCount' @($h.Records.Count) } else { [IO.Path]::GetFileName($h.Records[0].Current) }; $items+=[pscustomobject]@{Title=$title+' · '+(T $h.Kind);Detail=([DateTime]::Parse($h.Date).ToLocalTime().ToString('g'))+' · '+$h.Records[0].Current;Image=$null;Value=$h} } }
         'managed' { foreach ($f in @(Read-PersonalizedFolders | Sort-Object Name)) { $image=$null; try { $image=Read-IconFrame $f.Icon 32 } catch {}; $items+=[pscustomobject]@{Title=$f.Name;Detail=$f.Path;Image=$image;Value=$f} } }
     }; $script:productList.List.ItemsSource=[object[]]$items
     $script:productList.Empty.Visibility=if ($items.Count) { 'Collapsed' } else { 'Visible' }
@@ -170,7 +173,7 @@ function Show-UpdateDialog {
     try { [void]$dialog.ShowDialog() } finally { $script:updateLabel=$null; $script:updateDownload=$null; $script:updateDialog=$null }
 }
 function Invoke-ProductAction([string]$Action) {
-    switch ($Action) { 'presets' { Show-ProductList 'presets' } 'history' { Show-ProductList 'history' } 'managed' { Show-ProductList 'managed' } 'iconSizes' { Show-IconSizes } 'visualSettings' { Show-VisualSettings } 'updates' { Show-UpdateDialog } }
+    switch ($Action) { 'backup' { Show-LibraryBackup } 'redo' { Show-ProductList 'redo' } 'presets' { Show-ProductList 'presets' } 'history' { Show-ProductList 'history' } 'managed' { Show-ProductList 'managed' } 'iconSizes' { Show-IconSizes } 'visualSettings' { Show-VisualSettings } 'updates' { Show-UpdateDialog } }
 }
 function Initialize-ProductInterface {
     $script:appearance=Read-AppearancePreference
@@ -216,3 +219,5 @@ function Test-ProductInterface([string]$Png) {
         Select-ProductFolders @($old); Show-ProductList 'history'; Show-ProductList 'managed'
     } finally { $script:productDialogTest=$false; $script:badge=$originalBadge; $script:badgeHex=$originalBadgeHex; Update-BadgePreview; $ui.UseColor.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)); $ui.Hex.Text=$originalHex; $script:themeMode=$originalTheme; $script:glassOpacity=$originalOpacity; $script:glassDepth=$originalDepth; Save-AppSetting 'theme' $originalTheme; Save-AppSetting 'glassOpacity' ([string][int]$originalOpacity); Save-AppSetting 'glassDepth' ([string][int]$originalDepth); Update-ProductTheme }
 }
+
+. (Join-Path $PSScriptRoot 'Enhancements.ps1')

@@ -73,3 +73,13 @@ Verificati localmente attivazione del materiale DWM con superfici semitrasparent
 - Selezione di cartelle da percorsi diversi e rifiuto di trascinamenti misti con file.
 - Opacità e rilievo persistenti; anteprima PNG conservata durante i cambi di stile.
 - GitHub Actions legge la fonte VERSION attraverso lo stesso client HTTP usato dall’app.
+
+## Verifiche della versione 0.9
+
+- Annulla/ripeti di colore e nome Unicode, contenuti conservati e rifiuto del ripeti dopo una modifica successiva.
+- Preset preferiti, cache dell’icona, applicazione del preset dal backend e annullamento.
+- Backup con PNG incorporato: importazione dopo lo spostamento del PNG originale, su una libreria distinta.
+- Conservazione dei dati locali, nomi duplicati, importazione ripetuta senza duplicati, preferiti e preferenze.
+- Rifiuto di percorsi ZIP estranei e rollback dopo un errore simulato di scrittura.
+- Finestre dei preset e del ripeti e menu del backup nelle 15 lingue.
+- GitHub Actions, solo sul runner isolato: creazione del vero menu HKCU, nomi con &, avvio Rapido.vbs, worker su cartella Unicode, applicazione del PNG con simbolo e annullamento.

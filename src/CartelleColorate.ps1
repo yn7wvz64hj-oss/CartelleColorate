@@ -24,7 +24,7 @@ $palettePath = Join-Path $root 'colori.json'
 Initialize-Language $root $Language
 function Read-Palette {
     $items = @()
-    if (Test-Path -LiteralPath $palettePath) { $items = @(Get-Content -LiteralPath $palettePath -Raw | ConvertFrom-Json) }
+    if (Test-Path -LiteralPath $palettePath) { $items = Get-Content -LiteralPath $palettePath -Raw -Encoding UTF8 | ConvertFrom-Json }
     foreach ($c in $items) {
         if (!$c -or $c.Hex -notmatch '^#[0-9A-Fa-f]{6}$') { throw (T 'paletteError') }
         $c
@@ -63,6 +63,20 @@ function Update-Menu {
         New-ItemProperty -LiteralPath $child -Name MUIVerb -Value ($entry.Name.Replace('&','&&')) -Force | Out-Null
         New-ItemProperty -LiteralPath $child -Name Icon -Value ($icon+',0') -Force | Out-Null
         Set-Item -LiteralPath "$child\command" -Value ('"{0}" //B //Nologo "{1}" --color "%1" "{2}"' -f $hostPath,$fast,$entry.Hex)
+    }
+    $presetStore='HKCU:\Software\Classes\CartelleColorate.Presets'
+    if (Test-Path -LiteralPath $presetStore) { Remove-Item -LiteralPath $presetStore -Recurse }
+    $pinned=@(Get-PinnedPresetEntries)
+    if ($pinned.Count) {
+        $parent="$shell\pPresets"; New-Item -Path $parent -Force|Out-Null
+        New-ItemProperty -LiteralPath $parent -Name MUIVerb -Value (T 'favoritePresets') -Force|Out-Null
+        New-ItemProperty -LiteralPath $parent -Name ExtendedSubCommandsKey -Value 'CartelleColorate.Presets' -Force|Out-Null
+        foreach ($preset in $pinned) {
+            $child="$presetStore\shell\$($preset.Id)"; New-Item -Path "$child\command" -Force|Out-Null
+            New-ItemProperty -LiteralPath $child -Name MUIVerb -Value ($preset.Name.Replace('&','&&')) -Force|Out-Null
+            New-ItemProperty -LiteralPath $child -Name Icon -Value ($preset.Icon+',0') -Force|Out-Null
+            Set-Item -LiteralPath "$child\command" -Value ('"{0}" //B //Nologo "{1}" --preset "%1" "{2}"' -f $hostPath,$fast,$preset.Id)
+        }
     }
     $manage="$shell\yManage"
     New-Item -Path "$manage\command" -Force | Out-Null
@@ -296,17 +310,13 @@ function Restore-UndoRecord($record) {
     [IO.File]::SetAttributes($restored,[IO.FileAttributes]$record.Attributes); Update-FolderIcon $restored; return $restored
 }
 function Undo-FolderEdit([string]$Target) {
-    $path=Join-Path $root 'ultima-modifica.json'; $record=Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
-    if ($record.Batch) {
-        if (!@($record.Batch | Where-Object { $_.Current -eq $Target }).Count) { throw (T 'backupError') }
-        foreach ($entry in $record.Batch) { $null=Restore-UndoRecord $entry }; [IO.File]::Delete($path); Remove-ActivityForRecord $record; return $Target
-    }
-    if ($record.Current -ne [IO.Path]::GetFullPath($Target)) { throw (T 'backupError') }
-    $restored=Restore-UndoRecord $record; [IO.File]::Delete($path); Remove-ActivityForRecord $record; return $restored
+    $record=Get-Content -LiteralPath (Join-Path $root 'ultima-modifica.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+    return Undo-RecordedFolderEdit $record $Target
 }
 . (Join-Path $PSScriptRoot 'Advanced.ps1')
 if ($SelfTest) {
     Test-ProductBackend
+    Test-EnhancementBackend
     if ($NoConsoleTest) {
         if ([FolderShell]::IsWindowVisible([FolderShell]::GetConsoleWindow())) { throw 'Il processo ha una console visibile.' }
         Write-Output 'OK: nessuna console visibile.'
@@ -450,6 +460,7 @@ if ($Worker) {
                 try {
                     $lines=[IO.File]::ReadAllLines($request,[Text.Encoding]::Unicode)
                     if ($lines.Length -eq 3 -and $lines[0] -eq '--color' -and $lines[2] -match '^#[0-9A-Fa-f]{6}$') { $undo=New-FolderUndo $lines[1]; Save-FolderUndo $undo; Set-FolderColor $lines[1] $lines[2].ToUpperInvariant(); Save-FolderActivity $undo 'apply' }
+                    elseif ($lines.Length -eq 3 -and $lines[0] -eq '--preset') { Apply-PresetToFolder $lines[1] $lines[2] }
                     elseif ($lines.Length -eq 2 -and $lines[0] -eq '--restore') { $undo=New-FolderUndo $lines[1]; Restore-Folder $lines[1]; Save-FolderUndo $undo; Save-FolderActivity $undo 'restoreOriginal' }
                     else { throw (T 'requestError') }
                 } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null }

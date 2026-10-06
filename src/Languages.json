@@ -139,7 +139,18 @@
         "checking": "Controllo in corso…",
         "updateAvailable": "Nuova versione disponibile:",
         "upToDate": "Hai già l’ultima versione.",
-        "updateError": "Impossibile controllare gli aggiornamenti. Riprova più tardi."
+        "updateError": "Impossibile controllare gli aggiornamenti. Riprova più tardi.",
+        "pinPreset": "Tasto destro ★",
+        "favoritePresets": "Preset preferiti",
+        "redo": "Ripeti",
+        "redoSelected": "Ripeti selezionata",
+        "backup": "Backup della libreria",
+        "exportBackup": "Esporta backup…",
+        "importBackup": "Importa backup…",
+        "backupSaved": "Backup salvato.",
+        "backupLoaded": "Backup importato. I dati esistenti sono conservati.",
+        "backupInvalid": "Backup danneggiato o non compatibile.",
+        "presetMissing": "Questo preset non è più disponibile."
       }
     },
     {
@@ -280,7 +291,18 @@
         "checking": "Checking…",
         "updateAvailable": "New version available:",
         "upToDate": "You have the latest version.",
-        "updateError": "Unable to check for updates. Try again later."
+        "updateError": "Unable to check for updates. Try again later.",
+        "pinPreset": "Right-click ★",
+        "favoritePresets": "Favorite presets",
+        "redo": "Redo",
+        "redoSelected": "Redo selected",
+        "backup": "Library backup",
+        "exportBackup": "Export backup…",
+        "importBackup": "Import backup…",
+        "backupSaved": "Backup saved.",
+        "backupLoaded": "Backup imported. Existing data is preserved.",
+        "backupInvalid": "Backup is damaged or incompatible.",
+        "presetMissing": "This preset is no longer available."
       }
     },
     {
@@ -421,7 +443,18 @@
         "checking": "正在检查…",
         "updateAvailable": "有新版本：",
         "upToDate": "已是最新版本。",
-        "updateError": "无法检查更新，请稍后重试。"
+        "updateError": "无法检查更新，请稍后重试。",
+        "pinPreset": "右键菜单 ★",
+        "favoritePresets": "收藏预设",
+        "redo": "重做",
+        "redoSelected": "重做所选",
+        "backup": "库备份",
+        "exportBackup": "导出备份…",
+        "importBackup": "导入备份…",
+        "backupSaved": "备份已保存。",
+        "backupLoaded": "备份已导入，原有数据已保留。",
+        "backupInvalid": "备份损坏或不兼容。",
+        "presetMissing": "此预设已不可用。"
       }
     },
     {
@@ -562,7 +595,18 @@
         "checking": "Comprobando…",
         "updateAvailable": "Nueva versión disponible:",
         "upToDate": "Tienes la última versión.",
-        "updateError": "No se pueden comprobar las actualizaciones. Inténtalo más tarde."
+        "updateError": "No se pueden comprobar las actualizaciones. Inténtalo más tarde.",
+        "pinPreset": "Clic derecho ★",
+        "favoritePresets": "Estilos favoritos",
+        "redo": "Rehacer",
+        "redoSelected": "Rehacer selección",
+        "backup": "Copia de la biblioteca",
+        "exportBackup": "Exportar copia…",
+        "importBackup": "Importar copia…",
+        "backupSaved": "Copia guardada.",
+        "backupLoaded": "Copia importada. Se conservan los datos existentes.",
+        "backupInvalid": "La copia está dañada o es incompatible.",
+        "presetMissing": "Este estilo ya no está disponible."
       }
     },
     {
@@ -703,7 +747,18 @@
         "checking": "जाँच जारी है…",
         "updateAvailable": "नया संस्करण उपलब्ध:",
         "upToDate": "आपके पास नवीनतम संस्करण है।",
-        "updateError": "अपडेट जाँचना संभव नहीं है। बाद में प्रयास करें।"
+        "updateError": "अपडेट जाँचना संभव नहीं है। बाद में प्रयास करें।",
+        "pinPreset": "दायाँ क्लिक ★",
+        "favoritePresets": "पसंदीदा प्रीसेट",
+        "redo": "फिर करें",
+        "redoSelected": "चयनित फिर करें",
+        "backup": "लाइब्रेरी बैकअप",
+        "exportBackup": "बैकअप निर्यात…",
+        "importBackup": "बैकअप आयात…",
+        "backupSaved": "बैकअप सहेजा गया।",
+        "backupLoaded": "बैकअप आयात हुआ। मौजूदा डेटा सुरक्षित है।",
+        "backupInvalid": "बैकअप खराब या असंगत है।",
+        "presetMissing": "यह प्रीसेट अब उपलब्ध नहीं है।"
       }
     },
     {
@@ -844,7 +899,18 @@
         "checking": "جارٍ التحقق…",
         "updateAvailable": "إصدار جديد متاح:",
         "upToDate": "لديك أحدث إصدار.",
-        "updateError": "تعذر التحقق من التحديثات. حاول لاحقًا."
+        "updateError": "تعذر التحقق من التحديثات. حاول لاحقًا.",
+        "pinPreset": "زر الفأرة الأيمن ★",
+        "favoritePresets": "الإعدادات المفضلة",
+        "redo": "إعادة",
+        "redoSelected": "إعادة المحدد",
+        "backup": "نسخة المكتبة",
+        "exportBackup": "تصدير النسخة…",
+        "importBackup": "استيراد النسخة…",
+        "backupSaved": "تم حفظ النسخة.",
+        "backupLoaded": "تم الاستيراد مع الاحتفاظ بالبيانات الحالية.",
+        "backupInvalid": "النسخة تالفة أو غير متوافقة.",
+        "presetMissing": "هذا الإعداد لم يعد متاحًا."
       }
     },
     {
@@ -985,7 +1051,18 @@
         "checking": "A verificar…",
         "updateAvailable": "Nova versão disponível:",
         "upToDate": "Tem a versão mais recente.",
-        "updateError": "Não foi possível verificar atualizações. Tente mais tarde."
+        "updateError": "Não foi possível verificar atualizações. Tente mais tarde.",
+        "pinPreset": "Botão direito ★",
+        "favoritePresets": "Predefinições favoritas",
+        "redo": "Refazer",
+        "redoSelected": "Refazer seleção",
+        "backup": "Cópia da biblioteca",
+        "exportBackup": "Exportar cópia…",
+        "importBackup": "Importar cópia…",
+        "backupSaved": "Cópia guardada.",
+        "backupLoaded": "Cópia importada. Os dados existentes foram mantidos.",
+        "backupInvalid": "A cópia está danificada ou é incompatível.",
+        "presetMissing": "Esta predefinição já não está disponível."
       }
     },
     {
@@ -1126,7 +1203,18 @@
         "checking": "পরীক্ষা চলছে…",
         "updateAvailable": "নতুন সংস্করণ উপলব্ধ:",
         "upToDate": "সর্বশেষ সংস্করণ আছে।",
-        "updateError": "আপডেট পরীক্ষা করা যায়নি। পরে চেষ্টা করুন।"
+        "updateError": "আপডেট পরীক্ষা করা যায়নি। পরে চেষ্টা করুন।",
+        "pinPreset": "ডান ক্লিক ★",
+        "favoritePresets": "প্রিয় প্রিসেট",
+        "redo": "পুনরায় করুন",
+        "redoSelected": "নির্বাচিত পুনরায় করুন",
+        "backup": "লাইব্রেরি ব্যাকআপ",
+        "exportBackup": "ব্যাকআপ রপ্তানি…",
+        "importBackup": "ব্যাকআপ আমদানি…",
+        "backupSaved": "ব্যাকআপ সংরক্ষিত।",
+        "backupLoaded": "ব্যাকআপ আমদানি হয়েছে। আগের তথ্য অক্ষত।",
+        "backupInvalid": "ব্যাকআপ ক্ষতিগ্রস্ত বা অসামঞ্জস্যপূর্ণ।",
+        "presetMissing": "এই প্রিসেট আর পাওয়া যাচ্ছে না।"
       }
     },
     {
@@ -1267,7 +1355,18 @@
         "checking": "Проверка…",
         "updateAvailable": "Доступна новая версия:",
         "upToDate": "У вас последняя версия.",
-        "updateError": "Не удалось проверить обновления. Повторите позже."
+        "updateError": "Не удалось проверить обновления. Повторите позже.",
+        "pinPreset": "Правая кнопка ★",
+        "favoritePresets": "Избранные стили",
+        "redo": "Повторить",
+        "redoSelected": "Повторить выбранное",
+        "backup": "Копия библиотеки",
+        "exportBackup": "Экспорт копии…",
+        "importBackup": "Импорт копии…",
+        "backupSaved": "Копия сохранена.",
+        "backupLoaded": "Копия импортирована. Текущие данные сохранены.",
+        "backupInvalid": "Копия повреждена или несовместима.",
+        "presetMissing": "Этот стиль больше недоступен."
       }
     },
     {
@@ -1408,7 +1507,18 @@
         "checking": "Vérification…",
         "updateAvailable": "Nouvelle version disponible :",
         "upToDate": "Vous avez la dernière version.",
-        "updateError": "Impossible de vérifier les mises à jour. Réessayez plus tard."
+        "updateError": "Impossible de vérifier les mises à jour. Réessayez plus tard.",
+        "pinPreset": "Clic droit ★",
+        "favoritePresets": "Préréglages favoris",
+        "redo": "Rétablir",
+        "redoSelected": "Rétablir la sélection",
+        "backup": "Sauvegarde de la bibliothèque",
+        "exportBackup": "Exporter…",
+        "importBackup": "Importer…",
+        "backupSaved": "Sauvegarde enregistrée.",
+        "backupLoaded": "Sauvegarde importée. Les données existantes sont conservées.",
+        "backupInvalid": "Sauvegarde endommagée ou incompatible.",
+        "presetMissing": "Ce préréglage n’est plus disponible."
       }
     },
     {
@@ -1549,7 +1659,18 @@
         "checking": "Wird geprüft…",
         "updateAvailable": "Neue Version verfügbar:",
         "upToDate": "Sie haben die neueste Version.",
-        "updateError": "Updates konnten nicht geprüft werden. Versuchen Sie es später erneut."
+        "updateError": "Updates konnten nicht geprüft werden. Versuchen Sie es später erneut.",
+        "pinPreset": "Rechtsklick ★",
+        "favoritePresets": "Bevorzugte Vorlagen",
+        "redo": "Wiederholen",
+        "redoSelected": "Auswahl wiederholen",
+        "backup": "Bibliothek sichern",
+        "exportBackup": "Sicherung exportieren…",
+        "importBackup": "Sicherung importieren…",
+        "backupSaved": "Sicherung gespeichert.",
+        "backupLoaded": "Sicherung importiert. Vorhandene Daten bleiben erhalten.",
+        "backupInvalid": "Sicherung beschädigt oder inkompatibel.",
+        "presetMissing": "Diese Vorlage ist nicht mehr verfügbar."
       }
     },
     {
@@ -1690,7 +1811,18 @@
         "checking": "確認中…",
         "updateAvailable": "新しいバージョン：",
         "upToDate": "最新バージョンです。",
-        "updateError": "更新を確認できません。後でもう一度お試しください。"
+        "updateError": "更新を確認できません。後でもう一度お試しください。",
+        "pinPreset": "右クリック ★",
+        "favoritePresets": "お気に入りのプリセット",
+        "redo": "やり直す",
+        "redoSelected": "選択をやり直す",
+        "backup": "ライブラリのバックアップ",
+        "exportBackup": "書き出す…",
+        "importBackup": "読み込む…",
+        "backupSaved": "バックアップを保存しました。",
+        "backupLoaded": "読み込みました。既存のデータは保持されます。",
+        "backupInvalid": "バックアップが破損しているか非対応です。",
+        "presetMissing": "このプリセットは利用できません。"
       }
     },
     {
@@ -1831,7 +1963,18 @@
         "checking": "확인 중…",
         "updateAvailable": "새 버전 사용 가능:",
         "upToDate": "최신 버전입니다.",
-        "updateError": "업데이트를 확인할 수 없습니다. 나중에 다시 시도하세요."
+        "updateError": "업데이트를 확인할 수 없습니다. 나중에 다시 시도하세요.",
+        "pinPreset": "오른쪽 클릭 ★",
+        "favoritePresets": "즐겨찾는 프리셋",
+        "redo": "다시 실행",
+        "redoSelected": "선택 항목 다시 실행",
+        "backup": "라이브러리 백업",
+        "exportBackup": "백업 내보내기…",
+        "importBackup": "백업 가져오기…",
+        "backupSaved": "백업을 저장했습니다.",
+        "backupLoaded": "백업을 가져왔습니다. 기존 데이터는 유지됩니다.",
+        "backupInvalid": "백업이 손상되었거나 호환되지 않습니다.",
+        "presetMissing": "이 프리셋은 더 이상 사용할 수 없습니다."
       }
     },
     {
@@ -1972,7 +2115,18 @@
         "checking": "Memeriksa…",
         "updateAvailable": "Versi baru tersedia:",
         "upToDate": "Anda memiliki versi terbaru.",
-        "updateError": "Tidak dapat memeriksa pembaruan. Coba lagi nanti."
+        "updateError": "Tidak dapat memeriksa pembaruan. Coba lagi nanti.",
+        "pinPreset": "Klik kanan ★",
+        "favoritePresets": "Preset favorit",
+        "redo": "Ulangi",
+        "redoSelected": "Ulangi pilihan",
+        "backup": "Cadangan pustaka",
+        "exportBackup": "Ekspor cadangan…",
+        "importBackup": "Impor cadangan…",
+        "backupSaved": "Cadangan disimpan.",
+        "backupLoaded": "Cadangan diimpor. Data lama dipertahankan.",
+        "backupInvalid": "Cadangan rusak atau tidak kompatibel.",
+        "presetMissing": "Preset ini tidak lagi tersedia."
       }
     },
     {
@@ -2113,7 +2267,18 @@
         "checking": "جانچ جاری ہے…",
         "updateAvailable": "نیا ورژن دستیاب:",
         "upToDate": "آپ کے پاس تازہ ترین ورژن ہے۔",
-        "updateError": "اپ ڈیٹس کی جانچ ممکن نہیں۔ بعد میں دوبارہ کوشش کریں۔"
+        "updateError": "اپ ڈیٹس کی جانچ ممکن نہیں۔ بعد میں دوبارہ کوشش کریں۔",
+        "pinPreset": "دائیں کلک ★",
+        "favoritePresets": "پسندیدہ پیش سیٹ",
+        "redo": "دوبارہ کریں",
+        "redoSelected": "منتخب دوبارہ کریں",
+        "backup": "لائبریری بیک اپ",
+        "exportBackup": "بیک اپ برآمد…",
+        "importBackup": "بیک اپ درآمد…",
+        "backupSaved": "بیک اپ محفوظ ہوا۔",
+        "backupLoaded": "بیک اپ درآمد ہوا۔ موجودہ ڈیٹا محفوظ ہے۔",
+        "backupInvalid": "بیک اپ خراب یا غیر موافق ہے۔",
+        "presetMissing": "یہ پیش سیٹ اب دستیاب نہیں۔"
       }
     }
   ]

@@ -341,7 +341,7 @@ $ui.Colors.Add_Drop({ param($sender,$e) try {
 } catch { Show-Status $_.Exception.Message } })
 $ui.PaletteTools.Add_Click({
     $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
-    foreach ($action in @('presets','batch','singleFolder','editPng','badge','iconSizes','collections','history','managed','visualSettings','updates','importColors','exportColors')) {
+    foreach ($action in @('presets','batch','singleFolder','editPng','badge','iconSizes','collections','history','redo','backup','managed','visualSettings','updates','importColors','exportColors')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
         if ($action -eq 'editPng') { $item.IsEnabled=[bool]$script:pngSelection }; if ($action -eq 'singleFolder') { $item.IsEnabled=$script:batchTargets.Count -gt 1 }
         $item.Add_Click({ param($sender,$e) try {
@@ -634,6 +634,7 @@ if ($Preview) {
         try { $testGraphics.Clear([Drawing.Color]::Transparent); $testGraphics.FillEllipse([Drawing.Brushes]::Blue,4,4,56,56); $testBitmap.Save($testPng,[Drawing.Imaging.ImageFormat]::Png) } finally { $testGraphics.Dispose(); $testBitmap.Dispose() }
         Set-PngPreview $testPng
         Test-ProductInterface $testPng
+        Test-EnhancementInterface
         Set-PngPreview $testPng
         $pngSource=$ui.UploadedPreview.Source
         Apply-Appearance 'Windows'; Apply-Appearance 'MacOS'; Apply-Appearance $initialAppearance
