@@ -1,5 +1,15 @@
 # Note di versione
 
+## 0.7.0-beta.1 — 6 ottobre 2026
+
+- Selezione di più cartelle dalla finestra, applicazione di colore/PNG al gruppo, annullamento completo e rollback degli errori.
+- Ricerca per nome e HEX, raccolte personali creabili/rinominabili/eliminabili e import/export dei gruppi dei colori.
+- Otto colori recenti persistenti, anche per i comandi del menu di Esplora file.
+- Editor PNG con anteprima, zoom, posizione e ritaglio quadrato, senza modificare il file originale.
+- Contrassegni stella, spunta e lucchetto su colori e PNG.
+- Bordi delle nuvole nel colore corrispondente, animazioni brevi e conferme flottanti.
+- Nuovi comandi nelle 15 lingue.
+
 ## 0.6.0-beta.1 — 6 ottobre 2026
 
 - Nuvole affiancate con menu contestuale per modificare, rinominare, eliminare e segnare i preferiti.

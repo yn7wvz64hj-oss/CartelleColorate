@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate per Windows — 0.6.0-beta.1](downloads/CartelleColorate-0.6.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate per Windows — 0.7.0-beta.1](downloads/CartelleColorate-0.7.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -29,6 +29,10 @@ La schermata iniziale propone la lingua di Windows, se supportata, oppure l’in
 - Nome della cartella modificabile nella stessa finestra; la matita rinomina senza cambiare icona, mentre Applica conferma nome e colore o PNG.
 - Selezione precisa dal riquadro sfumato, dalla barra della tonalità o tramite codice HEX.
 - Piccolo mirino nel riquadro; frecce per regolare e Maiusc + frecce per movimenti più fini.
+- Ricerca apribile dalla lente, filtri per raccolta e otto colori recenti.
+- Menu ⋯: selezione di più cartelle, editor PNG con zoom/posizione/ritaglio e contrassegni stella, spunta e lucchetto.
+- Cambio multiplo con annullamento dell’intero gruppo e rollback automatico in caso di errore.
+- Conferme discrete e breve animazione di selezione, rispettando le animazioni del sistema.
 - Nuvole affiancate: tasto destro per modificare, rinominare, eliminare e segnare un preferito.
 - Preferiti in cima; trascina le nuvole per riordinarle nel proprio gruppo. Nel menu sono disponibili anche Sposta prima/dopo.
 - Menu ⋯ della raccolta per importare/esportare JSON. L’importazione aggiunge i colori senza duplicare quelli con lo stesso nome e codice.
@@ -53,7 +57,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 0.6.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
+**Versione 0.7.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 
@@ -71,7 +75,7 @@ Per rimuovere il menu esegui **Rimuovi-menu.cmd**. Palette, icone e backup vengo
 
 - La voce si trova nel menu **Mostra altre opzioni**, non nel menu compatto nativo di Windows 11.
 - Le icone restano nel profilo locale e non vengono trasferite automaticamente ad altri PC o utenti.
-- Sono supportate cartelle reali scrivibili, una per volta; non raccolte virtuali o modifiche ricorsive.
+- Sono supportate cartelle reali scrivibili; il menu di Esplora file apre una cartella, mentre il pulsante ⋯ permette di scegliere un gruppo. Non sono supportate raccolte virtuali o modifiche ricorsive.
 - Il primo comando dopo l'arresto del processo richiede un nuovo avvio. Il ridisegno finale delle icone dipende da Esplora file.
 - Usa una finestra del selettore alla volta per modificare la palette.
 - La pipetta può non leggere desktop protetti o contenuti esclusi dalla cattura.

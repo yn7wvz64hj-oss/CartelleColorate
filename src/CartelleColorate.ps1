@@ -118,6 +118,7 @@ function Set-FolderColor([string]$Target,[string]$Hex) {
     $iconPath = Join-Path $root ('verticale-grande-'+$Hex.TrimStart('#') + '.ico')
     if (!(Test-Path -LiteralPath $iconPath)) { New-ColorIcon $Hex $iconPath }
     Set-FolderIcon $Target $iconPath
+    try { Save-RecentColor $Hex } catch {}
 }
 function Set-FolderPng([string]$Target,[string]$PngPath) {
     $sha=[Security.Cryptography.SHA256]::Create()
@@ -283,8 +284,8 @@ function Save-FolderUndo($Record) {
     $path=Join-Path $root 'ultima-modifica.json'; $temporary=$path+'.'+[Guid]::NewGuid().ToString('N')+'.tmp'
     try { [IO.File]::WriteAllText($temporary,($Record | ConvertTo-Json -Depth 5),[Text.UTF8Encoding]::new($true)); if ([IO.File]::Exists($path)) { [IO.File]::Replace($temporary,$path,[NullString]::Value) } else { [IO.File]::Move($temporary,$path) } } finally { if ([IO.File]::Exists($temporary)) { [IO.File]::Delete($temporary) } }
 }
-function Undo-FolderEdit([string]$Target) {
-    $path=Join-Path $root 'ultima-modifica.json'; $record=Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+function Restore-UndoRecord($record) {
+    $Target=$record.Current
     if ($record.Current -ne [IO.Path]::GetFullPath($Target) -or [IO.Path]::GetDirectoryName($record.Original) -ne [IO.Path]::GetDirectoryName($record.Current)) { throw (T 'backupError') }
     $iniBytes=[byte[]]::new(0); $stateBytes=[byte[]]::new(0); if ($record.HadIni) { $iniBytes=[Convert]::FromBase64String($record.IniBytes) }; if ($record.HadState) { $stateBytes=[Convert]::FromBase64String($record.StateBytes) }
     $restored=Rename-Folder $Target ([IO.Path]::GetFileName($record.Original)); $ini=Join-Path $restored 'desktop.ini'
@@ -292,14 +293,45 @@ function Undo-FolderEdit([string]$Target) {
     if ($record.HadIni) { [IO.File]::WriteAllBytes($ini,$iniBytes); [IO.File]::SetAttributes($ini,[IO.FileAttributes]$record.IniAttributes) } elseif ([IO.File]::Exists($ini)) { [IO.File]::Delete($ini) }
     $state=Get-StatePath $restored
     if ($record.HadState) { [IO.File]::WriteAllBytes($state,$stateBytes) } elseif ([IO.File]::Exists($state)) { [IO.File]::Delete($state) }
-    [IO.File]::SetAttributes($restored,[IO.FileAttributes]$record.Attributes); [IO.File]::Delete($path); Update-FolderIcon $restored; return $restored
+    [IO.File]::SetAttributes($restored,[IO.FileAttributes]$record.Attributes); Update-FolderIcon $restored; return $restored
 }
+function Undo-FolderEdit([string]$Target) {
+    $path=Join-Path $root 'ultima-modifica.json'; $record=Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($record.Batch) {
+        if (!@($record.Batch | Where-Object { $_.Current -eq $Target }).Count) { throw (T 'backupError') }
+        foreach ($entry in $record.Batch) { $null=Restore-UndoRecord $entry }; [IO.File]::Delete($path); return $Target
+    }
+    if ($record.Current -ne [IO.Path]::GetFullPath($Target)) { throw (T 'backupError') }
+    $restored=Restore-UndoRecord $record; [IO.File]::Delete($path); return $restored
+}
+. (Join-Path $PSScriptRoot 'Advanced.ps1')
 if ($SelfTest) {
     if ($NoConsoleTest) {
         if ([FolderShell]::IsWindowVisible([FolderShell]::GetConsoleWindow())) { throw 'Il processo ha una console visibile.' }
         Write-Output 'OK: nessuna console visibile.'
         [IO.File]::WriteAllText((Join-Path $root 'verifica-avvio.txt'),'OK: nessuna console visibile.')
     }
+    $batchA=Join-Path $root 'Batch A'; $batchB=Join-Path $root 'Batch B'; New-Item -ItemType Directory -Path $batchA,$batchB -Force|Out-Null
+    [IO.File]::WriteAllText((Join-Path $batchB 'desktop.ini'),''); $previousAttrs=[IO.File]::GetAttributes($batchB)
+    Invoke-FolderBatch @($batchA,$batchB,$batchA) '#123456' ''
+    if (![IO.File]::Exists((Join-Path $batchA 'desktop.ini')) -or ![IO.File]::Exists((Join-Path $batchB 'desktop.ini'))) { throw 'Cambio multiplo fallito.' }
+    $null=Undo-FolderEdit $batchA
+    if ([IO.File]::Exists((Join-Path $batchA 'desktop.ini')) -or [IO.File]::ReadAllBytes((Join-Path $batchB 'desktop.ini')).Length -ne 0 -or [IO.File]::GetAttributes($batchB) -ne $previousAttrs) { throw 'Annullamento multiplo fallito.' }
+    $invalidBatch=$false; try { Invoke-FolderBatch @($batchA,(Join-Path $root 'missing-folder')) '#ABCDEF' '' } catch { $invalidBatch=$true }; if (!$invalidBatch -or [IO.File]::Exists((Join-Path $batchA 'desktop.ini'))) { throw 'Batch non valido modifica una cartella.' }
+    $script:originalIconSetter=(Get-Command Set-FolderIcon).ScriptBlock; $script:batchFailureTarget=$batchB
+    try {
+        function Set-FolderIcon([string]$Target,[string]$iconPath) { if ($Target -eq $script:batchFailureTarget) { throw 'Simulated batch failure' }; & $script:originalIconSetter $Target $iconPath }
+        $batchFailed=$false; try { Invoke-FolderBatch @($batchA,$batchB) '#ABCDEF' '' } catch { $batchFailed=$true }
+        if (!$batchFailed -or [IO.File]::Exists((Join-Path $batchA 'desktop.ini')) -or [IO.File]::ReadAllBytes((Join-Path $batchB 'desktop.ini')).Length -ne 0) { throw 'Rollback parziale del batch non riuscito.' }
+    } finally { Set-Item Function:Set-FolderIcon $script:originalIconSetter }
+    for ($i=0;$i -lt 10;$i++) { Save-RecentColor ('#{0:X6}' -f $i) }; Save-RecentColor '#000009'; $recent=@(Read-RecentColors); if ($recent.Count -ne 8 -or $recent[0] -ne '#000009') { throw 'Colori recenti non corretti.' }
+    $photo=[Drawing.Bitmap]::new(80,40); $g=[Drawing.Graphics]::FromImage($photo); $g.Clear([Drawing.Color]::Red); $g.Dispose()
+    try {
+        $fit=Render-PreparedImage $photo 1 0 0 $false 'none'; $cropped=Render-PreparedImage $photo 1 0 0 $true 'none'
+        try { if ($fit.GetPixel(128,0).A -ne 0 -or $cropped.GetPixel(128,8).R -lt 240 -or $cropped.GetPixel(128,8).A -lt 240) { throw 'Ritaglio o proporzioni errati.' } } finally { $fit.Dispose(); $cropped.Dispose() }
+        foreach ($badge in @('star','check','lock')) { $marked=Render-PreparedImage $photo 1 0 0 $false $badge; try { if ($marked.GetPixel(239,207).B -lt 200) { throw 'Contrassegno non disegnato.' } } finally { $marked.Dispose() } }
+    } finally { $photo.Dispose() }
+    Write-Output 'OK: batch e annullamento, convalida completa, recenti, ritaglio e tre contrassegni.'
     $undoTarget=Join-Path $root 'Test annulla'; New-Item -ItemType Directory -Path $undoTarget -Force | Out-Null
     Set-FolderColor $undoTarget '#123456'; $originalIcon=[IO.File]::ReadAllBytes((Join-Path $undoTarget 'desktop.ini')); $snapshot=New-FolderUndo $undoTarget
     $changed=Rename-Folder $undoTarget 'Test annulla rinominato'; $snapshot.Current=$changed; Save-FolderUndo $snapshot; Set-FolderColor $changed '#ABCDEF'

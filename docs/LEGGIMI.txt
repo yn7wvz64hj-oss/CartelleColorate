@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.6.0-beta.1
+CARTELLECOLORATE 0.7.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -22,6 +22,19 @@ Scrivi un nome e salva il colore. Seleziona un colore salvato per modificarne
 il nome o il valore. + Nuovo aggiunge un altro colore. Elimina lo rimuove
 dalla raccolta senza cambiare le cartelle gia' colorate.
 La raccolta non ha un limite imposto dall'app; restano i limiti del computer.
+
+FUNZIONI AVANZATE
+La lente apre ricerca e filtro delle raccolte. Dal menu ... puoi creare,
+rinominare o eliminare una raccolta; i suoi colori vengono conservati.
+Assegna raccolta dal tasto destro su un colore lo sposta nel gruppo scelto.
+Recenti mostra gli ultimi otto colori applicati, anche senza salvarli.
+Per cambiare piu’ cartelle scegli ... > Seleziona piu’ cartelle: usa Ctrl
+o Maiusc nell’elenco. Apri o un doppio clic cambia la cartella visualizzata.
+L’applica multiplo cambia solo l’icona, conservando i nomi. Un errore tenta
+il ripristino dell’intero gruppo; Annulla recupera le icone precedenti.
+Modifica PNG apre zoom, posizione e ritaglio quadrato: il PNG originale
+resta invariato. Contrassegno aggiunge stella, spunta o lucchetto a colori
+e PNG. Il lucchetto e’ solo un simbolo: non protegge l’accesso ai file.
 
 RACCOLTA E ANNULLAMENTO
 Tasto destro su una nuvola: modifica, rinomina, elimina o scegli Preferito.

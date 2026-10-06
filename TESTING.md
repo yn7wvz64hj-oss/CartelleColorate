@@ -22,6 +22,9 @@ La build con `-Test` verifica:
 - Palette di 150 colori e rinomina persistente.
 - Scorrimento della raccolta con la nuova barra sottile e raccolta affiancata nelle 15 lingue.
 - Riquadro cliccabile, valori intermedi, estremi e trascinamento fuori bordo.
+- Cambio multiplo, annullamento completo e rollback simulato dopo una prima cartella già modificata.
+- Recenti senza duplicati, ritaglio, proporzioni e rendering dei tre contrassegni.
+- Ricerca, filtri delle raccolte e finestre reali di testo, selezione cartelle ed editor PNG in tutte le lingue.
 - Importazione ed esportazione JSON, deduplicazione e rifiuto completo di file invalidi.
 - Preferiti in cima, riordino e annullamento di nome e icona immediatamente precedenti.
 - Nuovo senza creazione anticipata di una nuvola; raccolta vuota nascosta e ripristino della lista.

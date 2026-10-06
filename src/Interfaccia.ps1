@@ -57,7 +57,7 @@ $script:glassEnabled=$false
    <Setter Property="ToolTip" Value="{Binding Name}"/>
    <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Grid>
     <Border Background="{DynamicResource Card}" CornerRadius="{DynamicResource ControlRadius}" Effect="{DynamicResource ButtonShadow}" IsHitTestVisible="False"/>
-    <Border x:Name="Row" CornerRadius="{DynamicResource ControlRadius}" Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border>
+    <Border x:Name="Row" CornerRadius="{DynamicResource ControlRadius}" Background="{DynamicResource Card}" BorderBrush="{Binding Hex}" BorderThickness="1" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border>
     </Grid><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Hover}"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Selected}"/><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger></ControlTemplate.Triggers>
    </ControlTemplate></Setter.Value></Setter>
   </Style>
@@ -114,7 +114,7 @@ $script:glassEnabled=$false
        <Border Height="80" CornerRadius="14" Background="{DynamicResource Input}" Margin="0,0,0,8"><Viewbox Margin="8"><Grid Width="256" Height="256" FlowDirection="LeftToRight">
          <Path x:Name="FolderFront" Fill="#4A90E2" Data="M 52,10 L 192,10 L 192,139 L 204,152 L 204,208 L 52,208 Z"/>
          <Path x:Name="FolderBack" Fill="#60A0E6" Data="M 52,10 L 101,47 L 101,245 L 52,208 Z"/>
-         <Image x:Name="UploadedPreview" Visibility="Collapsed" Stretch="Uniform" Margin="8"/>
+         <Image x:Name="UploadedPreview" Visibility="Collapsed" Stretch="Uniform" Margin="8"/><Border x:Name="BadgePreview" Visibility="Collapsed" Width="64" Height="64" CornerRadius="32" Background="#F5F8FF" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,8"><TextBlock x:Name="BadgeGlyph" FontSize="38" FontFamily="Segoe UI Symbol" Foreground="#233755" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
        </Grid></Viewbox></Border>
        <TextBlock Text="{DynamicResource L_hex}" TextWrapping="Wrap" Foreground="{DynamicResource Secondary}" Margin="0,0,0,4"/><TextBox x:Name="Hex" FlowDirection="LeftToRight" Text="#4A90E2" FontFamily="Consolas" MaxLength="7" AutomationProperties.Name="{DynamicResource L_hex}"/>
       </StackPanel>
@@ -123,7 +123,9 @@ $script:glassEnabled=$false
     <Grid Margin="0,5,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="Auto" MinWidth="112"/></Grid.ColumnDefinitions>
      <StackPanel><TextBlock Text="{DynamicResource L_name}" Margin="0,0,0,4" FontSize="11" Foreground="{DynamicResource Secondary}"/><TextBox x:Name="ColorName" AutomationProperties.Name="{DynamicResource L_name}"/></StackPanel><Button x:Name="Save" Grid.Column="2" MinWidth="112" Content="{DynamicResource L_save}" VerticalAlignment="Bottom" Height="34"/>
     </Grid>
-    <Grid Margin="0,0,0,3"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="{DynamicResource L_new}" Margin="8,0,0,0" Padding="9,4" MinHeight="30"/><Button x:Name="Delete" Visibility="Collapsed"/><Button x:Name="PaletteTools" Grid.Column="3" Content="⋯" Padding="9,4" MinHeight="30" ToolTip="{DynamicResource L_collection}"/></Grid>
+    <Grid Margin="0,0,0,3"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="{DynamicResource L_new}" Margin="8,0,0,0" Padding="9,4" MinHeight="30"/><Button x:Name="Delete" Visibility="Collapsed"/><Button x:Name="SearchToggle" Grid.Column="3" Content="⌕" FontSize="19" Padding="8,2" MinHeight="30" Margin="0,0,5,0" ToolTip="{DynamicResource L_search}"/><Button x:Name="PaletteTools" Grid.Column="4" Content="⋯" Padding="9,4" MinHeight="30" ToolTip="{DynamicResource L_collection}"/></Grid>
+    <Grid x:Name="SearchRow" Visibility="Collapsed" Margin="0,2,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="130"/></Grid.ColumnDefinitions><TextBox x:Name="SearchText" AutomationProperties.Name="{DynamicResource L_search}"/><ComboBox x:Name="CollectionFilter" Grid.Column="1" Margin="6,0,0,0" VerticalContentAlignment="Center" AutomationProperties.Name="{DynamicResource L_collection}"/></Grid>
+    <StackPanel x:Name="RecentArea" Visibility="Collapsed" Margin="0,2,0,5"><TextBlock Text="{DynamicResource L_recent}" FontSize="11" Foreground="{DynamicResource Secondary}"/><WrapPanel x:Name="RecentColors"/></StackPanel>
     <ListBox x:Name="Colors" MaxHeight="104" Padding="1,2" Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
      <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel><ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Ellipse Width="14" Height="14" Fill="{Binding Hex}" HorizontalAlignment="Left" VerticalAlignment="Center"/><TextBlock Text="{Binding DisplayName}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></Grid></DataTemplate></ListBox.ItemTemplate>
     </ListBox>
@@ -132,16 +134,17 @@ $script:glassEnabled=$false
   </ScrollViewer>
   <StackPanel Grid.Row="2" Margin="0,8,0,0">
    <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Button x:Name="Pick" ToolTip="{DynamicResource L_pickHelp}" AutomationProperties.Name="{DynamicResource L_pick}" Padding="10,6"><Viewbox Width="20" Height="20"><Path Width="24" Height="24" Stretch="Uniform" Fill="{DynamicResource Text}" Data="M 16,2 Q 17,1 18,2 L 22,6 Q 23,7 22,8 L 19,11 L 20,12 L 18,14 L 16,12 L 8,20 L 3,21 L 4,16 L 12,8 L 10,6 L 12,4 L 13,5 Z M 6,17 L 5.5,18.5 L 7,18 L 14.5,10.5 L 13,9 Z"/></Viewbox></Button><Button x:Name="Upload" Grid.Column="1" Content="{DynamicResource L_upload}" Margin="8,0,0,0" Padding="12,6"/><Button x:Name="UseColor" Grid.Column="2" Content="{DynamicResource L_use}" HorizontalAlignment="Right" Padding="12,6" Visibility="Collapsed"/></Grid>
-   <TextBlock x:Name="Status" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" Foreground="{DynamicResource Text}"/>
+
    <Button x:Name="Undo" Content="{DynamicResource L_undo}" Visibility="Collapsed" Margin="0,0,0,6"/><Button x:Name="Apply" Content="{DynamicResource L_apply}" ToolTip="{DynamicResource L_applyHelp}" Style="{StaticResource Primary}" Height="38"/>
   </StackPanel>
+  <Border Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,46" CornerRadius="12" Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" Padding="10,6" IsHitTestVisible="False" Visibility="{Binding Visibility, ElementName=Status}"><TextBlock x:Name="Status" TextWrapping="Wrap" MaxWidth="340" Visibility="Collapsed" Foreground="{DynamicResource Text}"/></Border>
  </Grid>
 </Window>
 '@
 $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
 $ui=@{}
-foreach ($id in @('Root','MainScroll','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder','AppearanceButton','AppearanceName','PaletteTools','Undo')) { $ui[$id]=$window.FindName($id) }
+foreach ($id in @('Root','MainScroll','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder','AppearanceButton','AppearanceName','PaletteTools','Undo','SearchToggle','SearchRow','SearchText','CollectionFilter','RecentArea','RecentColors','BadgePreview','BadgeGlyph')) { $ui[$id]=$window.FindName($id) }
 $script:pngSelection=$null
 $ui.ColorPlane.Cursor=[Windows.Input.Cursors]::None
 $ui.ColorPlane.ForceCursor=$true
@@ -194,14 +197,14 @@ function Valid-Hex {
     $v=$ui.Hex.Text.Trim().ToUpperInvariant(); if ($v -match '^[0-9A-F]{6}$') { $v='#'+$v }
     if ($v -notmatch '^#[0-9A-F]{6}$') { throw (T 'hexError') }; $v
 }
-function Show-Status([string]$Text) { $ui.Status.Text=Translate-Error $Text; $ui.Status.Visibility='Visible' }
+function Show-Status([string]$Text) { if ($script:toastTimer) { $script:toastTimer.Stop() }; $ui.Status.Text=Translate-Error $Text; $ui.Status.Visibility='Visible' }
 function Update-Empty { $ui.Empty.Visibility='Collapsed'; $ui.Colors.Visibility='Visible'; if ($script:collection.Count -eq 0) { $ui.Empty.Visibility='Visible'; $ui.Colors.Visibility='Collapsed' } }
 function Save-Colors {
     foreach ($entry in $script:collection) { $entry | Add-Member -NotePropertyName DisplayName -NotePropertyValue $(if ($entry.Favorite) { '★ '+$entry.Name } else { $entry.Name }) -Force }
-    $items=@($script:collection | ForEach-Object { [pscustomobject]@{Name=$_.Name;Hex=$_.Hex;Favorite=[bool]$_.Favorite} })
+    $items=@($script:collection | ForEach-Object { [pscustomobject]@{Name=$_.Name;Hex=$_.Hex;Favorite=[bool]$_.Favorite;Group=[string]$_.Group} })
     $json=ConvertTo-Json -InputObject $items -Depth 4; $tmp=$palettePath+'.tmp'
     [IO.File]::WriteAllText($tmp,$json,[Text.Encoding]::UTF8); Move-Item -LiteralPath $tmp -Destination $palettePath -Force
-    if (!$Preview) { Update-Menu }; Update-Empty
+    if (!$Preview) { Update-Menu }; Update-Empty; if (Get-Command Refresh-CollectionChoices -ErrorAction SilentlyContinue) { Refresh-CollectionChoices }; $ui.Colors.Items.Refresh()
 }
 function Set-PlanePoint([double]$X,[double]$Y) {
     $script:saturation=[Math]::Max(0.0,[Math]::Min(1.0,$X/[Math]::Max(1.0,$ui.ColorPlane.ActualWidth)))
@@ -261,17 +264,18 @@ $ui.Hue.Add_ValueChanged({
 $ui.Hex.Add_TextChanged({ if (!$script:syncing) { try { Set-PickerFromHex (Valid-Hex); $ui.Status.Visibility='Collapsed' } catch {} } })
 $ui.Colors.Add_SelectionChanged({
     $c=$ui.Colors.SelectedItem
+    if ($c -and !$UITest -and [Windows.SystemParameters]::ClientAreaAnimation) { $container=$ui.Colors.ItemContainerGenerator.ContainerFromItem($c); if ($container) { $animation=[Windows.Media.Animation.DoubleAnimation]::new(0.65,1,[Windows.Duration]::new([TimeSpan]::FromMilliseconds(120))); $animation.FillBehavior='Stop'; $container.BeginAnimation([Windows.UIElement]::OpacityProperty,$animation) } }
     if ($c) { $ui.ColorName.Text=$c.Name; $ui.Hex.Text=$c.Hex; $ui.Save.Content=(T 'saveChanges'); $ui.Delete.Visibility='Collapsed' }
     else { $ui.Save.Content=(T 'save'); $ui.Delete.Visibility='Collapsed' }; $ui.Status.Visibility='Collapsed'
 })
 $ui.New.Add_Click({ $ui.Colors.SelectedIndex=-1; $ui.ColorName.Clear(); [void]$ui.ColorName.Focus(); $ui.Status.Visibility='Collapsed' })
 $ui.Save.Add_Click({ try {
-    $v=Valid-Hex; $n=$ui.ColorName.Text.Trim(); if (!$n) { $n=$v }; $idx=$ui.Colors.SelectedIndex
-    $favorite=if ($idx -ge 0) { [bool]$script:collection[$idx].Favorite } else { $false }; $item=[pscustomobject]@{Name=$n;Hex=$v;Favorite=$favorite;DisplayName=$(if ($favorite) { '★ '+$n } else { $n })}
+    $v=Valid-Hex; $n=$ui.ColorName.Text.Trim(); if (!$n) { $n=$v }; $idx=$script:collection.IndexOf($ui.Colors.SelectedItem)
+    $favorite=if ($idx -ge 0) { [bool]$script:collection[$idx].Favorite } else { $false }; $item=[pscustomobject]@{Name=$n;Hex=$v;Favorite=$favorite;Group=$(if ($idx -ge 0) { [string]$script:collection[$idx].Group } else { [string]$script:filterGroup });DisplayName=$(if ($favorite) { '★ '+$n } else { $n })}
     if ($idx -ge 0) { $script:collection[$idx]=$item } else { $script:collection.Add($item); $idx=$script:collection.Count-1 }
-    Save-Colors; $ui.Colors.SelectedIndex=$idx; $ui.ColorName.Text=$n; $ui.Save.Content=(T 'saveChanges'); $ui.Delete.Visibility='Collapsed'; $ui.Status.Visibility='Collapsed'
+    Save-Colors; $ui.Colors.SelectedItem=$item; $ui.ColorName.Text=$n; $ui.Save.Content=(T 'saveChanges'); $ui.Delete.Visibility='Collapsed'; $ui.Status.Visibility='Collapsed'; Show-Toast (T 'saved')
 } catch { Show-Status $_.Exception.Message } })
-$ui.Delete.Add_Click({ try { $idx=$ui.Colors.SelectedIndex; if ($idx -ge 0) { $script:collection.RemoveAt($idx); Save-Colors; $ui.ColorName.Clear() } } catch { Show-Status $_.Exception.Message } })
+$ui.Delete.Add_Click({ try { $idx=$script:collection.IndexOf($ui.Colors.SelectedItem); if ($idx -ge 0) { $script:collection.RemoveAt($idx); Save-Colors; $ui.ColorName.Clear() } } catch { Show-Status $_.Exception.Message } })
 function Order-Colors {
     $ordered=@($script:collection | Where-Object { $_.Favorite })+@($script:collection | Where-Object { !$_.Favorite })
     $script:collection.Clear(); foreach ($entry in $ordered) { $script:collection.Add($entry) }
@@ -282,27 +286,27 @@ function Move-Color($Item,[int]$Destination) {
     $script:collection.Move($old,$Destination); Save-Colors; $ui.Colors.SelectedItem=$Item
 }
 function Import-Colors([string]$Path) {
-    $document=Get-Content -LiteralPath $Path -Raw -Encoding UTF8 | ConvertFrom-Json
-    $entries=if ($document -is [array]) { @($document) } elseif ($document.schemaVersion -eq 1 -and $null -ne $document.colors) { @($document.colors) } else { throw (T 'paletteError') }
+    $raw=Get-Content -LiteralPath $Path -Raw -Encoding UTF8; $document=$raw | ConvertFrom-Json
+    $entries=if ($raw.TrimStart().StartsWith('[')) { @($document) } elseif ($document.schemaVersion -eq 1 -and $null -ne $document.colors) { @($document.colors) } else { throw (T 'paletteError') }
     $validated=@(); foreach ($entry in $entries) {
-        if ($entry.Name -isnot [string] -or [string]::IsNullOrWhiteSpace($entry.Name) -or $entry.Hex -isnot [string] -or $entry.Hex -notmatch '^#[0-9A-Fa-f]{6}$' -or ($null -ne $entry.Favorite -and $entry.Favorite -isnot [bool])) { throw (T 'paletteError') }
-        $validated += [pscustomobject]@{Name=$entry.Name;Hex=$entry.Hex.ToUpperInvariant();Favorite=[bool]$entry.Favorite}
+        if ($entry.Name -isnot [string] -or [string]::IsNullOrWhiteSpace($entry.Name) -or $entry.Hex -isnot [string] -or $entry.Hex -notmatch '^#[0-9A-Fa-f]{6}$' -or ($null -ne $entry.Favorite -and $entry.Favorite -isnot [bool]) -or ($null -ne $entry.Group -and $entry.Group -isnot [string])) { throw (T 'paletteError') }
+        $validated += [pscustomobject]@{Name=$entry.Name;Hex=$entry.Hex.ToUpperInvariant();Favorite=[bool]$entry.Favorite;Group=[string]$entry.Group}
     }
     $previous=@($script:collection)
     try {
-        foreach ($entry in $validated) { if (!@($script:collection | Where-Object { $_.Name -ceq $entry.Name -and $_.Hex -eq $entry.Hex }).Count) { $script:collection.Add($entry) } }
+        foreach ($entry in $validated) { if (!@($script:collection | Where-Object { $_.Name -ceq $entry.Name -and $_.Hex -eq $entry.Hex -and [string]$_.Group -ceq [string]$entry.Group }).Count) { $script:collection.Add($entry) } }
         Order-Colors; Save-Colors
     } catch { $script:collection.Clear(); foreach ($entry in $previous) { $script:collection.Add($entry) }; throw }
 }
 function Export-Colors([string]$Path) {
-    $colors=@($script:collection | ForEach-Object { [pscustomobject]@{Name=$_.Name;Hex=$_.Hex;Favorite=[bool]$_.Favorite} })
+    $colors=@($script:collection | ForEach-Object { [pscustomobject]@{Name=$_.Name;Hex=$_.Hex;Favorite=[bool]$_.Favorite;Group=[string]$_.Group} })
     [IO.File]::WriteAllText($Path,([pscustomobject]@{schemaVersion=1;colors=$colors} | ConvertTo-Json -Depth 5),[Text.UTF8Encoding]::new($true))
 }
 $ui.Colors.Add_ContextMenuOpening({ param($sender,$e)
     $container=[Windows.Controls.ItemsControl]::ContainerFromElement($ui.Colors,$e.OriginalSource)
     if (!$container) { $e.Handled=$true; return }; $ui.Colors.SelectedItem=$container.DataContext
     $menu=[Windows.Controls.ContextMenu]::new()
-    foreach ($action in @('editColor','renameColor','favorite','moveEarlier','moveLater','delete')) {
+    foreach ($action in @('editColor','renameColor','favorite','moveEarlier','moveLater','assignCollection','delete')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
         if ($action -eq 'favorite') { $item.IsCheckable=$true; $item.IsChecked=[bool]$container.DataContext.Favorite }
         $item.Add_Click({ param($sender,$e) try {
@@ -313,6 +317,7 @@ $ui.Colors.Add_ContextMenuOpening({ param($sender,$e)
                 'favorite' { $selected | Add-Member -NotePropertyName Favorite -NotePropertyValue (![bool]$selected.Favorite) -Force; Order-Colors; Save-Colors; $ui.Colors.SelectedItem=$selected }
                 'moveEarlier' { Move-Color $selected ($script:collection.IndexOf($selected)-1) }
                 'moveLater' { Move-Color $selected ($script:collection.IndexOf($selected)+1) }
+                'assignCollection' { $group=Show-AdvancedText (T 'collectionName') ([string]$selected.Group); if ($null -ne $group) { $selected | Add-Member -NotePropertyName Group -NotePropertyValue $group -Force; Save-Colors; Refresh-CollectionChoices } }
                 'delete' { $ui.Delete.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)) }
             }
         } catch { Show-Status $_.Exception.Message } }); $null=$menu.Items.Add($item)
@@ -336,9 +341,11 @@ $ui.Colors.Add_Drop({ param($sender,$e) try {
 } catch { Show-Status $_.Exception.Message } })
 $ui.PaletteTools.Add_Click({
     $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
-    foreach ($action in @('importColors','exportColors')) {
+    foreach ($action in @('batch','singleFolder','editPng','badge','collections','importColors','exportColors')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
+        if ($action -eq 'editPng') { $item.IsEnabled=[bool]$script:pngSelection }; if ($action -eq 'singleFolder') { $item.IsEnabled=$script:batchTargets.Count -gt 1 }
         $item.Add_Click({ param($sender,$e) try {
+            if ($sender.Tag -notin @('importColors','exportColors')) { Invoke-AdvancedAction ([string]$sender.Tag); return }
             $dialog=if ($sender.Tag -eq 'importColors') { [Microsoft.Win32.OpenFileDialog]::new() } else { [Microsoft.Win32.SaveFileDialog]::new() }; $dialog.Filter='JSON (*.json)|*.json'; $dialog.DefaultExt='.json'
             if ($dialog.ShowDialog($window)) { if ($sender.Tag -eq 'importColors') { Import-Colors $dialog.FileName } else { Export-Colors $dialog.FileName } }
         } catch { Show-Status $_.Exception.Message } }); $null=$menu.Items.Add($item)
@@ -436,20 +443,22 @@ $ui.Pick.Add_Click({
 $window.Add_Closed({ [Windows.Input.Mouse]::OverrideCursor=$null; $planeTimer.Stop(); $pickerTimer.Stop(); [DesktopPicker]::Stop(); $lens.Close() })
 function Update-UndoButton {
     $ui.Undo.Visibility='Collapsed'
-    try { $record=Get-Content -LiteralPath (Join-Path $root 'ultima-modifica.json') -Raw -Encoding UTF8 | ConvertFrom-Json; if ($record.Current -eq $script:currentFolder) { $ui.Undo.Visibility='Visible' } } catch {}
+    try { $record=Get-Content -LiteralPath (Join-Path $root 'ultima-modifica.json') -Raw -Encoding UTF8 | ConvertFrom-Json; if ($record.Current -eq $script:currentFolder -or @($record.Batch | Where-Object { $_.Current -eq $script:currentFolder }).Count) { $ui.Undo.Visibility='Visible' } } catch {}
 }
 function Edit-SelectedFolder([bool]$OnlyName) {
     $hexValue=$null; if (!$OnlyName -and !$script:pngSelection) { $hexValue=Valid-Hex }
+    $prepared=$null; if (!$OnlyName) { $prepared=Get-PreparedIcon $script:badge }
+    if (!$OnlyName -and $script:batchTargets.Count -gt 1) { Invoke-FolderBatch $script:batchTargets $hexValue $prepared; Update-UndoButton; return }
     $before=New-FolderUndo $script:currentFolder
     $script:currentFolder=Rename-Folder $script:currentFolder $ui.FolderName.Text
     $before.Current=$script:currentFolder; Save-FolderUndo $before
     $ui.FolderName.Text=[IO.Path]::GetFileName($script:currentFolder); $ui.FolderName.ToolTip=$script:currentFolder
     Update-UndoButton
-    if (!$OnlyName) { if ($script:pngSelection) { Set-FolderPng $script:currentFolder $script:pngSelection } else { Set-FolderColor $script:currentFolder $hexValue } }
+    if (!$OnlyName) { if ($prepared) { Set-FolderPng $script:currentFolder $prepared } else { Set-FolderColor $script:currentFolder $hexValue } }
 }
 $ui.RenameFolder.Add_Click({ try { Edit-SelectedFolder $true; Show-Status (T 'folderRenamed') } catch { Show-Status $_.Exception.Message } })
 $ui.Apply.Add_Click({ try { Edit-SelectedFolder $false; if (!$UITest) { $window.Close() } } catch { Show-Status $_.Exception.Message } })
-$ui.Undo.Add_Click({ try { $script:currentFolder=Undo-FolderEdit $script:currentFolder; $ui.FolderName.Text=[IO.Path]::GetFileName($script:currentFolder); $ui.FolderName.ToolTip=$script:currentFolder; Update-UndoButton } catch { Show-Status $_.Exception.Message } })
+$ui.Undo.Add_Click({ try { $script:currentFolder=Undo-FolderEdit $script:currentFolder; $ui.FolderName.Text=if ($script:batchTargets.Count -gt 1) { T 'folderCount' @($script:batchTargets.Count) } else { [IO.Path]::GetFileName($script:currentFolder) }; $ui.FolderName.ToolTip=$script:currentFolder; Update-UndoButton } catch { Show-Status $_.Exception.Message } })
 Update-UndoButton
 function Set-GlassSurface([bool]$Transparent) {
     $page=[Windows.Media.LinearGradientBrush]::new(); $page.StartPoint=[Windows.Point]::new(0,0); $page.EndPoint=[Windows.Point]::new(1,1)
@@ -512,6 +521,7 @@ $ui.AppearanceButton.Add_Click({
     }
     $ui.AppearanceButton.ContextMenu=$menu; $menu.IsOpen=$true
 })
+Initialize-AdvancedInterface
 Order-Colors
 Apply-Appearance (Read-AppearancePreference)
 $window.Add_SourceInitialized({
@@ -525,6 +535,7 @@ function Apply-InterfaceLanguage {
     Set-LanguageResources $window
     Set-LanguageResources $lens
     $ui.AppearanceButton.ToolTip=(T 'appearance')+': '+$ui.AppearanceName.Text
+    if ($script:advancedReady) { Refresh-CollectionChoices }
     $ui.LanguageName.Text=$script:activeLanguage.nativeName
     $ui.Save.Content=if ($ui.Colors.SelectedIndex -ge 0) { T 'saveChanges' } else { T 'save' }
     $ui.Upload.Content=if ($script:pngSelection) { T 'changePng' } else { T 'upload' }
@@ -667,6 +678,17 @@ if ($Preview) {
         $preferred.Favorite=$false; Order-Colors; Move-Color $preferred ($count-1)
         if (![Object]::ReferenceEquals($script:collection[$count-1],$preferred)) { throw 'Riordino non conservato.' }
         $ui.Colors.SelectedIndex=0
+        $first=$script:collection[0]; $first | Add-Member -NotePropertyName Group -NotePropertyValue 'Test collection' -Force; Refresh-CollectionChoices
+        $ui.CollectionFilter.SelectedItem='Test collection'; if ($ui.Colors.Items.Count -ne 1) { throw 'Filtro raccolte non funzionante.' }
+        $ui.SearchText.Text='not-present-7349'; if ($ui.Colors.Items.Count -ne 0) { throw 'Ricerca non funzionante.' }; $ui.SearchText.Clear(); $ui.CollectionFilter.SelectedIndex=0
+        $script:advancedDialogTest=$true
+        try {
+            if ((Show-AdvancedText (T 'collectionName')) -ne 'Test collection') { throw 'Dialogo raccolta non funzionante.' }
+            $chooserRoot=Join-Path $root ('chooser-'+[Guid]::NewGuid().ToString('N').Substring(0,8)); $a=Join-Path $chooserRoot 'A'; $b=Join-Path $chooserRoot 'B'; New-Item -ItemType Directory -Path $a,$b -Force|Out-Null
+            $previousFolder=$script:currentFolder; $script:currentFolder=$a; try { $selected=@(Show-FolderSelection); if ($selected.Count -ne 2) { throw 'Selezione multipla non funzionante.' } } finally { $script:currentFolder=$previousFolder }
+            Set-PngPreview $testPng; Show-PngEditor; if ($script:pngSelection -eq $testPng -or ![IO.File]::Exists($script:pngSelection)) { throw 'Editor PNG non salva il risultato.' }; $ui.UseColor.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        } finally { $script:advancedDialogTest=$false }
+        $first.Group=''; Refresh-CollectionChoices
         $bubbleItems=@($script:collection); $script:collection.Clear(); Update-Empty
         if ($ui.Colors.Visibility -ne 'Collapsed') { throw 'Contenitore dei colori visibile senza colori salvati.' }
         foreach ($bubbleItem in $bubbleItems) { $script:collection.Add($bubbleItem) }; Update-Empty; $ui.Colors.SelectedIndex=0
