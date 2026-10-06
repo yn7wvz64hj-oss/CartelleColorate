@@ -20,8 +20,10 @@ La build con `-Test` verifica:
 - Conservazione dei metadati originari e degli attributi della cartella.
 - PNG in sette dimensioni, trasparenza e proporzioni.
 - Palette di 150 colori e rinomina persistente.
-- Scorrimento della raccolta con la nuova barra sottile e palette virtualizzata nelle 15 lingue.
+- Scorrimento della raccolta con la nuova barra sottile e raccolta affiancata nelle 15 lingue.
 - Riquadro cliccabile, valori intermedi, estremi e trascinamento fuori bordo.
+- Importazione ed esportazione JSON, deduplicazione e rifiuto completo di file invalidi.
+- Preferiti in cima, riordino e annullamento di nome e icona immediatamente precedenti.
 - Nuovo senza creazione anticipata di una nuvola; raccolta vuota nascosta e ripristino della lista.
 - Salvataggio/modifica/eliminazione dei colori e validazione HEX.
 - Anteprima PNG e ritorno alla modalità colore.

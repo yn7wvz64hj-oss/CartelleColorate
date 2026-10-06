@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.5.1-beta.1
+CARTELLECOLORATE 0.6.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -22,6 +22,15 @@ Scrivi un nome e salva il colore. Seleziona un colore salvato per modificarne
 il nome o il valore. + Nuovo aggiunge un altro colore. Elimina lo rimuove
 dalla raccolta senza cambiare le cartelle gia' colorate.
 La raccolta non ha un limite imposto dall'app; restano i limiti del computer.
+
+RACCOLTA E ANNULLAMENTO
+Tasto destro su una nuvola: modifica, rinomina, elimina o scegli Preferito.
+I preferiti restano in cima. Trascina i colori per riordinarli nello stesso
+gruppo; puoi usare anche Sposta prima/dopo dal menu della nuvola.
+Il menu ... accanto alla raccolta importa ed esporta i colori in JSON.
+L’importazione aggiunge i nuovi colori senza duplicare quelli identici.
+Annulla ultima modifica recupera nome e icona immediatamente precedenti.
+Riapri il selettore sulla cartella modificata per trovare il pulsante.
 
 PIPETTA
 Il pulsante con disegno di pipetta nasconde la finestra e mostra una lente

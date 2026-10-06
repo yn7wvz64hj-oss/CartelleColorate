@@ -1,5 +1,13 @@
 # Note di versione
 
+## 0.6.0-beta.1 — 6 ottobre 2026
+
+- Nuvole affiancate con menu contestuale per modificare, rinominare, eliminare e segnare i preferiti.
+- Preferiti in cima e riordino tramite trascinamento o comandi nel menu.
+- Anteprima dell’icona più grande.
+- Annullamento persistente dell’ultima modifica di nome e icona dal selettore.
+- Importazione ed esportazione della raccolta JSON, con validazione completa prima dell’importazione e protezione dai duplicati.
+
 ## 0.5.1-beta.1 — 6 ottobre 2026
 
 - Colori salvati in piccole superfici separate, senza contenitore comune.

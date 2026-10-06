@@ -72,7 +72,16 @@
         "applyHelp": "Applica il nome e il colore o PNG scelto.",
         "appearance": "Stile",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Raccolta colori",
+        "editColor": "Modifica colore",
+        "renameColor": "Rinomina colore",
+        "favorite": "Preferito",
+        "moveEarlier": "Sposta prima",
+        "moveLater": "Sposta dopo",
+        "importColors": "Importa colori…",
+        "exportColors": "Esporta colori…",
+        "undo": "Annulla ultima modifica"
       }
     },
     {
@@ -146,7 +155,16 @@
         "applyHelp": "Apply the name and selected color or PNG.",
         "appearance": "Style",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Color collection",
+        "editColor": "Edit color",
+        "renameColor": "Rename color",
+        "favorite": "Favorite",
+        "moveEarlier": "Move earlier",
+        "moveLater": "Move later",
+        "importColors": "Import colors…",
+        "exportColors": "Export colors…",
+        "undo": "Undo last change"
       }
     },
     {
@@ -220,7 +238,16 @@
         "applyHelp": "应用名称及所选颜色或 PNG 图片。",
         "appearance": "外观",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "颜色集合",
+        "editColor": "编辑颜色",
+        "renameColor": "重命名颜色",
+        "favorite": "收藏",
+        "moveEarlier": "向前移动",
+        "moveLater": "向后移动",
+        "importColors": "导入颜色…",
+        "exportColors": "导出颜色…",
+        "undo": "撤销上次更改"
       }
     },
     {
@@ -294,7 +321,16 @@
         "applyHelp": "Aplica el nombre y el color o PNG elegido.",
         "appearance": "Estilo",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Colección de colores",
+        "editColor": "Editar color",
+        "renameColor": "Renombrar color",
+        "favorite": "Favorito",
+        "moveEarlier": "Mover antes",
+        "moveLater": "Mover después",
+        "importColors": "Importar colores…",
+        "exportColors": "Exportar colores…",
+        "undo": "Deshacer último cambio"
       }
     },
     {
@@ -368,7 +404,16 @@
         "applyHelp": "नाम और चुना हुआ रंग या PNG लागू करें।",
         "appearance": "शैली",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "रंग संग्रह",
+        "editColor": "रंग संपादित करें",
+        "renameColor": "रंग का नाम बदलें",
+        "favorite": "पसंदीदा",
+        "moveEarlier": "पहले ले जाएँ",
+        "moveLater": "बाद में ले जाएँ",
+        "importColors": "रंग आयात करें…",
+        "exportColors": "रंग निर्यात करें…",
+        "undo": "पिछला बदलाव पूर्ववत करें"
       }
     },
     {
@@ -442,7 +487,16 @@
         "applyHelp": "تطبيق الاسم واللون أو صورة PNG المحددة.",
         "appearance": "المظهر",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "مجموعة الألوان",
+        "editColor": "تعديل اللون",
+        "renameColor": "إعادة تسمية اللون",
+        "favorite": "مفضل",
+        "moveEarlier": "نقل للأمام",
+        "moveLater": "نقل للخلف",
+        "importColors": "استيراد الألوان…",
+        "exportColors": "تصدير الألوان…",
+        "undo": "التراجع عن آخر تغيير"
       }
     },
     {
@@ -516,7 +570,16 @@
         "applyHelp": "Aplique o nome e a cor ou PNG escolhido.",
         "appearance": "Estilo",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Coleção de cores",
+        "editColor": "Editar cor",
+        "renameColor": "Renomear cor",
+        "favorite": "Favorito",
+        "moveEarlier": "Mover antes",
+        "moveLater": "Mover depois",
+        "importColors": "Importar cores…",
+        "exportColors": "Exportar cores…",
+        "undo": "Desfazer última alteração"
       }
     },
     {
@@ -590,7 +653,16 @@
         "applyHelp": "নাম এবং নির্বাচিত রং বা PNG প্রয়োগ করুন।",
         "appearance": "শৈলী",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "রঙের সংগ্রহ",
+        "editColor": "রঙ সম্পাদনা",
+        "renameColor": "রঙের নাম পরিবর্তন",
+        "favorite": "পছন্দের",
+        "moveEarlier": "আগে সরান",
+        "moveLater": "পরে সরান",
+        "importColors": "রঙ আমদানি…",
+        "exportColors": "রঙ রপ্তানি…",
+        "undo": "শেষ পরিবর্তন বাতিল"
       }
     },
     {
@@ -664,7 +736,16 @@
         "applyHelp": "Применить имя и выбранный цвет или PNG.",
         "appearance": "Стиль",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Коллекция цветов",
+        "editColor": "Изменить цвет",
+        "renameColor": "Переименовать цвет",
+        "favorite": "Избранное",
+        "moveEarlier": "Переместить раньше",
+        "moveLater": "Переместить позже",
+        "importColors": "Импорт цветов…",
+        "exportColors": "Экспорт цветов…",
+        "undo": "Отменить последнее изменение"
       }
     },
     {
@@ -738,7 +819,16 @@
         "applyHelp": "Appliquer le nom et la couleur ou le PNG choisi.",
         "appearance": "Style",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Collection de couleurs",
+        "editColor": "Modifier la couleur",
+        "renameColor": "Renommer la couleur",
+        "favorite": "Favori",
+        "moveEarlier": "Déplacer avant",
+        "moveLater": "Déplacer après",
+        "importColors": "Importer des couleurs…",
+        "exportColors": "Exporter les couleurs…",
+        "undo": "Annuler la dernière modification"
       }
     },
     {
@@ -812,7 +902,16 @@
         "applyHelp": "Name und ausgewählte Farbe oder PNG anwenden.",
         "appearance": "Stil",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Farbsammlung",
+        "editColor": "Farbe bearbeiten",
+        "renameColor": "Farbe umbenennen",
+        "favorite": "Favorit",
+        "moveEarlier": "Nach vorne",
+        "moveLater": "Nach hinten",
+        "importColors": "Farben importieren…",
+        "exportColors": "Farben exportieren…",
+        "undo": "Letzte Änderung rückgängig"
       }
     },
     {
@@ -886,7 +985,16 @@
         "applyHelp": "名前と選択した色または PNG を適用します。",
         "appearance": "スタイル",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "カラーコレクション",
+        "editColor": "色を編集",
+        "renameColor": "色の名前を変更",
+        "favorite": "お気に入り",
+        "moveEarlier": "前へ移動",
+        "moveLater": "後ろへ移動",
+        "importColors": "色をインポート…",
+        "exportColors": "色をエクスポート…",
+        "undo": "最後の変更を取り消す"
       }
     },
     {
@@ -960,7 +1068,16 @@
         "applyHelp": "이름과 선택한 색 또는 PNG를 적용합니다.",
         "appearance": "스타일",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "색상 모음",
+        "editColor": "색상 편집",
+        "renameColor": "색상 이름 변경",
+        "favorite": "즐겨찾기",
+        "moveEarlier": "앞으로 이동",
+        "moveLater": "뒤로 이동",
+        "importColors": "색상 가져오기…",
+        "exportColors": "색상 내보내기…",
+        "undo": "마지막 변경 취소"
       }
     },
     {
@@ -1034,7 +1151,16 @@
         "applyHelp": "Terapkan nama dan warna atau PNG yang dipilih.",
         "appearance": "Gaya",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "Koleksi warna",
+        "editColor": "Edit warna",
+        "renameColor": "Ubah nama warna",
+        "favorite": "Favorit",
+        "moveEarlier": "Pindahkan lebih awal",
+        "moveLater": "Pindahkan lebih akhir",
+        "importColors": "Impor warna…",
+        "exportColors": "Ekspor warna…",
+        "undo": "Batalkan perubahan terakhir"
       }
     },
     {
@@ -1108,7 +1234,16 @@
         "applyHelp": "نام اور منتخب رنگ یا PNG لگائیں۔",
         "appearance": "انداز",
         "windowsStyle": "Windows",
-        "macStyle": "macOS"
+        "macStyle": "macOS",
+        "collection": "رنگوں کا مجموعہ",
+        "editColor": "رنگ تبدیل کریں",
+        "renameColor": "رنگ کا نام بدلیں",
+        "favorite": "پسندیدہ",
+        "moveEarlier": "آگے منتقل کریں",
+        "moveLater": "پیچھے منتقل کریں",
+        "importColors": "رنگ درآمد کریں…",
+        "exportColors": "رنگ برآمد کریں…",
+        "undo": "آخری تبدیلی واپس کریں"
       }
     }
   ]

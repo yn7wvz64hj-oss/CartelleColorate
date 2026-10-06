@@ -275,13 +275,38 @@ function Restore-Folder([string]$Target) {
     Remove-Item -LiteralPath $statePath
     Update-FolderIcon $Target
 }
+function New-FolderUndo([string]$Target) {
+    $folder=Get-Item -LiteralPath $Target -Force; $ini=Join-Path $folder.FullName 'desktop.ini'; $state=Get-StatePath $folder.FullName
+    [pscustomobject]@{Original=$folder.FullName;Current=$folder.FullName;Attributes=[int]$folder.Attributes;HadIni=[IO.File]::Exists($ini);IniBytes=$(if ([IO.File]::Exists($ini)) { [Convert]::ToBase64String([IO.File]::ReadAllBytes($ini)) } else { '' });IniAttributes=$(if ([IO.File]::Exists($ini)) { [int][IO.File]::GetAttributes($ini) } else { 0 });HadState=[IO.File]::Exists($state);StateBytes=$(if ([IO.File]::Exists($state)) { [Convert]::ToBase64String([IO.File]::ReadAllBytes($state)) } else { '' })}
+}
+function Save-FolderUndo($Record) {
+    $path=Join-Path $root 'ultima-modifica.json'; $temporary=$path+'.'+[Guid]::NewGuid().ToString('N')+'.tmp'
+    try { [IO.File]::WriteAllText($temporary,($Record | ConvertTo-Json -Depth 5),[Text.UTF8Encoding]::new($true)); if ([IO.File]::Exists($path)) { [IO.File]::Replace($temporary,$path,[NullString]::Value) } else { [IO.File]::Move($temporary,$path) } } finally { if ([IO.File]::Exists($temporary)) { [IO.File]::Delete($temporary) } }
+}
+function Undo-FolderEdit([string]$Target) {
+    $path=Join-Path $root 'ultima-modifica.json'; $record=Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($record.Current -ne [IO.Path]::GetFullPath($Target) -or [IO.Path]::GetDirectoryName($record.Original) -ne [IO.Path]::GetDirectoryName($record.Current)) { throw (T 'backupError') }
+    $iniBytes=[byte[]]::new(0); $stateBytes=[byte[]]::new(0); if ($record.HadIni) { $iniBytes=[Convert]::FromBase64String($record.IniBytes) }; if ($record.HadState) { $stateBytes=[Convert]::FromBase64String($record.StateBytes) }
+    $restored=Rename-Folder $Target ([IO.Path]::GetFileName($record.Original)); $ini=Join-Path $restored 'desktop.ini'
+    if ([IO.File]::Exists($ini)) { [IO.File]::SetAttributes($ini,[IO.FileAttributes]::Normal) }
+    if ($record.HadIni) { [IO.File]::WriteAllBytes($ini,$iniBytes); [IO.File]::SetAttributes($ini,[IO.FileAttributes]$record.IniAttributes) } elseif ([IO.File]::Exists($ini)) { [IO.File]::Delete($ini) }
+    $state=Get-StatePath $restored
+    if ($record.HadState) { [IO.File]::WriteAllBytes($state,$stateBytes) } elseif ([IO.File]::Exists($state)) { [IO.File]::Delete($state) }
+    [IO.File]::SetAttributes($restored,[IO.FileAttributes]$record.Attributes); [IO.File]::Delete($path); Update-FolderIcon $restored; return $restored
+}
 if ($SelfTest) {
     if ($NoConsoleTest) {
         if ([FolderShell]::IsWindowVisible([FolderShell]::GetConsoleWindow())) { throw 'Il processo ha una console visibile.' }
         Write-Output 'OK: nessuna console visibile.'
         [IO.File]::WriteAllText((Join-Path $root 'verifica-avvio.txt'),'OK: nessuna console visibile.')
     }
-    $target = Join-Path $root 'Cartella prova'
+    $undoTarget=Join-Path $root 'Test annulla'; New-Item -ItemType Directory -Path $undoTarget -Force | Out-Null
+    Set-FolderColor $undoTarget '#123456'; $originalIcon=[IO.File]::ReadAllBytes((Join-Path $undoTarget 'desktop.ini')); $snapshot=New-FolderUndo $undoTarget
+    $changed=Rename-Folder $undoTarget 'Test annulla rinominato'; $snapshot.Current=$changed; Save-FolderUndo $snapshot; Set-FolderColor $changed '#ABCDEF'
+    $returned=Undo-FolderEdit $changed
+    if ($returned -ne $undoTarget -or [Convert]::ToBase64String([IO.File]::ReadAllBytes((Join-Path $returned 'desktop.ini'))) -ne [Convert]::ToBase64String($originalIcon)) { throw 'Annulla non ripristina nome e icona precedenti.' }
+    Restore-Folder $returned
+    $target = Join-Path $root 'Cartella prova' 
     New-Item -ItemType Directory -Path $target -Force | Out-Null
     $ini = Join-Path $target 'desktop.ini'
     [IO.File]::WriteAllText($ini,"[.ShellClassInfo]`r`nInfoTip=Test originale`r`n",[Text.Encoding]::Unicode)
@@ -391,8 +416,8 @@ if ($Worker) {
                 Read-LanguagePreference
                 try {
                     $lines=[IO.File]::ReadAllLines($request,[Text.Encoding]::Unicode)
-                    if ($lines.Length -eq 3 -and $lines[0] -eq '--color' -and $lines[2] -match '^#[0-9A-Fa-f]{6}$') { Set-FolderColor $lines[1] $lines[2].ToUpperInvariant() }
-                    elseif ($lines.Length -eq 2 -and $lines[0] -eq '--restore') { Restore-Folder $lines[1] }
+                    if ($lines.Length -eq 3 -and $lines[0] -eq '--color' -and $lines[2] -match '^#[0-9A-Fa-f]{6}$') { $undo=New-FolderUndo $lines[1]; Save-FolderUndo $undo; Set-FolderColor $lines[1] $lines[2].ToUpperInvariant() }
+                    elseif ($lines.Length -eq 2 -and $lines[0] -eq '--restore') { $undo=New-FolderUndo $lines[1]; Restore-Folder $lines[1]; Save-FolderUndo $undo }
                     else { throw (T 'requestError') }
                 } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null }
                 finally { [IO.File]::Delete($request); $lastRequest=[DateTime]::UtcNow }
@@ -415,10 +440,10 @@ if (!$Folder -or !(Test-Path -LiteralPath $Folder -PathType Container)) { [Windo
 $Folder = (Get-Item -LiteralPath $Folder -Force).FullName
 if ($Color -or $Restore) {
     try {
-        if ($Restore) { Restore-Folder $Folder }
+        if ($Restore) { $undo=New-FolderUndo $Folder; Restore-Folder $Folder; Save-FolderUndo $undo }
         else {
             if ($Color -notmatch '^#[0-9A-Fa-f]{6}$') { throw (T 'colorInvalid') }
-            Set-FolderColor $Folder $Color.ToUpperInvariant()
+            $undo=New-FolderUndo $Folder; Save-FolderUndo $undo; Set-FolderColor $Folder $Color.ToUpperInvariant()
         }
     } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null; exit 1 }
     exit
