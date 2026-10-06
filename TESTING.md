@@ -12,6 +12,9 @@ La build con `-Test` verifica:
 - Cambio lingua senza riaprire la finestra; disposizione RTL e HEX/riquadro LTR.
 - Test dell’interfaccia e anteprime in tutte le 15 lingue.
 
+- Rinomina Unicode e solo maiuscole; rifiuto di nomi riservati, destinazioni esistenti e backup in conflitto.
+- Conservazione dei file e ripristino delle icone della cartella rinominata e delle sottocartelle.
+- Matita per rinominare e Applica per nome e colore nelle 15 interfacce.
 - Generazione ICO e cambio/ripristino con e senza `desktop.ini` precedente.
 - Conservazione dei metadati originari e degli attributi della cartella.
 - PNG in sette dimensioni, trasparenza e proporzioni.

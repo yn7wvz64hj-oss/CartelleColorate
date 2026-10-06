@@ -1,5 +1,13 @@
 # Note di versione
 
+## 0.3.0-beta.1 — 6 ottobre 2026
+
+- Rinomina della cartella dal selettore, con matita per cambiare solo il nome.
+- Applica conferma insieme nome e colore o immagine PNG.
+- Backup aggiornati anche per le sottocartelle, con ripristino conservato.
+- Validazione dei nomi Windows, protezione da collisioni e gestione delle modifiche alle sole maiuscole.
+- Interfaccia e messaggi di rinomina nelle 15 lingue.
+
 ## 0.2.0-beta.2 — 6 ottobre 2026
 
 - Corretto l'avvio dopo il download dello ZIP: l'installer genera le due librerie dai sorgenti sul PC, evitando il blocco .NET 0x80131515 delle DLL marcate come provenienti da Internet.

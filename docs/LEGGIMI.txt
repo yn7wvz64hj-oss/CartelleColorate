@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.2.0-beta.2
+CARTELLECOLORATE 0.3.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -7,6 +7,11 @@ INSTALLAZIONE
 3. Tasto destro su una cartella > Mostra altre opzioni > Cambia colore.
 Non serve normalmente essere amministratore. Per aggiornare una versione
 precedente, esegui il nuovo Installa.cmd: colori e backup vengono mantenuti.
+
+NOME DELLA CARTELLA
+Modifica il nome in alto. La matita rinomina senza cambiare l’icona.
+Applica alla cartella conferma il nome e il colore o il PNG scelto.
+I backup della cartella e delle sottocartelle seguono la rinomina dall’app.
 
 COLORI E IMMAGINI
 Seleziona un colore dal sottomenu oppure apri Personalizza colori.
@@ -31,7 +36,7 @@ torna all'icona colorata.
 
 RIPRISTINO E RIMOZIONE
 Ripristina originale recupera desktop.ini e gli attributi salvati al primo
-cambio. Ripristina prima di spostare o rinominare una cartella: il backup
+cambio. Ripristina prima di spostare o rinominare fuori dall’app: il backup
 e' associato al percorso iniziale. Eventuali modifiche successive di altre
 applicazioni a desktop.ini vengono sostituite dal backup originario.
 Rimuovi-menu.cmd rimuove il menu e ferma il processo in background. Non

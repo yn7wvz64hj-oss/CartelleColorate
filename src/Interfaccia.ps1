@@ -59,7 +59,7 @@ if ($dark) { $tokens=@{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#
  </Window.Resources>
  <Grid x:Name="Root" Margin="20,14,20,16">
   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-  <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{DynamicResource L_heading}" TextWrapping="Wrap" FontSize="22" FontWeight="SemiBold"/><TextBlock x:Name="FolderName" Margin="0,7,0,0" Foreground="{DynamicResource Secondary}" TextTrimming="CharacterEllipsis"/></StackPanel><Button x:Name="LanguageButton" Grid.Column="1" VerticalAlignment="Top" Padding="9,6" ToolTip="{DynamicResource L_language}" AutomationProperties.Name="{DynamicResource L_language}"><StackPanel Orientation="Horizontal"><Viewbox Width="16" Height="16" Margin="0,0,7,0"><Canvas Width="24" Height="24"><Ellipse Width="22" Height="22" Canvas.Left="1" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Ellipse Width="9" Height="22" Canvas.Left="7.5" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Path Data="M1,12 L23,12 M3,6 L21,6 M3,18 L21,18" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/></Canvas></Viewbox><TextBlock x:Name="LanguageName"/></StackPanel></Button></Grid>
+  <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{DynamicResource L_heading}" TextWrapping="Wrap" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="{DynamicResource L_folderName}" FontSize="12" Foreground="{DynamicResource Secondary}" Margin="0,8,0,4"/><Grid Margin="0,0,10,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox x:Name="FolderName" Height="36" MaxLength="255" AutomationProperties.Name="{DynamicResource L_folderName}"/><Button x:Name="RenameFolder" Grid.Column="1" ToolTip="{DynamicResource L_renameFolder}" AutomationProperties.Name="{DynamicResource L_renameFolder}" Margin="6,0,0,0" Padding="9,6"><Viewbox Width="16" Height="16"><Path Data="M16,3 L21,8 L8,21 L3,21 L3,16 Z M14,5 L19,10 M3,16 L8,21" Stroke="{DynamicResource Text}" StrokeThickness="1.8" Fill="Transparent"/></Viewbox></Button></Grid></StackPanel><Button x:Name="LanguageButton" Grid.Column="1" VerticalAlignment="Top" Padding="9,6" ToolTip="{DynamicResource L_language}" AutomationProperties.Name="{DynamicResource L_language}"><StackPanel Orientation="Horizontal"><Viewbox Width="16" Height="16" Margin="0,0,7,0"><Canvas Width="24" Height="24"><Ellipse Width="22" Height="22" Canvas.Left="1" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Ellipse Width="9" Height="22" Canvas.Left="7.5" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Path Data="M1,12 L23,12 M3,6 L21,6 M3,18 L21,18" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/></Canvas></Viewbox><TextBlock x:Name="LanguageName"/></StackPanel></Button></Grid>
   <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
    <StackPanel>
     <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="8" Padding="12">
@@ -107,7 +107,7 @@ if ($dark) { $tokens=@{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#
   <StackPanel Grid.Row="2" Margin="0,10,0,0">
    <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Button x:Name="Pick" ToolTip="{DynamicResource L_pickHelp}" AutomationProperties.Name="{DynamicResource L_pick}" Padding="10,6"><Viewbox Width="20" Height="20"><Path Width="24" Height="24" Stretch="Uniform" Fill="{DynamicResource Text}" Data="M 16,2 Q 17,1 18,2 L 22,6 Q 23,7 22,8 L 19,11 L 20,12 L 18,14 L 16,12 L 8,20 L 3,21 L 4,16 L 12,8 L 10,6 L 12,4 L 13,5 Z M 6,17 L 5.5,18.5 L 7,18 L 14.5,10.5 L 13,9 Z"/></Viewbox></Button><Button x:Name="Upload" Grid.Column="1" Content="{DynamicResource L_upload}" Margin="8,0,0,0" Padding="12,6"/><Button x:Name="UseColor" Grid.Column="2" Content="{DynamicResource L_use}" HorizontalAlignment="Right" Padding="12,6" Visibility="Collapsed"/></Grid>
    <TextBlock x:Name="Status" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" Foreground="{DynamicResource Text}"/>
-   <Button x:Name="Apply" Content="{DynamicResource L_apply}" Style="{StaticResource Primary}" Height="42"/>
+   <Button x:Name="Apply" Content="{DynamicResource L_apply}" ToolTip="{DynamicResource L_applyHelp}" Style="{StaticResource Primary}" Height="42"/>
   </StackPanel>
  </Grid>
 </Window>
@@ -116,7 +116,7 @@ $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
 foreach ($key in $tokens.Keys) { $window.Resources[$key]=[Windows.Media.BrushConverter]::new().ConvertFromString($tokens[$key]) }
 $ui=@{}
-foreach ($id in @('Root','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName')) { $ui[$id]=$window.FindName($id) }
+foreach ($id in @('Root','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder')) { $ui[$id]=$window.FindName($id) }
 $script:pngSelection=$null
 $ui.ColorPlane.Cursor=[Windows.Input.Cursors]::None
 $ui.ColorPlane.ForceCursor=$true
@@ -126,6 +126,7 @@ $window.Add_QueryCursor({ param($sender,$e)
     if ($ui.ColorPlane.IsMouseOver) { $e.Cursor=[Windows.Input.Cursors]::None; $e.Handled=$true }
 })
 $ui.FolderName.Text=[IO.Path]::GetFileName($Folder); $ui.FolderName.ToolTip=$Folder
+$script:currentFolder=$Folder
 $script:collection=New-Object 'Collections.ObjectModel.ObservableCollection[object]'
 try { foreach ($c in @(Read-Palette)) { $script:collection.Add($c) } } catch { [Windows.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null; exit 1 }
 if ($Preview) {
@@ -335,9 +336,18 @@ $ui.Pick.Add_Click({
     } catch { [DesktopPicker]::Stop(); $lens.Hide(); $window.Show(); Show-Status $_.Exception.Message }
 })
 $window.Add_Closed({ [Windows.Input.Mouse]::OverrideCursor=$null; $planeTimer.Stop(); $pickerTimer.Stop(); [DesktopPicker]::Stop(); $lens.Close() })
+function Rename-SelectedFolder {
+    $script:currentFolder=Rename-Folder $script:currentFolder $ui.FolderName.Text
+    $ui.FolderName.Text=[IO.Path]::GetFileName($script:currentFolder)
+    $ui.FolderName.ToolTip=$script:currentFolder
+}
+$ui.RenameFolder.Add_Click({ try { Rename-SelectedFolder; Show-Status (T 'folderRenamed') } catch { Show-Status $_.Exception.Message } })
 $ui.Apply.Add_Click({ try {
-    if ($script:pngSelection) { Set-FolderPng $Folder $script:pngSelection } else { Set-FolderColor $Folder (Valid-Hex) }
-    $window.Close()
+    $hexValue=$null
+    if (!$script:pngSelection) { $hexValue=Valid-Hex }
+    Rename-SelectedFolder
+    if ($script:pngSelection) { Set-FolderPng $script:currentFolder $script:pngSelection } else { Set-FolderColor $script:currentFolder $hexValue }
+    if (!$UITest) { $window.Close() }
 } catch { Show-Status $_.Exception.Message } })
 $window.Add_SourceInitialized({
     $hwnd=[Windows.Interop.WindowInteropHelper]::new($window).Handle
@@ -373,6 +383,19 @@ if ($Preview) {
     $window.WindowStartupLocation='Manual'; $window.Left=-3000; $window.Top=-3000; $window.ShowInTaskbar=$false
     $window.Show(); $window.UpdateLayout()
     if ($UITest) {
+        $testRenameOnly='UI-'+$script:activeLanguage.code+' solo rinomina'
+        $testRenameColor='UI-'+$script:activeLanguage.code+' nome e colore'
+        $renameTestFolder=Join-Path $root ('UI-'+$script:activeLanguage.code+' nome originale')
+        New-Item -ItemType Directory -Path $renameTestFolder -Force | Out-Null
+        [IO.File]::WriteAllText((Join-Path $renameTestFolder 'contenuto.txt'),'UI contenuto',[Text.Encoding]::UTF8)
+        $script:currentFolder=$renameTestFolder; $ui.FolderName.Text=$testRenameOnly
+        $ui.RenameFolder.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        if (!(Test-Path -LiteralPath $script:currentFolder) -or (Test-Path -LiteralPath (Join-Path $script:currentFolder 'desktop.ini')) -or [IO.Path]::GetFileName($script:currentFolder) -ne $testRenameOnly) { throw 'Rinomina dalla matita non riuscita o icona cambiata.' }
+        $ui.FolderName.Text=$testRenameColor; $ui.Hex.Text='#123456'
+        $ui.Apply.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        if ([IO.Path]::GetFileName($script:currentFolder) -ne $testRenameColor -or !(Test-Path -LiteralPath (Join-Path $script:currentFolder 'desktop.ini')) -or [IO.File]::ReadAllText((Join-Path $script:currentFolder 'contenuto.txt')) -ne 'UI contenuto') { throw 'Nome e colore dalla stessa finestra non applicati.' }
+        Restore-Folder $script:currentFolder
+        $script:currentFolder=$Folder; $ui.FolderName.Text=[IO.Path]::GetFileName($Folder)
         $originalLanguage=$script:activeLanguage
         $originalHex=$ui.Hex.Text; $originalNames=@($script:collection | ForEach-Object { $_.Name }) -join '|'
         foreach ($localeEntry in $script:languageCatalog.languages) {

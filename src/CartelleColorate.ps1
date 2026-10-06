@@ -11,6 +11,7 @@ public static class FolderShell {
  [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hwnd);
  [DllImport("shell32.dll", CharSet=CharSet.Unicode)] public static extern void SHChangeNotify(uint e, uint f, string a, IntPtr b);
+ [DllImport("shell32.dll", EntryPoint="SHChangeNotify", CharSet=CharSet.Unicode)] public static extern void SHRenameNotify(uint e, uint f, string a, string b);
  [DllImport("kernel32.dll", CharSet=CharSet.Unicode)] public static extern uint WritePrivateProfileString(string section, string key, string value, string file);
 }
 '@
@@ -181,6 +182,85 @@ function Set-FolderIcon([string]$Target,[string]$iconPath) {
     [IO.File]::SetAttributes($Target,($dir.Attributes -bor [IO.FileAttributes]::ReadOnly))
     Update-FolderIcon $Target
 }
+function Get-RenameDestination([string]$Target,[string]$Name) {
+    $directory=Get-Item -LiteralPath $Target -Force
+    if (!$directory.PSIsContainer -or !$directory.Parent) { throw (T 'invalidFolderName') }
+    if ([string]::IsNullOrWhiteSpace($Name) -or $Name.Length -gt 255 -or $Name -match '[<>:"/\\|?*\x00-\x1F]' -or $Name -match '[ .]$' -or $Name -in @('.','..')) { throw (T 'invalidFolderName') }
+    $base=($Name -split '\.')[0].TrimEnd(' ')
+    if ($base -match '^(CON|PRN|AUX|NUL|COM[1-9¹²³]|LPT[1-9¹²³])$') { throw (T 'invalidFolderName') }
+    $destination=[IO.Path]::GetFullPath((Join-Path $directory.Parent.FullName $Name))
+    if (![string]::Equals([IO.Path]::GetDirectoryName($destination),$directory.Parent.FullName,[StringComparison]::OrdinalIgnoreCase)) { throw (T 'invalidFolderName') }
+    if (![string]::Equals($destination,$directory.FullName,[StringComparison]::OrdinalIgnoreCase) -and (Test-Path -LiteralPath $destination)) { throw (T 'folderNameExists') }
+    return $destination
+}
+function Move-RenamedDirectory([string]$Source,[string]$Destination) {
+    # Both absolute paths must be siblings; this operation never moves into another folder.
+    $sourceFull=[IO.Path]::GetFullPath($Source); $destinationFull=[IO.Path]::GetFullPath($Destination)
+    $parent=[IO.Path]::GetDirectoryName($sourceFull)
+    if (![string]::Equals($parent,[IO.Path]::GetDirectoryName($destinationFull),[StringComparison]::OrdinalIgnoreCase)) { throw (T 'invalidFolderName') }
+    if ([string]::Equals($sourceFull,$destinationFull,[StringComparison]::Ordinal)) { return }
+    if ([string]::Equals($sourceFull,$destinationFull,[StringComparison]::OrdinalIgnoreCase)) {
+        $temporary=Join-Path $parent ('.cc-rename-'+[Guid]::NewGuid().ToString('N'))
+        if ([IO.Path]::GetDirectoryName([IO.Path]::GetFullPath($temporary)) -ne $parent -or (Test-Path -LiteralPath $temporary)) { throw (T 'invalidFolderName') }
+        [IO.Directory]::Move($sourceFull,$temporary)
+        try { [IO.Directory]::Move($temporary,$destinationFull) }
+        catch { [IO.Directory]::Move($temporary,$sourceFull); throw }
+    } else { [IO.Directory]::Move($sourceFull,$destinationFull) }
+}
+function Rename-Folder([string]$Target,[string]$Name) {
+    $source=(Get-Item -LiteralPath $Target -Force).FullName
+    $destination=Get-RenameDestination $source $Name
+    if ([string]::Equals($source,$destination,[StringComparison]::Ordinal)) { return $source }
+    $oldState=Get-StatePath $source; $newState=Get-StatePath $destination
+    $sameState=[string]::Equals($oldState,$newState,[StringComparison]::OrdinalIgnoreCase)
+    $records=New-Object Collections.Generic.List[object]
+    $moved=$false
+    try {
+        if (!$sameState -and (Test-Path -LiteralPath $newState)) { throw (T 'renameBackupConflict') }
+        foreach ($file in (Get-ChildItem -LiteralPath $root -Filter '*.json' -File)) {
+            if ($file.Name -notmatch '^[0-9A-Fa-f]{64}\.json$') { continue }
+            try { $state=Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8 | ConvertFrom-Json }
+            catch { if ($file.FullName -eq $oldState) { throw }; continue }
+            if (!$state.Folder -or $state.Folder -isnot [string]) { continue }
+            $isFolder=[string]::Equals($state.Folder,$source,[StringComparison]::OrdinalIgnoreCase)
+            $isChild=$state.Folder.StartsWith($source+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)
+            if (!$isFolder -and !$isChild) { continue }
+            $newFolder=$destination+$state.Folder.Substring($source.Length)
+            $newPath=Get-StatePath $newFolder
+            $same=[string]::Equals($file.FullName,$newPath,[StringComparison]::OrdinalIgnoreCase)
+            if (!$same -and (Test-Path -LiteralPath $newPath)) { throw (T 'renameBackupConflict') }
+            $original=[IO.File]::ReadAllBytes($file.FullName)
+            $state.Folder=$newFolder
+            $record=[pscustomobject]@{Old=$file.FullName;New=$newPath;Same=$same;Original=$original;Temporary=($newPath+'.'+[Guid]::NewGuid().ToString('N').Substring(0,8)+'.tmp');Committed=$false;Created=$false}
+            $records.Add($record)
+            [IO.File]::WriteAllText($record.Temporary,($state | ConvertTo-Json -Depth 8),[Text.Encoding]::UTF8)
+        }
+        Move-RenamedDirectory $source $destination; $moved=$true
+        foreach ($record in $records) {
+            if ($record.Same) { [IO.File]::Replace($record.Temporary,$record.Old,[NullString]::Value) }
+            else {
+                [IO.File]::Move($record.Temporary,$record.New); $record.Created=$true
+                [IO.File]::Delete($record.Old)
+            }
+            $record.Committed=$true
+        }
+    } catch {
+        $failure=$_
+        foreach ($record in $records) {
+            if ($record.Committed -or $record.Created) {
+                [IO.File]::WriteAllBytes($record.Old,$record.Original)
+                if (!$record.Same -and [IO.File]::Exists($record.New)) { [IO.File]::Delete($record.New) }
+            }
+        }
+        if ($moved) { Move-RenamedDirectory $destination $source }
+        throw $failure
+    } finally {
+        foreach ($record in $records) { if ([IO.File]::Exists($record.Temporary)) { [IO.File]::Delete($record.Temporary) } }
+    }
+    [FolderShell]::SHRenameNotify(0x00020000,0x00003005,$source,$destination)
+    Update-FolderIcon $destination
+    return $destination
+}
 function Restore-Folder([string]$Target) {
     $statePath = Get-StatePath $Target
     if (!(Test-Path -LiteralPath $statePath)) { throw (T 'backupError') }
@@ -245,6 +325,54 @@ if ($SelfTest) {
     $testPalette[0].Name='Nome rinominato & personale'
     ConvertTo-Json -InputObject $testPalette | Set-Content -LiteralPath $palettePath -Encoding UTF8
     if (@(Get-MenuEntries)[0].Name -ne 'Nome rinominato & personale') { throw 'Rinomina errata' }
+    $renameTarget=Join-Path $root 'Rinomina [prova]'
+    New-Item -ItemType Directory -Path $renameTarget -Force | Out-Null
+    $payload=Join-Path $renameTarget 'contenuto.txt'
+    [IO.File]::WriteAllText($payload,'contenuto invariato',[Text.Encoding]::UTF8)
+    $renameIni=Join-Path $renameTarget 'desktop.ini'
+    [IO.File]::WriteAllText($renameIni,"[.ShellClassInfo]`r`nInfoTip=Prima della rinomina`r`n",[Text.Encoding]::Unicode)
+    $originalIni=[IO.File]::ReadAllBytes($renameIni)
+    Set-FolderColor $renameTarget '#112233'
+    $childTarget=Join-Path $renameTarget 'Sottocartella'
+    New-Item -ItemType Directory -Path $childTarget -Force | Out-Null
+    Set-FolderColor $childTarget '#445566'
+    $childBackup=Get-StatePath $childTarget
+    $oldBackup=Get-StatePath $renameTarget
+    $renamed=Rename-Folder $renameTarget 'Nuovo nome 日本語 [test]'
+    $newBackup=Get-StatePath $renamed
+    if ((Test-Path -LiteralPath $renameTarget) -or !(Test-Path -LiteralPath $renamed) -or (Test-Path -LiteralPath $oldBackup) -or !(Test-Path -LiteralPath $newBackup)) { throw 'Rinomina o migrazione backup non riuscita.' }
+    $renamedState=Get-Content -LiteralPath $newBackup -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($renamedState.Folder -ne $renamed -or [IO.File]::ReadAllText((Join-Path $renamed 'contenuto.txt')) -ne 'contenuto invariato') { throw 'Rinomina altera stato o contenuto.' }
+    Restore-Folder $renamed
+    $renamedChild=Join-Path $renamed 'Sottocartella'
+    if ((Test-Path -LiteralPath $childBackup) -or !(Test-Path -LiteralPath (Get-StatePath $renamedChild))) { throw 'Backup della sottocartella non trasferito.' }
+    Restore-Folder $renamedChild
+    if (Test-Path -LiteralPath (Join-Path $renamedChild 'desktop.ini')) { throw 'Ripristino sottocartella dopo rinomina errato.' }
+    if ([Convert]::ToBase64String([IO.File]::ReadAllBytes((Join-Path $renamed 'desktop.ini'))) -ne [Convert]::ToBase64String($originalIni)) { throw 'Ripristino dopo rinomina errato.' }
+    foreach ($badName in @('','..','CON.txt','LPT1','COM¹','a/b','a\b','a:b','nome.','nome ')) {
+        $rejected=$false
+        try { Rename-Folder $renamed $badName | Out-Null } catch { $rejected=$true }
+        if (!$rejected -or !(Test-Path -LiteralPath $renamed)) { throw ('Nome non valido accettato: '+$badName) }
+    }
+    $occupied=Join-Path $root 'Nome occupato'
+    New-Item -ItemType Directory -Path $occupied -Force | Out-Null
+    $rejected=$false
+    try { Rename-Folder $renamed 'Nome occupato' | Out-Null } catch { $rejected=$true }
+    if (!$rejected -or !(Test-Path -LiteralPath $renamed) -or !(Test-Path -LiteralPath $occupied)) { throw 'Collisione di nomi non protetta.' }
+    $caseTarget=Join-Path $root 'CaseTest'
+    New-Item -ItemType Directory -Path $caseTarget -Force | Out-Null
+    Set-FolderColor $caseTarget '#ABCDEF'
+    $caseRenamed=Rename-Folder $caseTarget 'CASETEST'
+    if ((Get-Item -LiteralPath $caseRenamed).Name -cne 'CASETEST') { throw 'Rinomina delle sole maiuscole non riuscita.' }
+    Restore-Folder $caseRenamed
+    if (Test-Path -LiteralPath (Join-Path $caseRenamed 'desktop.ini')) { throw 'Ripristino delle sole maiuscole errato.' }
+    $conflicting=Join-Path $root 'Backup preesistente'
+    $conflictingState=Get-StatePath $conflicting
+    [IO.File]::WriteAllText($conflictingState,'backup da conservare',[Text.Encoding]::UTF8)
+    $rejected=$false
+    try { Rename-Folder $renamed 'Backup preesistente' | Out-Null } catch { $rejected=$true }
+    if (!$rejected -or !(Test-Path -LiteralPath $renamed) -or [IO.File]::ReadAllText($conflictingState) -ne 'backup da conservare') { throw 'Backup preesistente sovrascritto.' }
+    Write-Output 'OK: rinomina Unicode, contenuti conservati, backup trasferito, ripristino, nomi vietati, collisioni e sole maiuscole.'
     Write-Output 'OK: icone colore e PNG, 7 dimensioni, trasparenza, proporzioni, ripristino e palette.'
     exit
 }
