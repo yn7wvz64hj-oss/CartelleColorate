@@ -383,9 +383,10 @@ if ($Preview) {
     $window.WindowStartupLocation='Manual'; $window.Left=-3000; $window.Top=-3000; $window.ShowInTaskbar=$false
     $window.Show(); $window.UpdateLayout()
     if ($UITest) {
-        $testRenameOnly='UI-'+$script:activeLanguage.code+' solo rinomina'
-        $testRenameColor='UI-'+$script:activeLanguage.code+' nome e colore'
-        $renameTestFolder=Join-Path $root ('UI-'+$script:activeLanguage.code+' nome originale')
+        $renameTestId=[Guid]::NewGuid().ToString('N').Substring(0,8)
+        $testRenameOnly='UI-'+$renameTestId+' solo rinomina'
+        $testRenameColor='UI-'+$renameTestId+' nome e colore'
+        $renameTestFolder=Join-Path $root ('UI-'+$renameTestId+' nome originale')
         New-Item -ItemType Directory -Path $renameTestFolder -Force | Out-Null
         [IO.File]::WriteAllText((Join-Path $renameTestFolder 'contenuto.txt'),'UI contenuto',[Text.Encoding]::UTF8)
         $script:currentFolder=$renameTestFolder; $ui.FolderName.Text=$testRenameOnly
