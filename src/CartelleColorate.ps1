@@ -299,13 +299,14 @@ function Undo-FolderEdit([string]$Target) {
     $path=Join-Path $root 'ultima-modifica.json'; $record=Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
     if ($record.Batch) {
         if (!@($record.Batch | Where-Object { $_.Current -eq $Target }).Count) { throw (T 'backupError') }
-        foreach ($entry in $record.Batch) { $null=Restore-UndoRecord $entry }; [IO.File]::Delete($path); return $Target
+        foreach ($entry in $record.Batch) { $null=Restore-UndoRecord $entry }; [IO.File]::Delete($path); Remove-ActivityForRecord $record; return $Target
     }
     if ($record.Current -ne [IO.Path]::GetFullPath($Target)) { throw (T 'backupError') }
-    $restored=Restore-UndoRecord $record; [IO.File]::Delete($path); return $restored
+    $restored=Restore-UndoRecord $record; [IO.File]::Delete($path); Remove-ActivityForRecord $record; return $restored
 }
 . (Join-Path $PSScriptRoot 'Advanced.ps1')
 if ($SelfTest) {
+    Test-ProductBackend
     if ($NoConsoleTest) {
         if ([FolderShell]::IsWindowVisible([FolderShell]::GetConsoleWindow())) { throw 'Il processo ha una console visibile.' }
         Write-Output 'OK: nessuna console visibile.'
@@ -448,8 +449,8 @@ if ($Worker) {
                 Read-LanguagePreference
                 try {
                     $lines=[IO.File]::ReadAllLines($request,[Text.Encoding]::Unicode)
-                    if ($lines.Length -eq 3 -and $lines[0] -eq '--color' -and $lines[2] -match '^#[0-9A-Fa-f]{6}$') { $undo=New-FolderUndo $lines[1]; Save-FolderUndo $undo; Set-FolderColor $lines[1] $lines[2].ToUpperInvariant() }
-                    elseif ($lines.Length -eq 2 -and $lines[0] -eq '--restore') { $undo=New-FolderUndo $lines[1]; Restore-Folder $lines[1]; Save-FolderUndo $undo }
+                    if ($lines.Length -eq 3 -and $lines[0] -eq '--color' -and $lines[2] -match '^#[0-9A-Fa-f]{6}$') { $undo=New-FolderUndo $lines[1]; Save-FolderUndo $undo; Set-FolderColor $lines[1] $lines[2].ToUpperInvariant(); Save-FolderActivity $undo 'apply' }
+                    elseif ($lines.Length -eq 2 -and $lines[0] -eq '--restore') { $undo=New-FolderUndo $lines[1]; Restore-Folder $lines[1]; Save-FolderUndo $undo; Save-FolderActivity $undo 'restoreOriginal' }
                     else { throw (T 'requestError') }
                 } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null }
                 finally { [IO.File]::Delete($request); $lastRequest=[DateTime]::UtcNow }
@@ -472,10 +473,10 @@ if (!$Folder -or !(Test-Path -LiteralPath $Folder -PathType Container)) { [Windo
 $Folder = (Get-Item -LiteralPath $Folder -Force).FullName
 if ($Color -or $Restore) {
     try {
-        if ($Restore) { $undo=New-FolderUndo $Folder; Restore-Folder $Folder; Save-FolderUndo $undo }
+        if ($Restore) { $undo=New-FolderUndo $Folder; Restore-Folder $Folder; Save-FolderUndo $undo; Save-FolderActivity $undo 'restoreOriginal' }
         else {
             if ($Color -notmatch '^#[0-9A-Fa-f]{6}$') { throw (T 'colorInvalid') }
-            $undo=New-FolderUndo $Folder; Save-FolderUndo $undo; Set-FolderColor $Folder $Color.ToUpperInvariant()
+            $undo=New-FolderUndo $Folder; Save-FolderUndo $undo; Set-FolderColor $Folder $Color.ToUpperInvariant(); Save-FolderActivity $undo 'apply'
         }
     } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null; exit 1 }
     exit

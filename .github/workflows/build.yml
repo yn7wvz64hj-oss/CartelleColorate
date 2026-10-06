@@ -22,6 +22,11 @@ jobs:
           cscript.exe //Nologo work/launcher-check/CartelleColorate/Avvio.vbs --self-test
           if ($LASTEXITCODE -ne 0) { throw 'Avvio VBS fallito.' }
           if (!(Test-Path work/launcher-check/CartelleColorate/test-data/verifica-avvio.txt)) { throw 'Il launcher non ha eseguito il test.' }
+      - name: Verifica fonte degli aggiornamenti
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/TestUpdateSource.ps1 -Package work/launcher-check/CartelleColorate
+          if ($LASTEXITCODE -ne 0) { throw 'Controllo aggiornamenti fallito.' }
       - name: Conserva il pacchetto per revisione
         uses: actions/upload-artifact@v4
         with:

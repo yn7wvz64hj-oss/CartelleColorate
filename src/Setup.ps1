@@ -5,7 +5,7 @@ $root = Join-Path $env:LOCALAPPDATA 'CartelleColorate'
 Initialize-Language $root
 try {
     if (!$Remove) {
-        foreach ($file in @('CartelleColorate.ps1','Advanced.ps1','Interfaccia.ps1','Avvio.vbs','Rapido.vbs','FolderShell.dll','DesktopPicker.dll','Verifica.vbs','Avvio.ps1','NativeLibraries.ps1','FolderShell.cs','DesktopPicker.cs','Localization.ps1','Languages.json','LauncherMessages.txt')) {
+        foreach ($file in @('CartelleColorate.ps1','Advanced.ps1','Productivity.ps1','VERSION','Interfaccia.ps1','Avvio.vbs','Rapido.vbs','FolderShell.dll','DesktopPicker.dll','Verifica.vbs','Avvio.ps1','NativeLibraries.ps1','FolderShell.cs','DesktopPicker.cs','Localization.ps1','Languages.json','LauncherMessages.txt')) {
             if (!(Test-Path -LiteralPath (Join-Path $PSScriptRoot $file))) { throw (T 'missingFiles' @($file)) }
         }
         $checkHost=Join-Path $env:SystemRoot 'System32\cscript.exe'
@@ -33,6 +33,8 @@ try {
         New-Item -ItemType Directory -Path $root -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'CartelleColorate.ps1') -Destination $root -Force
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Advanced.ps1') -Destination $root -Force
+        Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Productivity.ps1') -Destination $root -Force
+        Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'VERSION') -Destination $root -Force
           Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Interfaccia.ps1') -Destination $root -Force
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Avvio.vbs') -Destination $root -Force
         . (Join-Path $PSScriptRoot 'NativeLibraries.ps1')

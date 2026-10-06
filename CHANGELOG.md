@@ -1,5 +1,16 @@
 # Note di versione
 
+## 0.8.0-beta.1 — 6 ottobre 2026
+
+- Preset completi con copie indipendenti dei PNG e contrassegni colorati.
+- Trascinamento di cartelle anche da percorsi diversi.
+- Cronologia con annullamento selettivo e controllo delle modifiche successive.
+- Inventario delle cartelle personalizzate e ripristino annullabile.
+- Sette simboli, anteprima dimensioni, regolazioni del vetro e tema automatico.
+- Controllo aggiornamenti asincrono e facoltativo all’apertura.
+- Interfacce e messaggi aggiornati nelle 15 lingue.
+- Installer aggiornato per includere Productivity.ps1 e VERSION.
+
 ## 0.7.0-beta.1 — 6 ottobre 2026
 
 - Selezione di più cartelle dalla finestra, applicazione di colore/PNG al gruppo, annullamento completo e rollback degli errori.

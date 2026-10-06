@@ -62,3 +62,14 @@ Il workflow GitHub Actions è incluso. Lo stato delle esecuzioni sul repository 
 Durante lo sviluppo, tre comandi riutilizzando il processo hanno scritto la configurazione e notificato la shell in circa 189–219 ms. Questo non misura il ridisegno visivo di Esplora file e non è una promessa di prestazioni su altri computer.
 
 Verificati localmente attivazione del materiale DWM con superfici semitrasparenti e avvio con sfondo opaco, in tema chiaro e scuro. L’aspetto della sfocatura sul desktop e i cambi delle impostazioni di trasparenza vanno controllati anche su altri PC.
+
+## Verifiche della versione 0.8
+
+- Cronologia: due modifiche consecutive, rifiuto dell’annullamento fuori ordine, ripristino in ordine e inventario coerente.
+- Preset: testo Unicode, copia del PNG e caricamento dopo lo spostamento dell’originale; array JSON vuoti validi.
+- Sette simboli con verifica dei pixel nel colore scelto.
+- Confronto delle versioni beta/stabili, aggiornamento asincrono e errore offline senza bloccare la finestra.
+- Finestre reali dei preset, simboli, dimensioni, cronologia, inventario e impostazioni, per tutte le lingue.
+- Selezione di cartelle da percorsi diversi e rifiuto di trascinamenti misti con file.
+- Opacità e rilievo persistenti; anteprima PNG conservata durante i cambi di stile.
+- GitHub Actions legge la fonte VERSION attraverso lo stesso client HTTP usato dall’app.

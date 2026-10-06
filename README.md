@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate per Windows — 0.7.0-beta.1](downloads/CartelleColorate-0.7.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate per Windows — 0.8.0-beta.1](downloads/CartelleColorate-0.8.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -25,6 +25,15 @@ Italiano, English, 简体中文, Español, हिन्दी, العربية, P
 La schermata iniziale propone la lingua di Windows, se supportata, oppure l’inglese. Il pulsante con il globo cambia la lingua in qualsiasi momento, aggiornando anche il menu del tasto destro. Arabo e urdu hanno disposizione da destra a sinistra; colori, codici HEX e nomi personali vengono conservati. Le traduzioni sono incluse nel pacchetto e funzionano senza Internet.
 
 ## Funzioni
+
+- Preset completi con colore, PNG e simbolo: salva, carica, rinomina o elimina dal menu ⋯. Il PNG viene copiato nei dati dell’app.
+- Trascina una o più cartelle reali nella finestra per selezionarle insieme, anche da percorsi diversi.
+- Cronologia delle modifiche riuscite, con annullamento di una voce specifica e protezione dalle modifiche successive.
+- Gestione delle cartelle personalizzate con anteprima, percorso, apertura e ripristino dell’icona originale.
+- Simboli stella, spunta, lucchetto, cuore, documento, musica e foto, con colore HEX indipendente.
+- Anteprima dell’icona a 16, 32, 48 e 96 pixel, anche per PNG e contrassegni.
+- Aspetto e vetro: opacità, intensità del rilievo e tema di sistema, chiaro o scuro; le modifiche sono visibili prima del salvataggio.
+- Controllo aggiornamenti manuale e controllo facoltativo all’apertura, eseguiti in background.
 
 - Nome della cartella modificabile nella stessa finestra; la matita rinomina senza cambiare icona, mentre Applica conferma nome e colore o PNG.
 - Selezione precisa dal riquadro sfumato, dalla barra della tonalità o tramite codice HEX.
@@ -57,7 +66,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 0.7.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
+**Versione 0.8.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 
@@ -65,7 +74,7 @@ L'installer genera le due librerie native dai sorgenti sul PC: corregge il blocc
 
 ## Dati, ripristino e rimozione
 
-I dati restano in `%LOCALAPPDATA%\CartelleColorate`: palette `colori.json`, lingua in `impostazioni.json`, icone e backup. Non vengono usati servizi Internet, telemetria o account nell'app. La pipetta legge una piccola area del desktop soltanto quando attiva; non salva screenshot su disco.
+I dati restano in `%LOCALAPPDATA%\CartelleColorate`: palette `colori.json`, lingua in `impostazioni.json`, icone e backup. Non vengono usati account o telemetria. Solo il controllo aggiornamenti contatta GitHub per leggere VERSION: il controllo all’apertura è disattivato per impostazione predefinita. Il download si apre nel browser su richiesta. Le altre funzioni restano locali. La pipetta legge una piccola area del desktop soltanto quando attiva; non salva screenshot su disco.
 
 La rinomina dall’app aggiorna i backup della cartella e delle sue sottocartelle. Prima di spostare o rinominare una cartella fuori dall’app, ripristina l’icona: i backup sono associati al percorso. Il ripristino recupera il `desktop.ini` originario e può sostituire successive personalizzazioni di altre applicazioni.
 

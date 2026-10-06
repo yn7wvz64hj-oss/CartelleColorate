@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.7.0-beta.1
+﻿CARTELLECOLORATE 0.8.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -71,7 +71,7 @@ La scelta viene salvata e puoi cambiarla senza perdere la selezione.
 Finestra compatta con pannelli arrotondati e superfici traslucide.
 Il vetro sfocato usa il compositore di Windows 11 22H2 o successivo.
 Se le trasparenze del sistema sono disattivate o non supportate, l’app
-mostra automaticamente uno sfondo opaco. Nessuna opzione aggiuntiva.
+mostra automaticamente uno sfondo opaco. Opacità e rilievo si regolano da ⋯ > Aspetto e vetro.
 
 DATI E PRESTAZIONI
 I dati restano in %LOCALAPPDATA%\CartelleColorate. colori.json e' la palette.
@@ -92,7 +92,8 @@ Il pacchetto non e' firmato digitalmente. Se antivirus o criteri aziendali
 lo bloccano, non disattivare le protezioni: controlla il sorgente e segnala
 il messaggio al manutentore del repository dal quale hai scaricato lo ZIP.
 ExecutionPolicy Bypass viene usato solo nei processi di avvio, senza cambiare
-permanentemente la policy. L'app non usa Internet, account o telemetria.
+permanentemente la policy. L'app non usa account o telemetria. Il solo controllo aggiornamenti legge
+VERSION su GitHub; all'apertura è facoltativo e inizialmente disattivato.
 
 Il file MANIFEST-SHA256.txt elenca i checksum dei file del pacchetto.
 La licenza completa e' nel file LICENSE. CartelleColorate non e' un prodotto
@@ -102,3 +103,23 @@ LINGUA / LANGUAGE
 Al primo avvio scegli la lingua; puoi cambiarla dal pulsante con il globo.
 On first launch choose your language; use the globe button to change it later.
 15 lingue incluse, utilizzabili anche senza Internet.
+
+FUNZIONI DELLA VERSIONE 0.8
+Nel menu ⋯ trovi i preset completi, la cronologia, le cartelle personalizzate,
+l’anteprima delle dimensioni, le impostazioni del vetro e gli aggiornamenti.
+Un preset salva colore, immagine e simbolo, copiando il PNG nei dati dell’app.
+Carica prepara l’anteprima; premi Applica per modificare le cartelle selezionate.
+I preset si possono rinominare ed eliminare. Salvare con lo stesso nome li aggiorna.
+Trascina una o più cartelle nella finestra per selezionarle, anche da percorsi diversi.
+La cronologia registra le modifiche riuscite. Annulla selezionata ripristina anche
+il nome precedente; se la cartella è cambiata, annulla prima le modifiche più recenti.
+La cronologia inizia da questa versione. Il vecchio pulsante Annulla resta disponibile.
+Cartelle personalizzate mostra anche cartelle colorate con versioni precedenti.
+Ripristina originale riporta l’icona precedente e crea una nuova voce annullabile.
+Il selettore di simboli comprende cuore, documento, musica e foto, oltre ai precedenti.
+Il campo HEX cambia il colore del simbolo. I simboli sono contrassegni visivi.
+Aspetto e vetro permette di regolare opacità e rilievo e scegliere il tema.
+Il tema del sistema segue anche i cambiamenti di Windows mentre l’app è aperta.
+Chiudere le impostazioni senza salvare annulla la loro anteprima.
+Gli aggiornamenti non vengono installati automaticamente: il pulsante Scarica
+apre lo ZIP nel browser. Estrai il pacchetto ed esegui Installa.cmd per aggiornare.

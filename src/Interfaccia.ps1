@@ -341,7 +341,7 @@ $ui.Colors.Add_Drop({ param($sender,$e) try {
 } catch { Show-Status $_.Exception.Message } })
 $ui.PaletteTools.Add_Click({
     $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
-    foreach ($action in @('batch','singleFolder','editPng','badge','collections','importColors','exportColors')) {
+    foreach ($action in @('presets','batch','singleFolder','editPng','badge','iconSizes','collections','history','managed','visualSettings','updates','importColors','exportColors')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
         if ($action -eq 'editPng') { $item.IsEnabled=[bool]$script:pngSelection }; if ($action -eq 'singleFolder') { $item.IsEnabled=$script:batchTargets.Count -gt 1 }
         $item.Add_Click({ param($sender,$e) try {
@@ -454,7 +454,7 @@ function Edit-SelectedFolder([bool]$OnlyName) {
     $before.Current=$script:currentFolder; Save-FolderUndo $before
     $ui.FolderName.Text=[IO.Path]::GetFileName($script:currentFolder); $ui.FolderName.ToolTip=$script:currentFolder
     Update-UndoButton
-    if (!$OnlyName) { if ($prepared) { Set-FolderPng $script:currentFolder $prepared } else { Set-FolderColor $script:currentFolder $hexValue } }
+    if (!$OnlyName) { if ($prepared) { Set-FolderPng $script:currentFolder $prepared } else { Set-FolderColor $script:currentFolder $hexValue } }; Save-FolderActivity $before $(if ($OnlyName) { 'folderRenamed' } else { 'apply' })
 }
 $ui.RenameFolder.Add_Click({ try { Edit-SelectedFolder $true; Show-Status (T 'folderRenamed') } catch { Show-Status $_.Exception.Message } })
 $ui.Apply.Add_Click({ try { Edit-SelectedFolder $false; if (!$UITest) { $window.Close() } } catch { Show-Status $_.Exception.Message } })
@@ -464,7 +464,7 @@ function Set-GlassSurface([bool]$Transparent) {
     $page=[Windows.Media.LinearGradientBrush]::new(); $page.StartPoint=[Windows.Point]::new(0,0); $page.EndPoint=[Windows.Point]::new(1,1)
     $colors=if ($dark) { if ($Transparent) { @('#603F404B','#42232630','#603B3244') } else { @('#FF353640','#FF252831','#FF35303F') } } else { if ($Transparent) { @('#85FFFFFF','#55EAF3FF','#72F3E9FF') } else { @('#FFF6F8FD','#FFECF2FA','#FFF4EDF9') } }
     for ($i=0; $i -lt 3; $i++) { $page.GradientStops.Add([Windows.Media.GradientStop]::new([Windows.Media.ColorConverter]::ConvertFromString($colors[$i]),$i/2.0)) }
-    $page.Freeze(); $window.Resources['Page']=$page
+    if ($Transparent) { foreach ($stop in $page.GradientStops) { $color=$stop.Color; $color.A=[byte][Math]::Min(255,[Math]::Round($color.A*$script:glassOpacity/55)); $stop.Color=$color } }; $page.Freeze(); $window.Resources['Page']=$page
 }
 function Set-AppearanceMaterial {
     $script:glassEnabled=$false
@@ -495,7 +495,7 @@ function Apply-Appearance([ValidateSet('Windows','MacOS')][string]$Style) {
     foreach ($name in @('PanelShadow','ButtonShadow')) {
         $shadow=[Windows.Media.Effects.DropShadowEffect]::new(); $shadow.Color=[Windows.Media.Colors]::Black; $shadow.Direction=270
         $shadow.ShadowDepth=if ($name -eq 'PanelShadow') { 5 } else { 2 }; $shadow.BlurRadius=if ($name -eq 'PanelShadow') { 16 } else { 7 }
-        $shadow.Opacity=if ($mac) { if ($dark) { 0.32 } else { 0.16 } } else { 0 }; $shadow.Freeze(); $window.Resources[$name]=$shadow
+        $shadow.Opacity=if ($mac) { if ($dark) { 0.32 } else { 0.16 } } else { 0 }; if ($mac) { $shadow.Opacity*=(0.5+$script:glassDepth/100); $shadow.BlurRadius*=(0.5+$script:glassDepth/100) }; $shadow.Freeze(); $window.Resources[$name]=$shadow
     }
     if ($mac) {
         foreach ($surface in @('Card','Line','PrimaryFill')) {
@@ -522,6 +522,7 @@ $ui.AppearanceButton.Add_Click({
     $ui.AppearanceButton.ContextMenu=$menu; $menu.IsOpen=$true
 })
 Initialize-AdvancedInterface
+Initialize-ProductInterface
 Order-Colors
 Apply-Appearance (Read-AppearancePreference)
 $window.Add_SourceInitialized({
@@ -631,6 +632,8 @@ if ($Preview) {
         $testBitmap=[Drawing.Bitmap]::new(64,64)
         $testGraphics=[Drawing.Graphics]::FromImage($testBitmap)
         try { $testGraphics.Clear([Drawing.Color]::Transparent); $testGraphics.FillEllipse([Drawing.Brushes]::Blue,4,4,56,56); $testBitmap.Save($testPng,[Drawing.Imaging.ImageFormat]::Png) } finally { $testGraphics.Dispose(); $testBitmap.Dispose() }
+        Set-PngPreview $testPng
+        Test-ProductInterface $testPng
         Set-PngPreview $testPng
         $pngSource=$ui.UploadedPreview.Source
         Apply-Appearance 'Windows'; Apply-Appearance 'MacOS'; Apply-Appearance $initialAppearance

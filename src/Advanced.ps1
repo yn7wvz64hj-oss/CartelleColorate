@@ -1,6 +1,6 @@
 ﻿function Write-AdvancedJson([string]$Path,$Data) {
     $temporary=$Path+'.'+[Guid]::NewGuid().ToString('N')+'.tmp'
-    try { [IO.File]::WriteAllText($temporary,($Data | ConvertTo-Json -Depth 12),[Text.UTF8Encoding]::new($true)); if ([IO.File]::Exists($Path)) { [IO.File]::Replace($temporary,$Path,[NullString]::Value) } else { [IO.File]::Move($temporary,$Path) } }
+    try { [IO.File]::WriteAllText($temporary,(ConvertTo-Json -InputObject $Data -Depth 12),[Text.UTF8Encoding]::new($true)); if ([IO.File]::Exists($Path)) { [IO.File]::Replace($temporary,$Path,[NullString]::Value) } else { [IO.File]::Move($temporary,$Path) } }
     finally { if ([IO.File]::Exists($temporary)) { [IO.File]::Delete($temporary) } }
 }
 function Read-RecentColors {
@@ -23,8 +23,9 @@ function Invoke-FolderBatch([string[]]$Targets,[string]$Hex,[string]$Png) {
         if ($rolledBack) { if ($null -ne $previous) { [IO.File]::WriteAllBytes($path,$previous) } else { [IO.File]::Delete($path) } }
         throw $failure
     }
+    Save-FolderActivity ([pscustomobject]@{Batch=$records}) 'apply'
 }
-function Render-PreparedImage([Drawing.Image]$Source,[double]$Zoom=1,[double]$X=0,[double]$Y=0,[bool]$Crop=$false,[ValidateSet('none','star','check','lock')][string]$Badge='none') {
+function Render-PreparedImage([Drawing.Image]$Source,[double]$Zoom=1,[double]$X=0,[double]$Y=0,[bool]$Crop=$false,[ValidateSet('none','star','check','lock','heart','document','music','photo')][string]$Badge='none',[string]$BadgeHex='#233755') {
     $bitmap=[Drawing.Bitmap]::new(256,256,[Drawing.Imaging.PixelFormat]::Format32bppArgb); $graphics=[Drawing.Graphics]::FromImage($bitmap)
     try {
         $graphics.Clear([Drawing.Color]::Transparent); $graphics.InterpolationMode=[Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $graphics.SmoothingMode=[Drawing.Drawing2D.SmoothingMode]::AntiAlias
@@ -32,12 +33,13 @@ function Render-PreparedImage([Drawing.Image]$Source,[double]$Zoom=1,[double]$X=
         $w=[single]($Source.Width*$scale); $h=[single]($Source.Height*$scale)
         $graphics.DrawImage($Source,[Drawing.RectangleF]::new([single]((256-$w)/2+$X*1.28),[single]((256-$h)/2+$Y*1.28),$w,$h))
         if ($Badge -ne 'none') {
-            $plate=[Drawing.SolidBrush]::new([Drawing.Color]::FromArgb(245,245,248,255)); $ink=[Drawing.Pen]::new([Drawing.Color]::FromArgb(255,35,55,85),7)
+            $plate=[Drawing.SolidBrush]::new([Drawing.Color]::FromArgb(245,245,248,255)); $ink=[Drawing.Pen]::new([Drawing.ColorTranslator]::FromHtml($BadgeHex),7)
             try {
                 $graphics.FillEllipse($plate,168,168,78,78)
                 if ($Badge -eq 'check') { $graphics.DrawLines($ink,[Drawing.PointF[]]@([Drawing.PointF]::new(184,207),[Drawing.PointF]::new(199,222),[Drawing.PointF]::new(230,189))) }
                 elseif ($Badge -eq 'lock') { $graphics.DrawArc($ink,193,185,28,34,180,180); $graphics.DrawRectangle($ink,188,203,38,27) }
                 elseif ($Badge -eq 'star') { $points=[Drawing.PointF[]]::new(10); for ($i=0;$i -lt 10;$i++) { $angle=($i*36-90)*[Math]::PI/180; $radius=if ($i%2 -eq 0) { 25 } else { 11 }; $points[$i]=[Drawing.PointF]::new([single](207+[Math]::Cos($angle)*$radius),[single](207+[Math]::Sin($angle)*$radius)) }; $brush=[Drawing.SolidBrush]::new($ink.Color); try { $graphics.FillPolygon($brush,$points) } finally { $brush.Dispose() } }
+                elseif ($Badge -in @('heart','document','music','photo')) { $font=[Drawing.Font]::new('Segoe UI Symbol',40,[Drawing.FontStyle]::Regular,[Drawing.GraphicsUnit]::Pixel); $brush=[Drawing.SolidBrush]::new($ink.Color); $format=[Drawing.StringFormat]::new(); $format.Alignment='Center'; $format.LineAlignment='Center'; try { $graphics.DrawString((Get-BadgeGlyph $Badge),$font,$brush,[Drawing.RectangleF]::new(170,169,74,74),$format) } finally { $font.Dispose(); $brush.Dispose(); $format.Dispose() } }
             } finally { $plate.Dispose(); $ink.Dispose() }
         }
         return $bitmap
@@ -121,7 +123,7 @@ function Get-PreparedIcon([string]$Badge) {
     try {
         if ($script:pngSelection) { $source=[Drawing.Image]::FromFile($script:pngSelection) }
         else { $path=Join-Path $root ('badge-base-'+(Valid-Hex).TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon (Valid-Hex) $path }; $icon=[Drawing.Icon]::new($path,256,256); $source=$icon.ToBitmap() }
-        $bitmap=Render-PreparedImage $source 1 0 0 $false $Badge; $path=Join-Path $root ('badge-'+[Guid]::NewGuid().ToString('N')+'.png'); try { $bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png) } finally { $bitmap.Dispose() }; return $path
+        $bitmap=Render-PreparedImage $source 1 0 0 $false $Badge $script:badgeHex; $path=Join-Path $root ('badge-'+[Guid]::NewGuid().ToString('N')+'.png'); try { $bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png) } finally { $bitmap.Dispose() }; return $path
     } finally { if ($source) { $source.Dispose() }; if ($icon) { $icon.Dispose() } }
 }
 function Refresh-CollectionChoices {
@@ -140,14 +142,12 @@ function Show-Toast([string]$Text) {
     Show-Status $Text; $script:toastTimer.Start()
 }
 function Invoke-AdvancedAction([string]$Action) {
+    if ($Action -in @('presets','history','managed','iconSizes','visualSettings','updates')) { Invoke-ProductAction $Action; return }
     switch ($Action) {
         'batch' { $targets=@(Show-FolderSelection); if ($targets.Count) { $script:singleFolder=$script:currentFolder; $script:batchTargets=$targets; $script:currentFolder=$targets[0]; $ui.FolderName.IsEnabled=$targets.Count -eq 1; $ui.RenameFolder.IsEnabled=$targets.Count -eq 1; $ui.FolderName.Text=if ($targets.Count -gt 1) { T 'folderCount' @($targets.Count) } else { [IO.Path]::GetFileName($targets[0]) }; Update-UndoButton } }
         'singleFolder' { $script:batchTargets=@($script:singleFolder); $script:currentFolder=$script:singleFolder; $ui.FolderName.IsEnabled=$true; $ui.RenameFolder.IsEnabled=$true; $ui.FolderName.Text=[IO.Path]::GetFileName($script:currentFolder); Update-UndoButton }
         'editPng' { Show-PngEditor }
-        'badge' {
-            $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
-            foreach ($name in @('none','star','check','lock')) { $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $name; $item.Tag=$name; $item.IsCheckable=$true; $item.IsChecked=$name -eq $script:badge; $item.Add_Click({ param($sender,$e) $script:badge=[string]$sender.Tag; $ui.BadgePreview.Visibility=if ($script:badge -eq 'none') { 'Collapsed' } else { 'Visible' }; $ui.BadgeGlyph.Text=switch ($script:badge) { 'star' { '★' } 'check' { '✔' } 'lock' { '🔒' } default { '' } } }); $null=$menu.Items.Add($item) }; $ui.PaletteTools.ContextMenu=$menu; $menu.IsOpen=$true
-        }
+        'badge' { Show-BadgePicker }
         'collections' {
             $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
             foreach ($name in @('newCollection','renameCollection','deleteCollection')) {
@@ -178,3 +178,5 @@ function Initialize-AdvancedInterface {
         $button.Add_Click({ param($sender,$e) $ui.Hex.Text=[string]$sender.Tag }); $ui.RecentColors.Children.Add($button)|Out-Null
     }; if ($ui.RecentColors.Children.Count) { $ui.RecentArea.Visibility='Visible' }
 }
+
+. (Join-Path $PSScriptRoot 'Productivity.ps1')
