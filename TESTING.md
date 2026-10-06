@@ -101,3 +101,5 @@ viene eseguita nuovamente sulla versione ufficiale. PublishRelease.ps1 -VerifyOn
 verifica lo ZIP destinato agli utenti, VERSION, manifest, corrispondenza dei sorgenti
 e guida installabile. Il job di pubblicazione parte solo dopo i test Windows riusciti,
 crea una release non prerelease e riscarica entrambi gli allegati per confrontarli.
+
+Il confronto dei sorgenti accetta soltanto le differenze CRLF/LF applicate dal checkout Git; una modifica reale del contenuto viene rifiutata. SHA256 dello ZIP e manifest restano confronti esatti.

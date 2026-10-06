@@ -18,6 +18,14 @@ function Read-ReleaseEntry([string]$Name) {
 function Get-ReleaseHash([byte[]]$Bytes) {
     $sha=[Security.Cryptography.SHA256]::Create(); try { return [BitConverter]::ToString($sha.ComputeHash($Bytes)).Replace('-','').ToLowerInvariant() } finally { $sha.Dispose() }
 }
+function Get-ComparableReleaseHash([byte[]]$Bytes,[string]$File) {
+    # Git applies .gitattributes on checkout. Only text line endings may differ.
+    if ($File -ne 'LauncherMessages.txt' -and [IO.Path]::GetExtension($File) -in @('.ps1','.vbs','.cmd','.cs','.md','.json','.txt')) {
+        $encoding=[Text.UTF8Encoding]::new($false,$true)
+        $Bytes=$encoding.GetBytes($encoding.GetString($Bytes).Replace("`r`n","`n"))
+    }
+    return Get-ReleaseHash $Bytes
+}
 try {
     $packedVersion=[Text.Encoding]::UTF8.GetString((Read-ReleaseEntry 'VERSION')).Trim()
     if ($packedVersion -ne $version) { throw 'Versione dello ZIP diversa dai sorgenti.' }
@@ -29,9 +37,9 @@ try {
         $expected=$matches[1]; $file=$matches[2]
         if ((Get-ReleaseHash (Read-ReleaseEntry $file)) -ne $expected) { throw ('File del pacchetto modificato: '+$file) }
         $source=Join-Path $repo ('src/'+$file)
-        if ([IO.File]::Exists($source) -and (Get-ReleaseHash ([IO.File]::ReadAllBytes($source))) -ne $expected) { throw ('Sorgente diverso dal pacchetto: '+$file) }
+        if ([IO.File]::Exists($source) -and (Get-ComparableReleaseHash ([IO.File]::ReadAllBytes($source)) $file) -ne (Get-ComparableReleaseHash (Read-ReleaseEntry $file) $file)) { throw ('Sorgente diverso dal pacchetto: '+$file) }
     }
-    if ((Get-ReleaseHash (Read-ReleaseEntry 'LEGGIMI.txt')) -ne (Get-ReleaseHash ([IO.File]::ReadAllBytes((Join-Path $repo 'docs/LEGGIMI.txt'))))) { throw 'Guida installabile non aggiornata.' }
+    if ((Get-ComparableReleaseHash (Read-ReleaseEntry 'LEGGIMI.txt') 'LEGGIMI.txt') -ne (Get-ComparableReleaseHash ([IO.File]::ReadAllBytes((Join-Path $repo 'docs/LEGGIMI.txt'))) 'LEGGIMI.txt')) { throw 'Guida installabile non aggiornata.' }
 } finally { $archive.Dispose() }
 Write-Output ('OK: pacchetto ufficiale '+$version+', sorgenti, manifest e SHA256 verificati.')
 if ($VerifyOnly) { exit 0 }
