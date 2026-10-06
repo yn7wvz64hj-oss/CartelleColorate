@@ -49,8 +49,8 @@ function Show-AdvancedText([string]$Title,[string]$Value='') {
     $dialog=[Windows.Window]::new(); $dialog.Title=$Title; $dialog.Width=350; $dialog.SizeToContent='Height'; $dialog.ResizeMode='NoResize'; $dialog.Owner=$window; $dialog.Resources.MergedDictionaries.Add($window.Resources); $dialog.FontFamily=$window.FontFamily; $dialog.WindowStartupLocation='CenterOwner'; $dialog.Background=$window.Resources['Page']; $dialog.Foreground=$window.Resources['Text']
     $panel=[Windows.Controls.StackPanel]::new(); $panel.Margin=[Windows.Thickness]::new(16); $text=[Windows.Controls.TextBox]::new(); $text.Text=$Value; $text.Margin=[Windows.Thickness]::new(0,0,0,10); $button=[Windows.Controls.Button]::new(); $button.Content=T 'apply'; $button.IsDefault=$true
     $panel.Children.Add($text)|Out-Null; $panel.Children.Add($button)|Out-Null; $dialog.Content=$panel; $script:advancedTextWindow=$dialog; $button.Add_Click({ $script:advancedTextWindow.DialogResult=$true })
-    if ($UITest -and $script:advancedDialogTest) { $dialog.Add_ContentRendered({ $script:advancedTextWindow.Content.Children[0].Text='Test collection'; $script:advancedTextWindow.Content.Children[1].RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)) }) }
-    try { if ($dialog.ShowDialog()) { return $text.Text.Trim() }; return $null } finally { $script:advancedTextWindow=$null }
+    if ($UITest -and $script:advancedDialogTest) { $dialog.Add_ContentRendered({ (Get-DialogContent $script:advancedTextWindow).Children[0].Text='Test collection'; (Get-DialogContent $script:advancedTextWindow).Children[1].RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)) }) }
+    try { if ((Show-AdaptiveDialog $dialog)) { return $text.Text.Trim() }; return $null } finally { $script:advancedTextWindow=$null }
 }
 function Show-FolderSelection {
     [xml]$markup=@'
@@ -82,7 +82,7 @@ function Show-FolderSelection {
         }); $script:chooserTestTimer.Start()
     }
 
-    try { if ($dialog.ShowDialog()) { return @($dialog.Tag) } } finally { if ($script:chooserTestTimer) { $script:chooserTestTimer.Stop() }; $script:folderChooser=$null }
+    try { if ((Show-AdaptiveDialog $dialog)) { return @($dialog.Tag) } } finally { if ($script:chooserTestTimer) { $script:chooserTestTimer.Stop() }; $script:folderChooser=$null }
 }
 function Show-PngEditor {
     if (!$script:pngSelection) { return }
@@ -114,7 +114,7 @@ function Show-PngEditor {
             $script:editorTestTimer.Add_Tick({ $script:editorTestTimer.Stop(); if (!$script:pngEditor.Window.FindName('Preview').Source) { $script:editorTestError='PNG preview missing' }; $script:pngEditor.Window.FindName('Confirm').RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)) }); $script:editorTestTimer.Start()
         })
     }
-    try { if ($dialog.ShowDialog()) { $bitmap=Render-PreparedImage $source ($dialog.FindName('Zoom').Value/100) $dialog.FindName('X').Value $dialog.FindName('Y').Value ([bool]$dialog.FindName('Crop').IsChecked); $path=Join-Path $root ('png-edit-'+[Guid]::NewGuid().ToString('N')+'.png'); try { $bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png) } finally { $bitmap.Dispose() }; Set-PngPreview $path } }
+    try { if ((Show-AdaptiveDialog $dialog)) { $bitmap=Render-PreparedImage $source ($dialog.FindName('Zoom').Value/100) $dialog.FindName('X').Value $dialog.FindName('Y').Value ([bool]$dialog.FindName('Crop').IsChecked); $path=Join-Path $root ('png-edit-'+[Guid]::NewGuid().ToString('N')+'.png'); try { $bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png) } finally { $bitmap.Dispose() }; Set-PngPreview $path } }
     finally { $timer.Stop(); $source.Dispose(); $script:pngEditor=$null; if ($script:editorTestTimer) { $script:editorTestTimer.Stop() } }; if ($script:editorTestError) { throw $script:editorTestError }
 }
 function Get-PreparedIcon([string]$Badge) {

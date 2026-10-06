@@ -1,4 +1,4 @@
-CARTELLECOLORATE 1.1.0
+CARTELLECOLORATE 1.2.0
 Prima release ufficiale gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -93,8 +93,10 @@ Il pacchetto non e' firmato digitalmente. Se antivirus o criteri aziendali
 lo bloccano, non disattivare le protezioni: controlla il sorgente e segnala
 il messaggio al manutentore del repository dal quale hai scaricato lo ZIP.
 ExecutionPolicy Bypass viene usato solo nei processi di avvio, senza cambiare
-permanentemente la policy. L'app non usa account o telemetria. Il solo controllo aggiornamenti legge
-VERSION su GitHub; all'apertura è facoltativo e inizialmente disattivato.
+permanentemente la policy. L’app non usa account o telemetria. Il controllo
+aggiornamenti legge VERSION su GitHub ed è attivo, ma si può disattivare.
+La finestra dell’aggiornamento legge note e metadati della release da GitHub;
+Scarica preleva il pacchetto su richiesta e lo verifica prima di prepararlo.
 
 Il file MANIFEST-SHA256.txt elenca i checksum dei file del pacchetto.
 La licenza completa e' nel file LICENSE. CartelleColorate non e' un prodotto
@@ -122,8 +124,9 @@ Il campo HEX cambia il colore del simbolo. I simboli sono contrassegni visivi.
 Aspetto e vetro permette di regolare opacità e rilievo e scegliere il tema.
 Il tema del sistema segue anche i cambiamenti di Windows mentre l’app è aperta.
 Chiudere le impostazioni senza salvare annulla la loro anteprima.
-Gli aggiornamenti non vengono installati automaticamente: il pulsante Scarica
-apre lo ZIP nel browser. Estrai il pacchetto ed esegui Installa.cmd per aggiornare.
+Gli aggiornamenti non vengono installati automaticamente. La finestra mostra
+le novità della release; Scarica verifica il pacchetto prima di estrarlo.
+Premi Installa aggiornamento per avviare l’installazione e chiudere l’app.
 
 FUNZIONI DELLA VERSIONE 0.9
 Preset nel tasto destro: apri ⋯ > Preset completi, seleziona un preset e premi
@@ -157,7 +160,7 @@ e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfa
 RELEASE UFFICIALE 1.0
 Questa release comprende tutte le funzioni della versione 0.10, con installazione
 e aggiornamento che mantengono colori, preset, preferenze e backup esistenti.
-Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.1.0
+Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.2.0
 
 NOVITÀ 1.1 — SFONDI E MENU
 Dal menu ⋯ scegli Sfondo: colore uniforme con selettore grafico e HEX,
@@ -167,3 +170,12 @@ I menu dell’app e i selettori usano superfici arrotondate ispirate a Windows 1
 L’icona di download accanto allo stile compare solo per un aggiornamento disponibile.
 Il controllo automatico è attivo; puoi disattivarlo da ⋯ → Aspetto e vetro.
 Windows e macOS indicano gli stili grafici dell’app per Windows.
+
+NOVITÀ 1.2
+Menu ⋯ compatto: Cartelle, Icone e Libreria raccolgono gli strumenti.
+Sfondo: posizione, zoom e velatura; anteprima dal vivo. Annulla ripristina
+lo sfondo precedente senza salvare. Le regolazioni sono incluse nei backup.
+Aggiornamento guidato: note in italiano o inglese e download verificato.
+Installa aggiornamento avvia l’installazione solo su richiesta.
+Finestre adattate allo spazio disponibile, contenuti scorrevoli e rendering
+verificato al 125%, 150% e 200%.

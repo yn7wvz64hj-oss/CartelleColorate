@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate 1.1 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.1.0/CartelleColorate-1.1.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.1.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.1.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate 1.2 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.2.0/CartelleColorate-1.2.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.2.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.2.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -26,8 +26,10 @@ La schermata iniziale propone la lingua di Windows, se supportata, oppure l’in
 
 ## Funzioni
 
-- **⋯ → Sfondo**: scegli un colore uniforme con tabella grafica e HEX, oppure un’immagine PNG, JPEG o BMP. Ogni stile conserva il proprio sfondo; le immagini vengono copiate nei dati dell’app e incluse nei backup.
-- Menu dell’app e selettori con angoli arrotondati, caratteri Segoe UI, evidenziazioni discrete e colori coerenti con il tema, ispirati a Windows 11.
+- Finestre limitate allo spazio disponibile e contenuti scorrevoli; rendering verificato al 125%, 150% e 200%.
+
+- **⋯ → Sfondo**: anteprima dal vivo sull’app, Annulla per ripristinare lo sfondo precedente, posizione dell’immagine, zoom/ritaglio e velatura regolabili. Scegli un colore uniforme con tabella grafica e HEX, oppure un’immagine PNG, JPEG o BMP. Ogni stile conserva il proprio sfondo; le immagini vengono copiate nei dati dell’app e incluse nei backup.
+- Menu ⋯ compatto: strumenti per cartelle, icone e libreria raccolti in sottomenu. Menu dell’app e selettori con angoli arrotondati, caratteri Segoe UI, evidenziazioni discrete e colori coerenti con il tema, ispirati a Windows 11.
 
 - Trascina un PNG sull’anteprima (o nella finestra) per personalizzare l’icona; la cartella selezionata resta la stessa. Le cartelle trascinate continuano a cambiare la selezione, anche in gruppo.
 - Cerca i preset completi per nome o codice HEX; i preferiti sono in cima.
@@ -77,7 +79,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 1.1: release ufficiale con sfondi personalizzabili e menu moderni.** Verifiche automatiche nelle 15 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
+**Versione 1.2: release ufficiale con anteprima dal vivo e aggiornamento guidato.** Verifiche automatiche nelle 15 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 
@@ -85,7 +87,7 @@ L'installer genera le due librerie native dai sorgenti sul PC: corregge il blocc
 
 ## Dati, ripristino e rimozione
 
-I dati restano in `%LOCALAPPDATA%\CartelleColorate`: palette `colori.json`, lingua in `impostazioni.json`, icone e backup. Non vengono usati account o telemetria. Solo il controllo aggiornamenti contatta GitHub per leggere VERSION: il controllo all’apertura è attivo per impostazione predefinita e si può disattivare da ⋯ → Aspetto e vetro. Il download si apre nel browser su richiesta. Le altre funzioni restano locali. La pipetta legge una piccola area del desktop soltanto quando attiva; non salva screenshot su disco.
+I dati restano in `%LOCALAPPDATA%\CartelleColorate`: palette `colori.json`, lingua in `impostazioni.json`, icone e backup. Non vengono usati account o telemetria. Il controllo aggiornamenti legge VERSION e, quando apri la finestra dell’aggiornamento, le note e i metadati della release da GitHub: il controllo all’apertura è attivo per impostazione predefinita e si può disattivare da ⋯ → Aspetto e vetro. La finestra dell’aggiornamento mostra le note della release in italiano o inglese. Su richiesta scarica il pacchetto da GitHub, controlla SHA-256, manifest e versione, poi offre il pulsante Installa aggiornamento. L’installazione parte solo con quel pulsante e chiude l’app. Le altre funzioni restano locali. La pipetta legge una piccola area del desktop soltanto quando attiva; non salva screenshot su disco.
 
 La rinomina dall’app aggiorna i backup della cartella e delle sue sottocartelle. Prima di spostare o rinominare una cartella fuori dall’app, ripristina l’icona: i backup sono associati al percorso. Il ripristino recupera il `desktop.ini` originario e può sostituire successive personalizzazioni di altre applicazioni.
 

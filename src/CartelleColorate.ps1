@@ -318,6 +318,7 @@ if ($SelfTest) {
     Test-ProductBackend
     Test-EnhancementBackend
     Test-VisualBackend
+    Test-ExperienceBackend
     if ($NoConsoleTest) {
         if ([FolderShell]::IsWindowVisible([FolderShell]::GetConsoleWindow())) { throw 'Il processo ha una console visibile.' }
         Write-Output 'OK: nessuna console visibile.'

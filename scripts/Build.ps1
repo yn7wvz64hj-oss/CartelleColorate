@@ -10,7 +10,7 @@ $work=Join-Path $repo ('work\build-'+[Guid]::NewGuid().ToString('N'))
 $package=Join-Path $work 'CartelleColorate'
 $dist=Join-Path $repo 'dist'
 New-Item -ItemType Directory -Path $package,$dist -Force | Out-Null
-$files=@('CartelleColorate.ps1','Advanced.ps1','Productivity.ps1','Enhancements.ps1','Visuals.ps1','Interfaccia.ps1','Localization.ps1','Avvio.ps1','NativeLibraries.ps1','Languages.json','LauncherMessages.txt','Avvio.vbs','Rapido.vbs','Setup.ps1','Installa.cmd','Rimuovi-menu.cmd','Verifica.vbs','FolderShell.cs','DesktopPicker.cs')
+$files=@('CartelleColorate.ps1','Advanced.ps1','Productivity.ps1','Enhancements.ps1','Visuals.ps1','Experience.ps1','Interfaccia.ps1','Localization.ps1','Avvio.ps1','NativeLibraries.ps1','Languages.json','LauncherMessages.txt','Avvio.vbs','Rapido.vbs','Setup.ps1','Installa.cmd','Rimuovi-menu.cmd','Verifica.vbs','FolderShell.cs','DesktopPicker.cs')
 foreach ($file in $files) { Copy-Item -LiteralPath (Join-Path $repo ('src\'+$file)) -Destination $package }
 foreach ($name in @('FolderShell','DesktopPicker')) {
     $source=Join-Path $package ($name+'.cs')

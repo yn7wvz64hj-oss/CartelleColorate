@@ -342,8 +342,9 @@ $ui.Colors.Add_Drop({ param($sender,$e) try {
 } catch { Show-Status $_.Exception.Message } })
 $ui.PaletteTools.Add_Click({
     $menu=New-ModernMenu $ui.PaletteTools
-    foreach ($action in @('presets','batch','singleFolder','editPng','badge','iconSizes','collections','history','redo','backup','managed','visualSettings','background','importColors','exportColors')) {
+    foreach ($action in @('presets','folderTools','iconTools','libraryTools','visualSettings','background')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
+        if ($action -in @('folderTools','iconTools','libraryTools')) { Add-GroupedActions $item $action; $null=$menu.Items.Add($item); continue }
         if ($action -eq 'editPng') { $item.IsEnabled=[bool]$script:pngSelection }; if ($action -eq 'singleFolder') { $item.IsEnabled=$script:batchTargets.Count -gt 1 }
         $item.Add_Click({ param($sender,$e) try {
             if ($sender.Tag -notin @('importColors','exportColors')) { Invoke-AdvancedAction ([string]$sender.Tag); return }
@@ -523,6 +524,7 @@ $ui.AppearanceButton.Add_Click({
 Initialize-AdvancedInterface
 Initialize-ProductInterface
 Initialize-VisualInterface
+Initialize-AdaptiveLayout
 $ui.Colors.ContextMenu=New-ModernMenu $ui.Colors
 Order-Colors
 Apply-Appearance (Read-AppearancePreference)
