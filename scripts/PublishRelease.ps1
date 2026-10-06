@@ -45,18 +45,24 @@ Write-Output ('OK: pacchetto ufficiale '+$version+', sorgenti, manifest e SHA256
 if ($VerifyOnly) { exit 0 }
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:GITHUB_REPOSITORY -ne 'yn7wvz64hj-oss/CartelleColorate' -or $env:GITHUB_REF -ne 'refs/heads/main' -or $env:GITHUB_SHA -notmatch '^[a-f0-9]{40}$') { throw 'La pubblicazione richiede il workflow del repository ufficiale su main.' }
 $tag='v'+$version
+$releaseTitle='CartelleColorate 1.0 — Official Release / Release ufficiale'
+$notesPath=Join-Path $repo 'docs/RELEASE-1.0.0.md'
 $stage=Join-Path $repo ('work/release-'+[Guid]::NewGuid().ToString('N')); [IO.Directory]::CreateDirectory($stage)|Out-Null
 $sums=Join-Path $stage 'SHA256SUMS.txt'; [IO.File]::WriteAllText($sums,$lines[0]+[Environment]::NewLine,[Text.Encoding]::ASCII)
 $known=& gh release list --repo $env:GITHUB_REPOSITORY --limit 100 --json tagName
 if ($LASTEXITCODE -ne 0) { throw 'Impossibile leggere le release esistenti.' }
 $existing=@(($known | ConvertFrom-Json) | Where-Object { $_.tagName -eq $tag })
 if (!$existing.Count) {
-    & gh release create $tag $zip $sums --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title 'CartelleColorate 1.0' --notes-file (Join-Path $repo 'docs/RELEASE-1.0.0.md') --latest
+    & gh release create $tag $zip $sums --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title $releaseTitle --notes-file $notesPath --latest
     if ($LASTEXITCODE -ne 0) { throw 'Pubblicazione della release fallita.' }
+} else {
+    & gh release edit $tag --repo $env:GITHUB_REPOSITORY --title $releaseTitle --notes-file $notesPath
+    if ($LASTEXITCODE -ne 0) { throw 'Aggiornamento del titolo e delle note fallito.' }
 }
-$result=& gh release view $tag --repo $env:GITHUB_REPOSITORY --json isDraft,isPrerelease,assets,url
+$result=& gh release view $tag --repo $env:GITHUB_REPOSITORY --json isDraft,isPrerelease,assets,url,name,body
 if ($LASTEXITCODE -ne 0) { throw 'Impossibile verificare la release pubblicata.' }
 $release=$result | ConvertFrom-Json
+if ($release.name -ne $releaseTitle -or $release.body.Replace("`r`n","`n").Trim() -ne [IO.File]::ReadAllText($notesPath).Replace("`r`n","`n").Trim()) { throw 'Titolo o descrizione pubblicati diversi dalle note bilingui.' }
 if ($release.isDraft -or $release.isPrerelease -or !(@($release.assets | Where-Object { $_.name -eq $name }).Count) -or !(@($release.assets | Where-Object { $_.name -eq 'SHA256SUMS.txt' }).Count)) { throw 'Release ufficiale incompleta.' }
 $download=Join-Path $stage 'download'; [IO.Directory]::CreateDirectory($download)|Out-Null
 & gh release download $tag --repo $env:GITHUB_REPOSITORY --pattern $name --pattern 'SHA256SUMS.txt' --dir $download
