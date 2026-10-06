@@ -317,6 +317,7 @@ function Undo-FolderEdit([string]$Target) {
 if ($SelfTest) {
     Test-ProductBackend
     Test-EnhancementBackend
+    Test-VisualBackend
     if ($NoConsoleTest) {
         if ([FolderShell]::IsWindowVisible([FolderShell]::GetConsoleWindow())) { throw 'Il processo ha una console visibile.' }
         Write-Output 'OK: nessuna console visibile.'

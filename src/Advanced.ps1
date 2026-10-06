@@ -142,14 +142,14 @@ function Show-Toast([string]$Text) {
     Show-Status $Text; $script:toastTimer.Start()
 }
 function Invoke-AdvancedAction([string]$Action) {
-    if ($Action -in @('presets','history','redo','backup','managed','iconSizes','visualSettings','updates')) { Invoke-ProductAction $Action; return }
+    if ($Action -in @('presets','history','redo','backup','managed','iconSizes','visualSettings','background','updates')) { Invoke-ProductAction $Action; return }
     switch ($Action) {
         'batch' { $targets=@(Show-FolderSelection); if ($targets.Count) { $script:singleFolder=$script:currentFolder; $script:batchTargets=$targets; $script:currentFolder=$targets[0]; $ui.FolderName.IsEnabled=$targets.Count -eq 1; $ui.RenameFolder.IsEnabled=$targets.Count -eq 1; $ui.FolderName.Text=if ($targets.Count -gt 1) { T 'folderCount' @($targets.Count) } else { [IO.Path]::GetFileName($targets[0]) }; Update-UndoButton } }
         'singleFolder' { $script:batchTargets=@($script:singleFolder); $script:currentFolder=$script:singleFolder; $ui.FolderName.IsEnabled=$true; $ui.RenameFolder.IsEnabled=$true; $ui.FolderName.Text=[IO.Path]::GetFileName($script:currentFolder); Update-UndoButton }
         'editPng' { Show-PngEditor }
         'badge' { Show-BadgePicker }
         'collections' {
-            $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
+            $menu=New-ModernMenu $ui.PaletteTools
             foreach ($name in @('newCollection','renameCollection','deleteCollection')) {
                 $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $name; $item.Tag=$name; if ($name -ne 'newCollection') { $item.IsEnabled=[bool]$script:filterGroup }
                 $item.Add_Click({ param($sender,$e) try {

@@ -80,11 +80,12 @@ $script:glassEnabled=$false
   </Style>
   <Style TargetType="ListBox"><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBox"><ScrollViewer x:Name="PaletteScroll" Focusable="False" Padding="{TemplateBinding Padding}" CanContentScroll="False" VerticalScrollBarVisibility="Auto" Style="{StaticResource GlassScroll}"><ItemsPresenter/></ScrollViewer></ControlTemplate></Setter.Value></Setter></Style>
  </Window.Resources>
+ <Grid><Border x:Name="PersonalBackground" IsHitTestVisible="False"/><Border x:Name="BackgroundShade" IsHitTestVisible="False"/>
  <Grid x:Name="Root" Margin="16,10,16,12">
   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
   <StackPanel Margin="0,0,0,8">
-   <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_heading}" TextWrapping="Wrap" FontSize="19" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/><Button x:Name="AppearanceButton" Grid.Column="1" Margin="0,0,6,0" Padding="9,6" AutomationProperties.Name="{DynamicResource L_appearance}"><StackPanel Orientation="Horizontal"><TextBlock x:Name="AppearanceName" FontSize="12"/><Path Data="M0,0 L4,4 L8,0" Stroke="{DynamicResource Text}" StrokeThickness="1.4" Width="8" Height="4" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel></Button><Button x:Name="LanguageButton" Grid.Column="2" VerticalAlignment="Top" Padding="9,6" ToolTip="{DynamicResource L_language}" AutomationProperties.Name="{DynamicResource L_language}"><StackPanel Orientation="Horizontal"><Viewbox Width="16" Height="16" Margin="0,0,7,0"><Canvas Width="24" Height="24"><Ellipse Width="22" Height="22" Canvas.Left="1" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Ellipse Width="9" Height="22" Canvas.Left="7.5" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Path Data="M1,12 L23,12 M3,6 L21,6 M3,18 L21,18" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/></Canvas></Viewbox><TextBlock x:Name="LanguageName"/></StackPanel></Button></Grid>
-   <TextBlock Text="{DynamicResource L_folderName}" FontSize="11" Foreground="{DynamicResource Secondary}" Margin="0,5,0,3"/>
+   <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_heading}" Foreground="{DynamicResource BackdropText}" TextWrapping="Wrap" FontSize="19" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/><Button x:Name="AppearanceButton" Grid.Column="1" Margin="0,0,6,0" Padding="9,6" AutomationProperties.Name="{DynamicResource L_appearance}"><StackPanel Orientation="Horizontal"><TextBlock x:Name="AppearanceName" FontSize="12"/><Path Data="M0,0 L4,4 L8,0" Stroke="{DynamicResource Text}" StrokeThickness="1.4" Width="8" Height="4" Margin="6,0,0,0" VerticalAlignment="Center"/></StackPanel></Button><Button x:Name="UpdateAvailable" Grid.Column="2" Visibility="Collapsed" Width="32" Padding="7" Margin="0,0,6,0" ToolTip="{DynamicResource L_downloadUpdate}" AutomationProperties.Name="{DynamicResource L_downloadUpdate}"><Viewbox Width="16" Height="16"><Path Data="M12,3 L12,15 M7,10 L12,15 L17,10 M4,18 L4,21 L20,21 L20,18" Stroke="{DynamicResource Text}" StrokeThickness="1.7" Width="24" Height="24"/></Viewbox></Button><Button x:Name="LanguageButton" Grid.Column="3" VerticalAlignment="Top" Padding="9,6" ToolTip="{DynamicResource L_language}" AutomationProperties.Name="{DynamicResource L_language}"><StackPanel Orientation="Horizontal"><Viewbox Width="16" Height="16" Margin="0,0,7,0"><Canvas Width="24" Height="24"><Ellipse Width="22" Height="22" Canvas.Left="1" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Ellipse Width="9" Height="22" Canvas.Left="7.5" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Path Data="M1,12 L23,12 M3,6 L21,6 M3,18 L21,18" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/></Canvas></Viewbox><TextBlock x:Name="LanguageName"/></StackPanel></Button></Grid>
+   <TextBlock Text="{DynamicResource L_folderName}" FontSize="11" Foreground="{DynamicResource BackdropText}" Margin="0,5,0,3"/>
    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox x:Name="FolderName" MaxLength="255" AutomationProperties.Name="{DynamicResource L_folderName}"/><Button x:Name="RenameFolder" Grid.Column="1" ToolTip="{DynamicResource L_renameFolder}" AutomationProperties.Name="{DynamicResource L_renameFolder}" Margin="6,0,0,0" Padding="9,5"><Viewbox Width="16" Height="16"><Path Data="M16,3 L21,8 L8,21 L3,21 L3,16 Z M14,5 L19,10 M3,16 L8,21" Stroke="{DynamicResource Text}" StrokeThickness="1.8" Fill="Transparent"/></Viewbox></Button></Grid>
   </StackPanel>
   <ScrollViewer x:Name="MainScroll" Padding="6,2,6,4" Style="{StaticResource GlassScroll}" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -121,15 +122,15 @@ $script:glassEnabled=$false
      </Grid>
     </Border></Grid>
     <Grid Margin="0,5,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="Auto" MinWidth="112"/></Grid.ColumnDefinitions>
-     <StackPanel><TextBlock Text="{DynamicResource L_name}" Margin="0,0,0,4" FontSize="11" Foreground="{DynamicResource Secondary}"/><TextBox x:Name="ColorName" AutomationProperties.Name="{DynamicResource L_name}"/></StackPanel><Button x:Name="Save" Grid.Column="2" MinWidth="112" Content="{DynamicResource L_save}" VerticalAlignment="Bottom" Height="34"/>
+     <StackPanel><TextBlock Text="{DynamicResource L_name}" Margin="0,0,0,4" FontSize="11" Foreground="{DynamicResource BackdropText}"/><TextBox x:Name="ColorName" AutomationProperties.Name="{DynamicResource L_name}"/></StackPanel><Button x:Name="Save" Grid.Column="2" MinWidth="112" Content="{DynamicResource L_save}" VerticalAlignment="Bottom" Height="34"/>
     </Grid>
-    <Grid Margin="0,0,0,3"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="{DynamicResource L_new}" Margin="8,0,0,0" Padding="9,4" MinHeight="30"/><Button x:Name="Delete" Visibility="Collapsed"/><Button x:Name="SearchToggle" Grid.Column="3" Content="⌕" FontSize="19" Padding="8,2" MinHeight="30" Margin="0,0,5,0" ToolTip="{DynamicResource L_search}"/><Button x:Name="PaletteTools" Grid.Column="4" Content="⋯" Padding="9,4" MinHeight="30" ToolTip="{DynamicResource L_collection}"/></Grid>
+    <Grid Margin="0,0,0,3"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" Foreground="{DynamicResource BackdropText}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="{DynamicResource L_new}" Margin="8,0,0,0" Padding="9,4" MinHeight="30"/><Button x:Name="Delete" Visibility="Collapsed"/><Button x:Name="SearchToggle" Grid.Column="3" Content="⌕" FontSize="19" Padding="8,2" MinHeight="30" Margin="0,0,5,0" ToolTip="{DynamicResource L_search}"/><Button x:Name="PaletteTools" Grid.Column="4" Content="⋯" Padding="9,4" MinHeight="30" ToolTip="{DynamicResource L_collection}"/></Grid>
     <Grid x:Name="SearchRow" Visibility="Collapsed" Margin="0,2,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="130"/></Grid.ColumnDefinitions><TextBox x:Name="SearchText" AutomationProperties.Name="{DynamicResource L_search}"/><ComboBox x:Name="CollectionFilter" Grid.Column="1" Margin="6,0,0,0" VerticalContentAlignment="Center" AutomationProperties.Name="{DynamicResource L_collection}"/></Grid>
-    <StackPanel x:Name="RecentArea" Visibility="Collapsed" Margin="0,2,0,5"><TextBlock Text="{DynamicResource L_recent}" FontSize="11" Foreground="{DynamicResource Secondary}"/><WrapPanel x:Name="RecentColors"/></StackPanel>
+    <StackPanel x:Name="RecentArea" Visibility="Collapsed" Margin="0,2,0,5"><TextBlock Text="{DynamicResource L_recent}" FontSize="11" Foreground="{DynamicResource BackdropText}"/><WrapPanel x:Name="RecentColors"/></StackPanel>
     <ListBox x:Name="Colors" MaxHeight="104" Padding="1,2" Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
      <ListBox.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ListBox.ItemsPanel><ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Ellipse Width="14" Height="14" Fill="{Binding Hex}" HorizontalAlignment="Left" VerticalAlignment="Center"/><TextBlock Text="{Binding DisplayName}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></Grid></DataTemplate></ListBox.ItemTemplate>
     </ListBox>
-    <TextBlock x:Name="Empty" Text="{DynamicResource L_empty}" TextWrapping="Wrap" Foreground="{DynamicResource Secondary}" Margin="0,6,0,0" Visibility="Collapsed"/>
+    <TextBlock x:Name="Empty" Text="{DynamicResource L_empty}" TextWrapping="Wrap" Foreground="{DynamicResource BackdropText}" Margin="0,6,0,0" Visibility="Collapsed"/>
    </StackPanel>
   </ScrollViewer>
   <StackPanel Grid.Row="2" Margin="0,8,0,0">
@@ -138,13 +139,13 @@ $script:glassEnabled=$false
    <Button x:Name="Undo" Content="{DynamicResource L_undo}" Visibility="Collapsed" Margin="0,0,0,6"/><Button x:Name="Apply" Content="{DynamicResource L_apply}" ToolTip="{DynamicResource L_applyHelp}" Style="{StaticResource Primary}" Height="38"/>
   </StackPanel>
   <Border Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,46" CornerRadius="12" Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" Padding="10,6" IsHitTestVisible="False" Visibility="{Binding Visibility, ElementName=Status}"><TextBlock x:Name="Status" TextWrapping="Wrap" MaxWidth="340" Visibility="Collapsed" Foreground="{DynamicResource Text}"/></Border>
- </Grid>
+ </Grid></Grid>
 </Window>
 '@
 $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
 $ui=@{}
-foreach ($id in @('ImageDrop','Root','MainScroll','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder','AppearanceButton','AppearanceName','PaletteTools','Undo','SearchToggle','SearchRow','SearchText','CollectionFilter','RecentArea','RecentColors','BadgePreview','BadgeGlyph')) { $ui[$id]=$window.FindName($id) }
+foreach ($id in @('PersonalBackground','BackgroundShade','UpdateAvailable','ImageDrop','Root','MainScroll','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName','RenameFolder','AppearanceButton','AppearanceName','PaletteTools','Undo','SearchToggle','SearchRow','SearchText','CollectionFilter','RecentArea','RecentColors','BadgePreview','BadgeGlyph')) { $ui[$id]=$window.FindName($id) }
 $script:pngSelection=$null
 $ui.ColorPlane.Cursor=[Windows.Input.Cursors]::None
 $ui.ColorPlane.ForceCursor=$true
@@ -305,7 +306,7 @@ function Export-Colors([string]$Path) {
 $ui.Colors.Add_ContextMenuOpening({ param($sender,$e)
     $container=[Windows.Controls.ItemsControl]::ContainerFromElement($ui.Colors,$e.OriginalSource)
     if (!$container) { $e.Handled=$true; return }; $ui.Colors.SelectedItem=$container.DataContext
-    $menu=[Windows.Controls.ContextMenu]::new()
+    $menu=New-ModernMenu $ui.Colors
     foreach ($action in @('editColor','renameColor','favorite','moveEarlier','moveLater','assignCollection','delete')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
         if ($action -eq 'favorite') { $item.IsCheckable=$true; $item.IsChecked=[bool]$container.DataContext.Favorite }
@@ -340,8 +341,8 @@ $ui.Colors.Add_Drop({ param($sender,$e) try {
     if ($container) { Move-Color $entry ($script:collection.IndexOf($container.DataContext)); $e.Handled=$true }
 } catch { Show-Status $_.Exception.Message } })
 $ui.PaletteTools.Add_Click({
-    $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
-    foreach ($action in @('presets','batch','singleFolder','editPng','badge','iconSizes','collections','history','redo','backup','managed','visualSettings','updates','importColors','exportColors')) {
+    $menu=New-ModernMenu $ui.PaletteTools
+    foreach ($action in @('presets','batch','singleFolder','editPng','badge','iconSizes','collections','history','redo','backup','managed','visualSettings','background','importColors','exportColors')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action
         if ($action -eq 'editPng') { $item.IsEnabled=[bool]$script:pngSelection }; if ($action -eq 'singleFolder') { $item.IsEnabled=$script:batchTargets.Count -gt 1 }
         $item.Add_Click({ param($sender,$e) try {
@@ -509,13 +510,10 @@ function Apply-Appearance([ValidateSet('Windows','MacOS')][string]$Style) {
     $ui.AppearanceName.Text=if ($mac) { T 'macStyle' } else { T 'windowsStyle' }
     $ui.AppearanceButton.ToolTip=(T 'appearance')+': '+$ui.AppearanceName.Text
     Set-AppearanceMaterial
+    Update-ModernMenuResources; Apply-PersonalBackground
 }
 $ui.AppearanceButton.Add_Click({
-    $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.AppearanceButton; $menu.Placement='Bottom'; $menu.FlowDirection=$window.FlowDirection
-    $menu.Background=Brush $(if ($dark) { '#FF30343E' } else { '#FFF6F8FC' }); $menu.Foreground=$window.Resources['Text']; $menu.BorderBrush=$window.Resources['Line']; $menu.BorderThickness=[Windows.Thickness]::new(1); $menu.Padding=[Windows.Thickness]::new(4)
-    $menuTemplate='<ControlTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" TargetType="ContextMenu"><Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="4"><ItemsPresenter/></Border></ControlTemplate>'
-    if ($script:appearance -eq 'Windows') { $menuTemplate=$menuTemplate.Replace('CornerRadius="12"','CornerRadius="5"') }
-    $menu.Template=[Windows.Markup.XamlReader]::Parse($menuTemplate)
+    $menu=New-ModernMenu $ui.AppearanceButton
     foreach ($style in @('Windows','MacOS')) {
         $item=[Windows.Controls.MenuItem]::new(); $item.Header=if ($style -eq 'Windows') { T 'windowsStyle' } else { T 'macStyle' }; $item.Tag=$style; $item.IsCheckable=$true; $item.IsChecked=$script:appearance -eq $style
         $item.Add_Click({ param($sender,$e) try { Save-AppearancePreference ([string]$sender.Tag); Apply-Appearance ([string]$sender.Tag) } catch { Show-Status $_.Exception.Message } }); $null=$menu.Items.Add($item)
@@ -524,6 +522,8 @@ $ui.AppearanceButton.Add_Click({
 })
 Initialize-AdvancedInterface
 Initialize-ProductInterface
+Initialize-VisualInterface
+$ui.Colors.ContextMenu=New-ModernMenu $ui.Colors
 Order-Colors
 Apply-Appearance (Read-AppearancePreference)
 $window.Add_SourceInitialized({
@@ -531,11 +531,13 @@ $window.Add_SourceInitialized({
     $corner=2; [void][FluentWindow]::DwmSetWindowAttribute($hwnd,33,[ref]$corner,4)
     $mode=[int]$dark; [void][FluentWindow]::DwmSetWindowAttribute($hwnd,20,[ref]$mode,4)
     Set-AppearanceMaterial
+    Update-ModernMenuResources; Apply-PersonalBackground
 })
 
 function Apply-InterfaceLanguage {
     Set-LanguageResources $window
     Set-LanguageResources $lens
+    Sync-UpdateButton
     $ui.AppearanceButton.ToolTip=(T 'appearance')+': '+$ui.AppearanceName.Text
     if ($script:advancedReady) { Refresh-CollectionChoices }
     $ui.LanguageName.Text=$script:activeLanguage.nativeName
@@ -636,6 +638,7 @@ if ($Preview) {
         Set-PngPreview $testPng
         Test-ProductInterface $testPng
         Test-EnhancementInterface
+        Test-VisualInterface $testPng
         Set-PngPreview $testPng
         $pngSource=$ui.UploadedPreview.Source
         Apply-Appearance 'Windows'; Apply-Appearance 'MacOS'; Apply-Appearance $initialAppearance

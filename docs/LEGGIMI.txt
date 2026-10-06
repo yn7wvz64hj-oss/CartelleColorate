@@ -1,4 +1,4 @@
-﻿CARTELLECOLORATE 1.0.0
+CARTELLECOLORATE 1.1.0
 Prima release ufficiale gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -157,4 +157,13 @@ e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfa
 RELEASE UFFICIALE 1.0
 Questa release comprende tutte le funzioni della versione 0.10, con installazione
 e aggiornamento che mantengono colori, preset, preferenze e backup esistenti.
-Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.0.0
+Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.1.0
+
+NOVITÀ 1.1 — SFONDI E MENU
+Dal menu ⋯ scegli Sfondo: colore uniforme con selettore grafico e HEX,
+oppure immagine PNG, JPEG o BMP. Windows e macOS conservano sfondi separati.
+Le immagini vengono copiate nei dati locali e incluse nei backup .ccbackup.
+I menu dell’app e i selettori usano superfici arrotondate ispirate a Windows 11.
+L’icona di download accanto allo stile compare solo per un aggiornamento disponibile.
+Il controllo automatico è attivo; puoi disattivarlo da ⋯ → Aspetto e vetro.
+Windows e macOS indicano gli stili grafici dell’app per Windows.

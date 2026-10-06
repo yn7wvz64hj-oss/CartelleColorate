@@ -151,7 +151,15 @@
         "backupLoaded": "Backup importato. I dati esistenti sono conservati.",
         "backupInvalid": "Backup danneggiato o non compatibile.",
         "presetMissing": "Questo preset non è più disponibile.",
-        "searchPresets": "Cerca preset"
+        "searchPresets": "Cerca preset",
+        "background": "Sfondo",
+        "backgroundFor": "Sfondo dello stile {0}",
+        "backgroundDefault": "Predefinito",
+        "backgroundColor": "Colore uniforme",
+        "backgroundImage": "Scegli immagine…",
+        "backgroundFilter": "Immagini (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Impossibile utilizzare questo sfondo. Scegli un’immagine valida o un colore HEX.",
+        "cancel": "Annulla"
       }
     },
     {
@@ -304,7 +312,15 @@
         "backupLoaded": "Backup imported. Existing data is preserved.",
         "backupInvalid": "Backup is damaged or incompatible.",
         "presetMissing": "This preset is no longer available.",
-        "searchPresets": "Search presets"
+        "searchPresets": "Search presets",
+        "background": "Background",
+        "backgroundFor": "Background for {0}",
+        "backgroundDefault": "Default",
+        "backgroundColor": "Solid color",
+        "backgroundImage": "Choose image…",
+        "backgroundFilter": "Images (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Unable to use this background. Choose a valid image or HEX color.",
+        "cancel": "Cancel"
       }
     },
     {
@@ -457,7 +473,15 @@
         "backupLoaded": "备份已导入，原有数据已保留。",
         "backupInvalid": "备份损坏或不兼容。",
         "presetMissing": "此预设已不可用。",
-        "searchPresets": "搜索预设"
+        "searchPresets": "搜索预设",
+        "background": "背景",
+        "backgroundFor": "{0} 的背景",
+        "backgroundDefault": "默认",
+        "backgroundColor": "纯色",
+        "backgroundImage": "选择图片…",
+        "backgroundFilter": "图片 (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "无法使用此背景。请选择有效图片或 HEX 颜色。",
+        "cancel": "Close"
       }
     },
     {
@@ -610,7 +634,15 @@
         "backupLoaded": "Copia importada. Se conservan los datos existentes.",
         "backupInvalid": "La copia está dañada o es incompatible.",
         "presetMissing": "Este estilo ya no está disponible.",
-        "searchPresets": "Buscar preajustes"
+        "searchPresets": "Buscar preajustes",
+        "background": "Fondo",
+        "backgroundFor": "Fondo del estilo {0}",
+        "backgroundDefault": "Predeterminado",
+        "backgroundColor": "Color uniforme",
+        "backgroundImage": "Elegir imagen…",
+        "backgroundFilter": "Imágenes (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "No se puede usar este fondo. Elige una imagen válida o un color HEX.",
+        "cancel": "Close"
       }
     },
     {
@@ -763,7 +795,15 @@
         "backupLoaded": "बैकअप आयात हुआ। मौजूदा डेटा सुरक्षित है।",
         "backupInvalid": "बैकअप खराब या असंगत है।",
         "presetMissing": "यह प्रीसेट अब उपलब्ध नहीं है।",
-        "searchPresets": "प्रीसेट खोजें"
+        "searchPresets": "प्रीसेट खोजें",
+        "background": "पृष्ठभूमि",
+        "backgroundFor": "{0} की पृष्ठभूमि",
+        "backgroundDefault": "डिफ़ॉल्ट",
+        "backgroundColor": "एक समान रंग",
+        "backgroundImage": "चित्र चुनें…",
+        "backgroundFilter": "चित्र (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "इस पृष्ठभूमि का उपयोग नहीं कर सकते। मान्य चित्र या HEX रंग चुनें।",
+        "cancel": "Close"
       }
     },
     {
@@ -916,7 +956,15 @@
         "backupLoaded": "تم الاستيراد مع الاحتفاظ بالبيانات الحالية.",
         "backupInvalid": "النسخة تالفة أو غير متوافقة.",
         "presetMissing": "هذا الإعداد لم يعد متاحًا.",
-        "searchPresets": "البحث عن الإعدادات"
+        "searchPresets": "البحث عن الإعدادات",
+        "background": "الخلفية",
+        "backgroundFor": "خلفية نمط {0}",
+        "backgroundDefault": "افتراضي",
+        "backgroundColor": "لون موحد",
+        "backgroundImage": "اختيار صورة…",
+        "backgroundFilter": "صور (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "تعذر استخدام هذه الخلفية. اختر صورة صالحة أو لون HEX.",
+        "cancel": "Close"
       }
     },
     {
@@ -1069,7 +1117,15 @@
         "backupLoaded": "Cópia importada. Os dados existentes foram mantidos.",
         "backupInvalid": "A cópia está danificada ou é incompatível.",
         "presetMissing": "Esta predefinição já não está disponível.",
-        "searchPresets": "Pesquisar predefinições"
+        "searchPresets": "Pesquisar predefinições",
+        "background": "Fundo",
+        "backgroundFor": "Fundo do estilo {0}",
+        "backgroundDefault": "Padrão",
+        "backgroundColor": "Cor uniforme",
+        "backgroundImage": "Escolher imagem…",
+        "backgroundFilter": "Imagens (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Não foi possível usar este fundo. Escolha uma imagem válida ou cor HEX.",
+        "cancel": "Close"
       }
     },
     {
@@ -1222,7 +1278,15 @@
         "backupLoaded": "ব্যাকআপ আমদানি হয়েছে। আগের তথ্য অক্ষত।",
         "backupInvalid": "ব্যাকআপ ক্ষতিগ্রস্ত বা অসামঞ্জস্যপূর্ণ।",
         "presetMissing": "এই প্রিসেট আর পাওয়া যাচ্ছে না।",
-        "searchPresets": "প্রিসেট খুঁজুন"
+        "searchPresets": "প্রিসেট খুঁজুন",
+        "background": "পটভূমি",
+        "backgroundFor": "{0} শৈলীর পটভূমি",
+        "backgroundDefault": "ডিফল্ট",
+        "backgroundColor": "একক রং",
+        "backgroundImage": "ছবি বেছে নিন…",
+        "backgroundFilter": "ছবি (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "এই পটভূমি ব্যবহার করা যাচ্ছে না। বৈধ ছবি বা HEX রং বেছে নিন।",
+        "cancel": "Close"
       }
     },
     {
@@ -1375,7 +1439,15 @@
         "backupLoaded": "Копия импортирована. Текущие данные сохранены.",
         "backupInvalid": "Копия повреждена или несовместима.",
         "presetMissing": "Этот стиль больше недоступен.",
-        "searchPresets": "Поиск стилей"
+        "searchPresets": "Поиск стилей",
+        "background": "Фон",
+        "backgroundFor": "Фон стиля {0}",
+        "backgroundDefault": "По умолчанию",
+        "backgroundColor": "Сплошной цвет",
+        "backgroundImage": "Выбрать изображение…",
+        "backgroundFilter": "Изображения (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Не удалось использовать фон. Выберите корректное изображение или цвет HEX.",
+        "cancel": "Close"
       }
     },
     {
@@ -1528,7 +1600,15 @@
         "backupLoaded": "Sauvegarde importée. Les données existantes sont conservées.",
         "backupInvalid": "Sauvegarde endommagée ou incompatible.",
         "presetMissing": "Ce préréglage n’est plus disponible.",
-        "searchPresets": "Rechercher des préréglages"
+        "searchPresets": "Rechercher des préréglages",
+        "background": "Arrière-plan",
+        "backgroundFor": "Arrière-plan du style {0}",
+        "backgroundDefault": "Par défaut",
+        "backgroundColor": "Couleur unie",
+        "backgroundImage": "Choisir une image…",
+        "backgroundFilter": "Images (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Impossible d’utiliser cet arrière-plan. Choisissez une image valide ou une couleur HEX.",
+        "cancel": "Close"
       }
     },
     {
@@ -1681,7 +1761,15 @@
         "backupLoaded": "Sicherung importiert. Vorhandene Daten bleiben erhalten.",
         "backupInvalid": "Sicherung beschädigt oder inkompatibel.",
         "presetMissing": "Diese Vorlage ist nicht mehr verfügbar.",
-        "searchPresets": "Vorlagen suchen"
+        "searchPresets": "Vorlagen suchen",
+        "background": "Hintergrund",
+        "backgroundFor": "Hintergrund für {0}",
+        "backgroundDefault": "Standard",
+        "backgroundColor": "Einfarbig",
+        "backgroundImage": "Bild auswählen…",
+        "backgroundFilter": "Bilder (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Dieser Hintergrund kann nicht verwendet werden. Wähle ein gültiges Bild oder eine HEX-Farbe.",
+        "cancel": "Close"
       }
     },
     {
@@ -1834,7 +1922,15 @@
         "backupLoaded": "読み込みました。既存のデータは保持されます。",
         "backupInvalid": "バックアップが破損しているか非対応です。",
         "presetMissing": "このプリセットは利用できません。",
-        "searchPresets": "プリセットを検索"
+        "searchPresets": "プリセットを検索",
+        "background": "背景",
+        "backgroundFor": "{0} の背景",
+        "backgroundDefault": "標準",
+        "backgroundColor": "単色",
+        "backgroundImage": "画像を選択…",
+        "backgroundFilter": "画像 (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "この背景は使用できません。有効な画像または HEX 色を選択してください。",
+        "cancel": "Close"
       }
     },
     {
@@ -1987,7 +2083,15 @@
         "backupLoaded": "백업을 가져왔습니다. 기존 데이터는 유지됩니다.",
         "backupInvalid": "백업이 손상되었거나 호환되지 않습니다.",
         "presetMissing": "이 프리셋은 더 이상 사용할 수 없습니다.",
-        "searchPresets": "프리셋 검색"
+        "searchPresets": "프리셋 검색",
+        "background": "배경",
+        "backgroundFor": "{0} 스타일 배경",
+        "backgroundDefault": "기본값",
+        "backgroundColor": "단색",
+        "backgroundImage": "이미지 선택…",
+        "backgroundFilter": "이미지 (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "이 배경을 사용할 수 없습니다. 올바른 이미지 또는 HEX 색상을 선택하세요.",
+        "cancel": "Close"
       }
     },
     {
@@ -2140,7 +2244,15 @@
         "backupLoaded": "Cadangan diimpor. Data lama dipertahankan.",
         "backupInvalid": "Cadangan rusak atau tidak kompatibel.",
         "presetMissing": "Preset ini tidak lagi tersedia.",
-        "searchPresets": "Cari preset"
+        "searchPresets": "Cari preset",
+        "background": "Latar belakang",
+        "backgroundFor": "Latar belakang gaya {0}",
+        "backgroundDefault": "Bawaan",
+        "backgroundColor": "Warna polos",
+        "backgroundImage": "Pilih gambar…",
+        "backgroundFilter": "Gambar (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "Latar belakang ini tidak dapat digunakan. Pilih gambar atau warna HEX yang valid.",
+        "cancel": "Close"
       }
     },
     {
@@ -2293,7 +2405,15 @@
         "backupLoaded": "بیک اپ درآمد ہوا۔ موجودہ ڈیٹا محفوظ ہے۔",
         "backupInvalid": "بیک اپ خراب یا غیر موافق ہے۔",
         "presetMissing": "یہ پیش سیٹ اب دستیاب نہیں۔",
-        "searchPresets": "پری سیٹ تلاش کریں"
+        "searchPresets": "پری سیٹ تلاش کریں",
+        "background": "پس منظر",
+        "backgroundFor": "{0} طرز کا پس منظر",
+        "backgroundDefault": "طے شدہ",
+        "backgroundColor": "یکساں رنگ",
+        "backgroundImage": "تصویر منتخب کریں…",
+        "backgroundFilter": "تصاویر (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp",
+        "backgroundError": "یہ پس منظر استعمال نہیں ہو سکتا۔ درست تصویر یا HEX رنگ منتخب کریں۔",
+        "cancel": "Close"
       }
     }
   ]

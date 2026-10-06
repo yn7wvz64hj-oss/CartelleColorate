@@ -46,7 +46,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Pubblica la prima release ufficiale dopo i test
+      - name: Pubblica la release ufficiale dopo i test
         shell: powershell
         env:
           GH_TOKEN: ${{ github.token }}

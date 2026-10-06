@@ -56,7 +56,8 @@ function Export-LibraryBackup([string]$Path) {
         Assert-CompletePreset $preset; $asset=''; if ($preset.Png) { $bytes=[IO.File]::ReadAllBytes($preset.Png); Assert-BackupPng $bytes; $asset=Get-DataHash $bytes; $assets[$asset]=$bytes }
         $presets+=[pscustomobject]@{Name=$preset.Name;Hex=$preset.Hex;Badge=$preset.Badge;BadgeHex=$preset.BadgeHex;Favorite=[bool]$preset.Favorite;Asset=$asset}
     }
-    $document=[pscustomobject]@{Format='CartelleColorateBackup';Version=1;Colors=@(Read-Palette);Groups=@(Read-ProductList 'raccolte.json');Recent=@(Read-RecentColors);Settings=$settings;Presets=$presets}
+    $backgrounds=@(Get-PortableBackgrounds $assets)
+    $document=[pscustomobject]@{Backgrounds=$backgrounds;Format='CartelleColorateBackup';Version=1;Colors=@(Read-Palette);Groups=@(Read-ProductList 'raccolte.json');Recent=@(Read-RecentColors);Settings=$settings;Presets=$presets}
     $target=[IO.Path]::GetFullPath($Path); $temporary=$target+'.'+[Guid]::NewGuid().ToString('N')+'.tmp'; $stream=$null; $zip=$null
     try { $stream=[IO.File]::Create($temporary); $zip=[IO.Compression.ZipArchive]::new($stream,[IO.Compression.ZipArchiveMode]::Create,$true)
         $entry=$zip.CreateEntry('backup.json'); $output=$entry.Open(); try { $bytes=[Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject $document -Depth 12)); $output.Write($bytes,0,$bytes.Length) } finally { $output.Dispose() }
@@ -73,6 +74,7 @@ function Import-LibraryBackup([string]$Path) {
         $manifest=$zip.GetEntry('backup.json'); if (!$manifest -or $manifest.Length -gt 16777216) { throw (T 'backupInvalid') }; $reader=[IO.StreamReader]::new($manifest.Open(),[Text.Encoding]::UTF8); try { $document=$reader.ReadToEnd() | ConvertFrom-Json } finally { $reader.Dispose() }
         if ($document.Format -cne 'CartelleColorateBackup' -or $document.Version -ne 1 -or $null -eq $document.Colors -or $null -eq $document.Presets) { throw (T 'backupInvalid') }
         foreach ($preset in $document.Presets) { $preset | Add-Member -NotePropertyName Id -NotePropertyValue ([Guid]::NewGuid().ToString('N')) -Force; Assert-CompletePreset $preset; if ($preset.Asset) { if ($preset.Asset -notmatch '^[a-f0-9]{64}$') { throw (T 'backupInvalid') }; if (!$assets.ContainsKey($preset.Asset)) { $entry=$zip.GetEntry('images/'+$preset.Asset+'.png'); if (!$entry) { throw (T 'backupInvalid') }; $input=$entry.Open(); $memory=[IO.MemoryStream]::new(); try { $input.CopyTo($memory); $bytes=$memory.ToArray() } finally { $input.Dispose(); $memory.Dispose() }; if ((Get-DataHash $bytes) -cne $preset.Asset) { throw (T 'backupInvalid') }; Assert-BackupPng $bytes; $assets[$preset.Asset]=$bytes } } }
+        $backgrounds=@(Read-PortableBackgrounds $document.Backgrounds $zip $assets)
     } finally { $zip.Dispose() }
     $colors=@(Read-Palette); foreach ($entry in $document.Colors) { if ($entry.Name -isnot [string] -or !$entry.Name.Trim() -or $entry.Hex -notmatch '^#[0-9A-Fa-f]{6}$' -or ($null -ne $entry.Favorite -and $entry.Favorite -isnot [bool]) -or ($null -ne $entry.Group -and $entry.Group -isnot [string])) { throw (T 'backupInvalid') }; if (!@($colors | Where-Object { $_.Name -ceq $entry.Name -and $_.Hex -eq $entry.Hex -and [string]$_.Group -ceq [string]$entry.Group }).Count) { $colors+=[pscustomobject]@{Name=$entry.Name;Hex=$entry.Hex.ToUpperInvariant();Favorite=[bool]$entry.Favorite;Group=[string]$entry.Group} } }
     $groups=@(Read-ProductList 'raccolte.json'); foreach ($group in $document.Groups) { if ($group -isnot [string] -or !$group.Trim()) { throw (T 'backupInvalid') }; $groups+=$group }
@@ -85,13 +87,14 @@ function Import-LibraryBackup([string]$Path) {
         $png=''; if ($preset.Asset) { $png=Join-Path $root ('preset-import-'+$preset.Id+'.png'); $pendingAssets[$png]=$assets[$preset.Asset] }
         $presets+=[pscustomobject]@{Id=$preset.Id;Name=$name;OriginName=$preset.Name;Hex=$preset.Hex.ToUpperInvariant();Badge=$preset.Badge;BadgeHex=$preset.BadgeHex.ToUpperInvariant();Favorite=[bool]$preset.Favorite;Png=$png}
     }
-    $writes=@{'colori.json'=$colors;'preset.json'=$presets;'raccolte.json'=@($groups | Sort-Object -Unique);'recenti.json'=@($recent | Select-Object -Unique -First 8);'impostazioni.json'=$settings}; $previous=@{}; $created=@()
+    $backgroundChoices=Read-BackgroundChoices; foreach ($entry in $backgrounds) { $image=''; if ($entry.Mode -eq 'Image') { $image=Join-Path $root ('background-'+[Guid]::NewGuid().ToString('N')+'.png'); $pendingAssets[$image]=$assets[$entry.Asset] }; $backgroundChoices[$entry.Style]=[pscustomobject]@{Style=$entry.Style;Mode=$entry.Mode;Hex=$entry.Hex;Image=$image} }
+    $writes=@{'colori.json'=$colors;'preset.json'=$presets;'raccolte.json'=@($groups | Sort-Object -Unique);'recenti.json'=@($recent | Select-Object -Unique -First 8);'impostazioni.json'=$settings}; if ($backgrounds.Count) { $writes['sfondi.json']=@($backgroundChoices.Values) }; $previous=@{}; $created=@()
     foreach ($name in $writes.Keys) { $file=Join-Path $root $name; $previous[$file]=if ([IO.File]::Exists($file)) { [IO.File]::ReadAllBytes($file) } else { $null } }
     try { foreach ($file in $pendingAssets.Keys) { [IO.File]::WriteAllBytes($file,$pendingAssets[$file]); $created+=$file }; foreach ($name in $writes.Keys) { Write-AdvancedJson (Join-Path $root $name) $writes[$name] } }
     catch { foreach ($file in $previous.Keys) { if ($null -ne $previous[$file]) { [IO.File]::WriteAllBytes($file,$previous[$file]) } elseif ([IO.File]::Exists($file)) { [IO.File]::Delete($file) } }; foreach ($file in $created) { [IO.File]::Delete($file) }; throw }
 }
 function Show-LibraryBackup {
-    $menu=[Windows.Controls.ContextMenu]::new(); $menu.PlacementTarget=$ui.PaletteTools
+    $menu=New-ModernMenu $ui.PaletteTools
     foreach ($action in @('exportBackup','importBackup')) { $item=[Windows.Controls.MenuItem]::new(); $item.Header=T $action; $item.Tag=$action; $item.Add_Click({ param($sender,$e) try {
         $dialog=if ($sender.Tag -eq 'importBackup') { [Microsoft.Win32.OpenFileDialog]::new() } else { [Microsoft.Win32.SaveFileDialog]::new() }; $dialog.Filter='CartelleColorate (*.ccbackup)|*.ccbackup'; $dialog.DefaultExt='.ccbackup'; $dialog.FileName='CartelleColorate-backup'
         if ($dialog.ShowDialog($window)) { if ($sender.Tag -eq 'exportBackup') { Export-LibraryBackup $dialog.FileName; Show-Toast (T 'backupSaved') } else { Import-LibraryBackup $dialog.FileName; Reload-LibraryInterface; Show-Toast (T 'backupLoaded') } }
@@ -267,3 +270,5 @@ function Test-PngDropInterface([string]$Png) {
     if ($script:pngSelection -or !$ui.Apply.IsEnabled) { throw 'Stale asynchronous preview replaces chosen color' }
     Set-PngPreview $Png
 }
+
+. (Join-Path $PSScriptRoot 'Visuals.ps1')
