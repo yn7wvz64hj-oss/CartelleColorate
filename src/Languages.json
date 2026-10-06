@@ -69,7 +69,10 @@
         "invalidFolderName": "Inserisci un nome valido: niente caratteri vietati, nomi riservati, punti o spazi finali.",
         "folderNameExists": "Esiste già una cartella o un file con questo nome.",
         "renameBackupConflict": "Esiste un backup associato al nuovo nome. Scegli un nome diverso per conservarlo.",
-        "applyHelp": "Applica il nome e il colore o PNG scelto."
+        "applyHelp": "Applica il nome e il colore o PNG scelto.",
+        "appearance": "Stile",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -140,7 +143,10 @@
         "invalidFolderName": "Enter a valid name without forbidden characters, reserved names or trailing dots or spaces.",
         "folderNameExists": "A folder or file with this name already exists.",
         "renameBackupConflict": "A backup is already associated with the new name. Choose another name to preserve it.",
-        "applyHelp": "Apply the name and selected color or PNG."
+        "applyHelp": "Apply the name and selected color or PNG.",
+        "appearance": "Style",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -211,7 +217,10 @@
         "invalidFolderName": "请输入有效名称，不可使用禁用字符、保留名称或结尾的句点和空格。",
         "folderNameExists": "已存在同名文件或文件夹。",
         "renameBackupConflict": "新名称已有备份。请换一个名称以保留该备份。",
-        "applyHelp": "应用名称及所选颜色或 PNG 图片。"
+        "applyHelp": "应用名称及所选颜色或 PNG 图片。",
+        "appearance": "外观",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -282,7 +291,10 @@
         "invalidFolderName": "Introduce un nombre válido sin caracteres prohibidos, nombres reservados ni puntos o espacios al final.",
         "folderNameExists": "Ya existe una carpeta o un archivo con este nombre.",
         "renameBackupConflict": "El nuevo nombre ya tiene una copia de seguridad. Elige otro para conservarla.",
-        "applyHelp": "Aplica el nombre y el color o PNG elegido."
+        "applyHelp": "Aplica el nombre y el color o PNG elegido.",
+        "appearance": "Estilo",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -353,7 +365,10 @@
         "invalidFolderName": "सही नाम लिखें: प्रतिबंधित वर्ण, आरक्षित नाम या अंत में बिंदु और खाली स्थान न हों।",
         "folderNameExists": "इस नाम की फ़ाइल या फ़ोल्डर पहले से मौजूद है।",
         "renameBackupConflict": "नए नाम से जुड़ा बैकअप मौजूद है। उसे सुरक्षित रखने के लिए दूसरा नाम चुनें।",
-        "applyHelp": "नाम और चुना हुआ रंग या PNG लागू करें।"
+        "applyHelp": "नाम और चुना हुआ रंग या PNG लागू करें।",
+        "appearance": "शैली",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -424,7 +439,10 @@
         "invalidFolderName": "أدخل اسمًا صالحًا دون أحرف ممنوعة أو أسماء محجوزة أو نقاط ومسافات في النهاية.",
         "folderNameExists": "يوجد ملف أو مجلد بهذا الاسم بالفعل.",
         "renameBackupConflict": "توجد نسخة احتياطية مرتبطة بالاسم الجديد. اختر اسمًا آخر للحفاظ عليها.",
-        "applyHelp": "تطبيق الاسم واللون أو صورة PNG المحددة."
+        "applyHelp": "تطبيق الاسم واللون أو صورة PNG المحددة.",
+        "appearance": "المظهر",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -495,7 +513,10 @@
         "invalidFolderName": "Digite um nome válido sem caracteres proibidos, nomes reservados, pontos ou espaços no final.",
         "folderNameExists": "Já existe uma pasta ou arquivo com esse nome.",
         "renameBackupConflict": "O novo nome já tem um backup associado. Escolha outro para preservá-lo.",
-        "applyHelp": "Aplique o nome e a cor ou PNG escolhido."
+        "applyHelp": "Aplique o nome e a cor ou PNG escolhido.",
+        "appearance": "Estilo",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -566,7 +587,10 @@
         "invalidFolderName": "সঠিক নাম লিখুন: নিষিদ্ধ অক্ষর, সংরক্ষিত নাম বা শেষে বিন্দু ও ফাঁকা স্থান ব্যবহার করবেন না।",
         "folderNameExists": "এই নামে একটি ফাইল বা ফোল্ডার ইতিমধ্যে আছে।",
         "renameBackupConflict": "নতুন নামের সঙ্গে একটি ব্যাকআপ আছে। সেটি রাখতে অন্য নাম বেছে নিন।",
-        "applyHelp": "নাম এবং নির্বাচিত রং বা PNG প্রয়োগ করুন।"
+        "applyHelp": "নাম এবং নির্বাচিত রং বা PNG প্রয়োগ করুন।",
+        "appearance": "শৈলী",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -637,7 +661,10 @@
         "invalidFolderName": "Введите допустимое имя без запрещённых символов, зарезервированных имён, точек и пробелов в конце.",
         "folderNameExists": "Папка или файл с таким именем уже существует.",
         "renameBackupConflict": "С новым именем уже связана резервная копия. Выберите другое имя, чтобы сохранить её.",
-        "applyHelp": "Применить имя и выбранный цвет или PNG."
+        "applyHelp": "Применить имя и выбранный цвет или PNG.",
+        "appearance": "Стиль",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -708,7 +735,10 @@
         "invalidFolderName": "Saisissez un nom valide, sans caractères interdits, noms réservés, points ou espaces à la fin.",
         "folderNameExists": "Un dossier ou fichier porte déjà ce nom.",
         "renameBackupConflict": "Une sauvegarde est déjà associée au nouveau nom. Choisissez-en un autre pour la conserver.",
-        "applyHelp": "Appliquer le nom et la couleur ou le PNG choisi."
+        "applyHelp": "Appliquer le nom et la couleur ou le PNG choisi.",
+        "appearance": "Style",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -779,7 +809,10 @@
         "invalidFolderName": "Gib einen gültigen Namen ohne verbotene Zeichen, reservierte Namen und abschließende Punkte oder Leerzeichen ein.",
         "folderNameExists": "Ein Ordner oder eine Datei mit diesem Namen existiert bereits.",
         "renameBackupConflict": "Dem neuen Namen ist bereits eine Sicherung zugeordnet. Wähle einen anderen Namen, um sie zu behalten.",
-        "applyHelp": "Name und ausgewählte Farbe oder PNG anwenden."
+        "applyHelp": "Name und ausgewählte Farbe oder PNG anwenden.",
+        "appearance": "Stil",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -850,7 +883,10 @@
         "invalidFolderName": "禁止文字、予約名、末尾のピリオドや空白を使わず、有効な名前を入力してください。",
         "folderNameExists": "同じ名前のファイルまたはフォルダーが存在します。",
         "renameBackupConflict": "新しい名前には既にバックアップがあります。保持するために別の名前を選んでください。",
-        "applyHelp": "名前と選択した色または PNG を適用します。"
+        "applyHelp": "名前と選択した色または PNG を適用します。",
+        "appearance": "スタイル",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -921,7 +957,10 @@
         "invalidFolderName": "금지된 문자, 예약된 이름 또는 끝의 마침표와 공백 없이 올바른 이름을 입력하세요.",
         "folderNameExists": "같은 이름의 파일 또는 폴더가 이미 있습니다.",
         "renameBackupConflict": "새 이름에 연결된 백업이 있습니다. 백업을 보존하려면 다른 이름을 선택하세요.",
-        "applyHelp": "이름과 선택한 색 또는 PNG를 적용합니다."
+        "applyHelp": "이름과 선택한 색 또는 PNG를 적용합니다.",
+        "appearance": "스타일",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -992,7 +1031,10 @@
         "invalidFolderName": "Masukkan nama yang valid tanpa karakter terlarang, nama khusus, titik atau spasi di akhir.",
         "folderNameExists": "Folder atau berkas dengan nama ini sudah ada.",
         "renameBackupConflict": "Nama baru sudah memiliki cadangan. Pilih nama lain untuk mempertahankannya.",
-        "applyHelp": "Terapkan nama dan warna atau PNG yang dipilih."
+        "applyHelp": "Terapkan nama dan warna atau PNG yang dipilih.",
+        "appearance": "Gaya",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     },
     {
@@ -1063,7 +1105,10 @@
         "invalidFolderName": "درست نام لکھیں: ممنوعہ حروف، مخصوص نام یا آخر میں نقطے اور خالی جگہ نہ ہوں۔",
         "folderNameExists": "اس نام کی فائل یا فولڈر پہلے سے موجود ہے۔",
         "renameBackupConflict": "نئے نام سے ایک بیک اپ منسلک ہے۔ اسے محفوظ رکھنے کے لیے دوسرا نام چنیں۔",
-        "applyHelp": "نام اور منتخب رنگ یا PNG لگائیں۔"
+        "applyHelp": "نام اور منتخب رنگ یا PNG لگائیں۔",
+        "appearance": "انداز",
+        "windowsStyle": "Windows",
+        "macStyle": "macOS"
       }
     }
   ]

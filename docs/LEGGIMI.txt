@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.4.0-beta.1
+CARTELLECOLORATE 0.5.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -43,6 +43,9 @@ Rimuovi-menu.cmd rimuove il menu e ferma il processo in background. Non
 ripristina tutte le cartelle e non cancella colori, icone o backup.
 
 ASPETTO
+Il pulsante in alto con Windows o macOS permette di scegliere lo stile.
+Windows usa superfici classiche opache; macOS usa vetro e pannelli rialzati.
+La scelta viene salvata e puoi cambiarla senza perdere la selezione.
 Finestra compatta con pannelli arrotondati e superfici traslucide.
 Il vetro sfocato usa il compositore di Windows 11 22H2 o successivo.
 Se le trasparenze del sistema sono disattivate o non supportate, l’app

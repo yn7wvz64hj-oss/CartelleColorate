@@ -54,29 +54,34 @@ function Translate-Error([string]$Message) {
     if ($Message -eq 'Non riesco a leggere quel punto. Riprova con la pipetta.') { return T 'pixelError' }
     return $Message
 }
-function Save-LanguagePreference([string]$Code) {
-    if (!$script:languageMap.ContainsKey($Code)) { throw ('Unsupported language: '+$Code) }
+function Save-AppSetting([string]$Key,[string]$Value) {
     $temporary=$null
     try {
         $settings=[pscustomobject]@{}
         if (Test-Path -LiteralPath $script:languageSettingsPath) {
-            try {
-                $saved=Get-Content -LiteralPath $script:languageSettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
-                if ($saved -is [pscustomobject]) { $settings=$saved }
-            } catch { }
+            try { $saved=Get-Content -LiteralPath $script:languageSettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json; if ($saved -is [pscustomobject]) { $settings=$saved } } catch {}
         }
-        $settings | Add-Member -NotePropertyName language -NotePropertyValue $Code -Force
-        $directory=Split-Path $script:languageSettingsPath -Parent
-        New-Item -ItemType Directory -Path $directory -Force | Out-Null
+        $settings | Add-Member -NotePropertyName $Key -NotePropertyValue $Value -Force
+        New-Item -ItemType Directory -Path (Split-Path $script:languageSettingsPath -Parent) -Force | Out-Null
         $temporary=$script:languageSettingsPath+'.'+[Guid]::NewGuid().ToString('N')+'.tmp'
         [IO.File]::WriteAllText($temporary,($settings | ConvertTo-Json -Depth 20),[Text.UTF8Encoding]::new($true))
-        if ([IO.File]::Exists($script:languageSettingsPath)) { [IO.File]::Replace($temporary,$script:languageSettingsPath,[NullString]::Value) }
-        else { [IO.File]::Move($temporary,$script:languageSettingsPath) }
-        $script:activeLanguage=$script:languageMap[$Code]
-        $script:hasLanguagePreference=$true
+        if ([IO.File]::Exists($script:languageSettingsPath)) { [IO.File]::Replace($temporary,$script:languageSettingsPath,[NullString]::Value) } else { [IO.File]::Move($temporary,$script:languageSettingsPath) }
     } catch { throw [InvalidOperationException]::new((T 'settingsError'),$_.Exception) }
     finally { if ($temporary -and [IO.File]::Exists($temporary)) { [IO.File]::Delete($temporary) } }
 }
+function Save-LanguagePreference([string]$Code) {
+    if (!$script:languageMap.ContainsKey($Code)) { throw ('Unsupported language: '+$Code) }
+    Save-AppSetting 'language' $Code
+    $script:activeLanguage=$script:languageMap[$Code]; $script:hasLanguagePreference=$true
+}
+function Read-AppearancePreference {
+    try {
+        $saved=Get-Content -LiteralPath $script:languageSettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if ($saved.appearance -eq 'Windows') { return 'Windows' }
+    } catch {}
+    return 'MacOS'
+}
+function Save-AppearancePreference([ValidateSet('Windows','MacOS')][string]$Style) { Save-AppSetting 'appearance' $Style }
 function Set-LanguageResources($Window,$Language=$script:activeLanguage) {
     foreach ($property in $Language.strings.PSObject.Properties) { $Window.Resources['L_'+$property.Name]=[string]$property.Value }
     $Window.FlowDirection=if ($Language.rtl) { 'RightToLeft' } else { 'LeftToRight' }
@@ -97,12 +102,15 @@ function New-LanguageDialog($Owner) {
  </Grid>
 </Window>
 '@
+    $classic=(Read-AppearancePreference) -eq 'Windows'
+    if ($classic) { $languageXaml=[xml]$languageXaml.OuterXml.Replace('CornerRadius="12"','CornerRadius="5"').Replace('CornerRadius="18"','CornerRadius="8"') }
     $dialog=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($languageXaml))
     $colors=@{Page='#F1F5FA';Card='#C0FFFFFF';Text='#18212F';Secondary='#526174';Line='#300D2440';Hover='#DCFFFFFF';Selected='#350078EA';Accent='#007AFF';OnAccent='#FFFFFF'}
     $isDark=$false
     try { $isDark=(Get-ItemPropertyValue 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' -Name AppsUseLightTheme) -eq 0 } catch { }
     if ($Theme -eq 'Dark') { $isDark=$true }; if ($Theme -eq 'Light') { $isDark=$false }
     if ($isDark) { $colors=@{Page='#202832';Card='#493F5066';Text='#F6F8FC';Secondary='#BBC7D8';Line='#38FFFFFF';Hover='#65556B85';Selected='#554D9EFF';Accent='#65B5FF';OnAccent='#071C31'} }
+    if ($classic) { $colors=if ($isDark) { @{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#ADADAD';Line='#414141';Hover='#383838';Selected='#344452';Accent='#60CDFF';OnAccent='#00304A'} } else { @{Page='#F3F3F3';Card='#FFFFFF';Text='#1A1A1A';Secondary='#666666';Line='#E4E4E4';Hover='#F0F0F0';Selected='#E8F0FB';Accent='#0067C0';OnAccent='#FFFFFF'} } }
     foreach ($key in $colors.Keys) { $dialog.Resources[$key]=[Windows.Media.BrushConverter]::new().ConvertFromString($colors[$key]) }
     Set-LanguageResources $dialog
     if ($Owner) { $dialog.Owner=$Owner; $dialog.WindowStartupLocation='CenterOwner'; $dialog.ShowInTaskbar=$false }

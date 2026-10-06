@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate per Windows — 0.4.0-beta.1](downloads/CartelleColorate-0.4.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate per Windows — 0.5.0-beta.1](downloads/CartelleColorate-0.5.0-beta.1-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -33,14 +33,23 @@ La schermata iniziale propone la lingua di Windows, se supportata, oppure l’in
 - Sottomenu con colori salvati e icone colorate.
 - Pipetta desktop con lente 10×, pixel centrale evidenziato e codice HEX; Esc annulla.
 - Importazione PNG come icona, con proporzioni e trasparenza conservate.
-- Finestra compatta 456 × 600, superfici arrotondate e riflessi leggeri, con tema chiaro/scuro del sistema.
+- Finestra compatta 456 × 616, superfici arrotondate e riflessi leggeri, con tema chiaro/scuro del sistema.
+- Pulsante dello stile in alto: scegli Windows classico oppure macOS con superfici in vetro rialzate. La scelta è salvata e il passaggio conserva nome, colore e PNG selezionati.
 - Vetro traslucido con sfocatura nativa del desktop su Windows 11 22H2 o successivo; sfondo opaco se la trasparenza è disabilitata o non disponibile.
 - Ripristino della configurazione originale della cartella.
 - Processo in background per i colori del menu, che termina dopo 20 minuti di inattività.
 
+## Due stili
+
+Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appare durante l’uso quando disponibile; queste anteprime mostrano la disposizione e le superfici.
+
+| Windows classico | Vetro macOS |
+| --- | --- |
+| ![Stile Windows](docs/images/stile-windows.png) | ![Stile macOS](docs/images/stile-macos.png) |
+
 ## Requisiti e stato della release
 
-**Versione 0.4.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
+**Versione 0.5.0-beta.1: prima anteprima pubblica.** Test automatici effettuati nell'ambiente di sviluppo; installazione su PC diversi, uso dello zoom su più monitor e comportamento visivo di Esplora file richiedono ancora verifiche manuali.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 

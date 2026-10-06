@@ -6,6 +6,7 @@ La build con `-Test` verifica:
 
 - Riproduzione del blocco 0x80131515 su DLL con ZoneId=3, segnalazione/log dell'errore e ricompilazione locale delle librerie.
 
+- Cambio tra Windows e macOS, salvataggio dello stile e conservazione della lingua e della selezione.
 - Completezza dei 15 cataloghi e coerenza dei segnaposti.
 - Lingua di Windows, preferenze mancanti o danneggiate e salvataggio atomico.
 - Annullamento e conferma della schermata iniziale, con nome dei colori conservato.

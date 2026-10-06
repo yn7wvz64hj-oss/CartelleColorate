@@ -1,5 +1,13 @@
 # Note di versione
 
+## 0.5.0-beta.1 — 6 ottobre 2026
+
+- Stile macOS ispirato a pannelli in vetro rialzati, con ombre morbide e bordi luminosi.
+- Pulsante in alto per scegliere Windows classico o macOS, con preferenza salvata.
+- Cambio stile immediato, senza perdere nome, colore, palette, lingua o PNG selezionato.
+- Stile Windows opaco, senza ombre, con colori e bordi classici.
+- Ombre applicate a superfici statiche separate dal selettore per conservare la fluidità.
+
 ## 0.4.0-beta.1 — 6 ottobre 2026
 
 - Interfaccia ridotta da 500 × 690 a 456 × 600, con campi e comandi più compatti.
