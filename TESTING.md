@@ -22,6 +22,7 @@ La build con `-Test` verifica:
 - Palette di 150 colori e rinomina persistente.
 - Scorrimento della raccolta con la nuova barra sottile e palette virtualizzata nelle 15 lingue.
 - Riquadro cliccabile, valori intermedi, estremi e trascinamento fuori bordo.
+- Nuovo senza creazione anticipata di una nuvola; raccolta vuota nascosta e ripristino della lista.
 - Salvataggio/modifica/eliminazione dei colori e validazione HEX.
 - Anteprima PNG e ritorno alla modalità colore.
 - Conversione dei valori della pipetta, zoom aggiornabile e attivazione/disattivazione del gestore del mouse.

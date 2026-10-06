@@ -1,5 +1,12 @@
 # Note di versione
 
+## 0.5.1-beta.1 — 6 ottobre 2026
+
+- Colori salvati in piccole superfici separate, senza contenitore comune.
+- Nuovo accanto al titolo, con comandi più compatti.
+- Nessuna superficie vuota: le nuvole compaiono solo per i colori salvati.
+- Raccolta scorrevole e virtualizzata, con nomi lunghi consultabili dal tooltip.
+
 ## 0.5.0-beta.1 — 6 ottobre 2026
 
 - Stile macOS ispirato a pannelli in vetro rialzati, con ombre morbide e bordi luminosi.

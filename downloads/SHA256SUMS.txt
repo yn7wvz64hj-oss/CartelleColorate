@@ -4,3 +4,4 @@ c9db9d9848f96e5fed243f1403505863dba4f335b2be132ba9f6ba6097df7b28  CartelleColora
 de4fe700745c3e36ccbc2287b99b644cda6f6580bcc8b9cb62e5d2597401e980  CartelleColorate-0.3.0-beta.1-windows.zip
 eccf25e8b7c9e83da50c6557ab3ee22906d445158b6bd838815cb9a071e30f94  CartelleColorate-0.4.0-beta.1-windows.zip
 226c2724b6a028fe9b8233be3a237229e1811e64cdc6687ce127ba87d9562189  CartelleColorate-0.5.0-beta.1-windows.zip
+cad8ebeaafa2c09aba36ba0c524d2d266c99bace38ba88a25f2714d5133bb7b5  CartelleColorate-0.5.1-beta.1-windows.zip

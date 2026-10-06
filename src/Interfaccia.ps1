@@ -53,10 +53,12 @@ $script:glassEnabled=$false
    </Grid><ControlTemplate.Triggers><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Accent}"/><Setter TargetName="Box" Property="BorderThickness" Value="2"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style TargetType="ListBoxItem">
-   <Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Padding" Value="9,5"/><Setter Property="Margin" Value="4,1"/>
-   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem">
-    <Border x:Name="Row" CornerRadius="{DynamicResource ControlRadius}" Background="Transparent" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border>
-    <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Hover}"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Selected}"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/><Setter TargetName="Row" Property="BorderThickness" Value="1"/></Trigger></ControlTemplate.Triggers>
+   <Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Padding" Value="10,4"/><Setter Property="Margin" Value="3,3"/>
+   <Setter Property="ToolTip" Value="{Binding Name}"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Grid>
+    <Border Background="{DynamicResource Card}" CornerRadius="{DynamicResource ControlRadius}" Effect="{DynamicResource ButtonShadow}" IsHitTestVisible="False"/>
+    <Border x:Name="Row" CornerRadius="{DynamicResource ControlRadius}" Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border>
+    </Grid><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Hover}"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Selected}"/><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger></ControlTemplate.Triggers>
    </ControlTemplate></Setter.Value></Setter>
   </Style>
   <Style TargetType="ScrollBar">
@@ -121,13 +123,10 @@ $script:glassEnabled=$false
     <Grid Margin="0,5,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="Auto" MinWidth="112"/></Grid.ColumnDefinitions>
      <StackPanel><TextBlock Text="{DynamicResource L_name}" Margin="0,0,0,4" FontSize="11" Foreground="{DynamicResource Secondary}"/><TextBox x:Name="ColorName" AutomationProperties.Name="{DynamicResource L_name}"/></StackPanel><Button x:Name="Save" Grid.Column="2" MinWidth="112" Content="{DynamicResource L_save}" VerticalAlignment="Bottom" Height="34"/>
     </Grid>
-    <Grid Margin="0,0,0,4"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="Delete" Grid.Column="1" Content="{DynamicResource L_delete}" Margin="4,0,5,0" Padding="10,5" Visibility="Collapsed"/><Button x:Name="New" Grid.Column="2" Content="{DynamicResource L_new}" Padding="10,5"/></Grid>
-    <Grid Margin="2,2,2,5"><Border Background="{DynamicResource Card}" CornerRadius="{DynamicResource CardRadius}" Effect="{DynamicResource PanelShadow}" IsHitTestVisible="False"/>
-    <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="{DynamicResource CardRadius}">
-     <ListBox x:Name="Colors" Height="90" Padding="0" Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
-      <ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Ellipse Width="16" Height="16" Fill="{Binding Hex}" HorizontalAlignment="Left"/><TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></Grid></DataTemplate></ListBox.ItemTemplate>
-     </ListBox>
-    </Border></Grid>
+    <Grid Margin="0,0,0,3"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="{DynamicResource L_new}" Margin="8,0,0,0" Padding="9,4" MinHeight="30"/><Button x:Name="Delete" Grid.Column="3" Content="{DynamicResource L_delete}" Margin="5,0,0,0" Padding="9,4" MinHeight="30" Visibility="Collapsed"/></Grid>
+    <ListBox x:Name="Colors" MaxHeight="104" Padding="1,2" Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+     <ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Ellipse Width="14" Height="14" Fill="{Binding Hex}" HorizontalAlignment="Left" VerticalAlignment="Center"/><TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></Grid></DataTemplate></ListBox.ItemTemplate>
+    </ListBox>
     <TextBlock x:Name="Empty" Text="{DynamicResource L_empty}" TextWrapping="Wrap" Foreground="{DynamicResource Secondary}" Margin="0,6,0,0" Visibility="Collapsed"/>
    </StackPanel>
   </ScrollViewer>
@@ -196,7 +195,7 @@ function Valid-Hex {
     if ($v -notmatch '^#[0-9A-F]{6}$') { throw (T 'hexError') }; $v
 }
 function Show-Status([string]$Text) { $ui.Status.Text=Translate-Error $Text; $ui.Status.Visibility='Visible' }
-function Update-Empty { $ui.Empty.Visibility='Collapsed'; if ($script:collection.Count -eq 0) { $ui.Empty.Visibility='Visible' } }
+function Update-Empty { $ui.Empty.Visibility='Collapsed'; $ui.Colors.Visibility='Visible'; if ($script:collection.Count -eq 0) { $ui.Empty.Visibility='Visible'; $ui.Colors.Visibility='Collapsed' } }
 function Save-Colors {
     $items=@($script:collection | ForEach-Object { [pscustomobject]@{Name=$_.Name;Hex=$_.Hex} })
     $json=ConvertTo-Json -InputObject $items -Depth 4; $tmp=$palettePath+'.tmp'
@@ -565,7 +564,8 @@ if ($Preview) {
         $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
         $saved=@(Read-Palette)
         if ($saved.Count -ne 4 -or $saved[0].Name -ne 'Lavoro personale' -or $saved[0].Hex -ne '#123ABC') { throw 'Modifica colore non riuscita' }
-        $ui.New.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)); $ui.ColorName.Text='Nuovo'; $ui.Hex.Text='#ABCDEF'
+        $beforeNewCount=$script:collection.Count
+        $ui.New.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent)); if ($script:collection.Count -ne $beforeNewCount) { throw 'Nuovo crea una nuvola prima del salvataggio.' }; $ui.ColorName.Text='Nuovo'; $ui.Hex.Text='#ABCDEF'
         $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
         if (@(Read-Palette).Count -ne 5) { throw 'Nuovo colore non salvato' }
         $ui.Delete.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
@@ -573,6 +573,9 @@ if ($Preview) {
         $ui.Hex.Text='errore'; $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
         if ($ui.Status.Visibility -ne 'Visible' -or @(Read-Palette).Count -ne 4) { throw 'Validazione HEX errata' }
         $ui.Colors.SelectedIndex=0; $ui.ColorName.Text=(T 'projects'); $ui.Hex.Text='#4A90E2'; $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        $bubbleItems=@($script:collection); $script:collection.Clear(); Update-Empty
+        if ($ui.Colors.Visibility -ne 'Collapsed') { throw 'Contenitore dei colori visibile senza colori salvati.' }
+        foreach ($bubbleItem in $bubbleItems) { $script:collection.Add($bubbleItem) }; Update-Empty; $ui.Colors.SelectedIndex=0
         Write-Output 'OK: tabella cliccabile, selezione precisa, estremi e trascinamento fuori bordo; palette e HEX.'
     } else { $ui.Colors.SelectedIndex=0 }
     $ui.Status.Visibility='Collapsed'; $ui.MainScroll.ScrollToHome()
