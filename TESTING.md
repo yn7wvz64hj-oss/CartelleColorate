@@ -19,6 +19,7 @@ La build con `-Test` verifica:
 - Conservazione dei metadati originari e degli attributi della cartella.
 - PNG in sette dimensioni, trasparenza e proporzioni.
 - Palette di 150 colori e rinomina persistente.
+- Scorrimento della raccolta con la nuova barra sottile e palette virtualizzata nelle 15 lingue.
 - Riquadro cliccabile, valori intermedi, estremi e trascinamento fuori bordo.
 - Salvataggio/modifica/eliminazione dei colori e validazione HEX.
 - Anteprima PNG e ritorno alla modalità colore.
@@ -52,3 +53,5 @@ Il 6 ottobre 2026 la compilazione dai sorgenti, i test sulle icone e i test dell
 Il workflow GitHub Actions è incluso. Lo stato delle esecuzioni sul repository pubblico è consultabile nella scheda Actions; i risultati locali sopra indicati non certificano il successo del workflow su GitHub.
 
 Durante lo sviluppo, tre comandi riutilizzando il processo hanno scritto la configurazione e notificato la shell in circa 189–219 ms. Questo non misura il ridisegno visivo di Esplora file e non è una promessa di prestazioni su altri computer.
+
+Verificati localmente attivazione del materiale DWM con superfici semitrasparenti e avvio con sfondo opaco, in tema chiaro e scuro. L’aspetto della sfocatura sul desktop e i cambi delle impostazioni di trasparenza vanno controllati anche su altri PC.

@@ -1,5 +1,13 @@
 # Note di versione
 
+## 0.4.0-beta.1 — 6 ottobre 2026
+
+- Interfaccia ridotta da 500 × 690 a 456 × 600, con campi e comandi più compatti.
+- Pannelli traslucidi, riflessi delicati, bordi arrotondati e pulsante principale sfumato.
+- Sfocatura del desktop gestita dal compositore Windows, senza catture dello schermo o blur WPF nel selettore.
+- Sfondo opaco automatico se le trasparenze sono disabilitate o il sistema non supporta il materiale.
+- Barre di scorrimento sottili, rimozione del colore accanto a Nuovo e schermata lingua coordinata.
+
 ## 0.3.0-beta.1 — 6 ottobre 2026
 
 - Rinomina della cartella dal selettore, con matita per cambiare solo il nome.

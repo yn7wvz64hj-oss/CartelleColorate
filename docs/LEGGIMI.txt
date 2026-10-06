@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.3.0-beta.1
+CARTELLECOLORATE 0.4.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -41,6 +41,12 @@ e' associato al percorso iniziale. Eventuali modifiche successive di altre
 applicazioni a desktop.ini vengono sostituite dal backup originario.
 Rimuovi-menu.cmd rimuove il menu e ferma il processo in background. Non
 ripristina tutte le cartelle e non cancella colori, icone o backup.
+
+ASPETTO
+Finestra compatta con pannelli arrotondati e superfici traslucide.
+Il vetro sfocato usa il compositore di Windows 11 22H2 o successivo.
+Se le trasparenze del sistema sono disattivate o non supportate, l’app
+mostra automaticamente uno sfondo opaco. Nessuna opzione aggiuntiva.
 
 DATI E PRESTAZIONI
 I dati restano in %LOCALAPPDATA%\CartelleColorate. colori.json e' la palette.
