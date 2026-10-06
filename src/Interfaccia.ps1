@@ -15,7 +15,7 @@ elseif ($Theme -eq 'System') {
 $tokens=@{Page='#F3F3F3';Card='#FFFFFF';Text='#1A1A1A';Secondary='#666666';Line='#E4E4E4';Hover='#F0F0F0';Selected='#E8F0FB';Accent='#0067C0';AccentHover='#005AAB';OnAccent='#FFFFFF';Input='#FAFAFA'}
 if ($dark) { $tokens=@{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#ADADAD';Line='#414141';Hover='#383838';Selected='#344452';Accent='#60CDFF';AccentHover='#78D5FF';OnAccent='#00304A';Input='#333333'} }
 [xml]$xaml=@'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Cambia colore" Width="500" Height="690" MinHeight="580" MinWidth="460" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Variable, Segoe UI" FontSize="13" Background="{DynamicResource Page}" Foreground="{DynamicResource Text}" UseLayoutRounding="True" SnapsToDevicePixels="True">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="{DynamicResource L_change}" Width="500" Height="690" MinHeight="580" MinWidth="460" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" FontFamily="Segoe UI Variable, Segoe UI" FontSize="13" Background="{DynamicResource Page}" Foreground="{DynamicResource Text}" UseLayoutRounding="True" SnapsToDevicePixels="True">
  <Window.Resources>
   <Style TargetType="Button">
    <Setter Property="Background" Value="{DynamicResource Card}"/><Setter Property="Foreground" Value="{DynamicResource Text}"/>
@@ -59,55 +59,55 @@ if ($dark) { $tokens=@{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#
  </Window.Resources>
  <Grid x:Name="Root" Margin="20,14,20,16">
   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-  <StackPanel Margin="0,0,0,10"><TextBlock Text="Colori della cartella" FontSize="22" FontWeight="SemiBold"/><TextBlock x:Name="FolderName" Margin="0,7,0,0" Foreground="{DynamicResource Secondary}" TextTrimming="CharacterEllipsis"/></StackPanel>
+  <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="{DynamicResource L_heading}" TextWrapping="Wrap" FontSize="22" FontWeight="SemiBold"/><TextBlock x:Name="FolderName" Margin="0,7,0,0" Foreground="{DynamicResource Secondary}" TextTrimming="CharacterEllipsis"/></StackPanel><Button x:Name="LanguageButton" Grid.Column="1" VerticalAlignment="Top" Padding="9,6" ToolTip="{DynamicResource L_language}" AutomationProperties.Name="{DynamicResource L_language}"><StackPanel Orientation="Horizontal"><Viewbox Width="16" Height="16" Margin="0,0,7,0"><Canvas Width="24" Height="24"><Ellipse Width="22" Height="22" Canvas.Left="1" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Ellipse Width="9" Height="22" Canvas.Left="7.5" Canvas.Top="1" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/><Path Data="M1,12 L23,12 M3,6 L21,6 M3,18 L21,18" Stroke="{DynamicResource Text}" StrokeThickness="1.5"/></Canvas></Viewbox><TextBlock x:Name="LanguageName"/></StackPanel></Button></Grid>
   <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
    <StackPanel>
     <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="8" Padding="12">
      <Grid>
       <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="116"/></Grid.ColumnDefinitions>
       <StackPanel>
-       <Grid Height="110" ClipToBounds="True">
+       <Grid Height="110" ClipToBounds="True" FlowDirection="LeftToRight">
         <Border x:Name="HueBase" Background="Red" CornerRadius="5"/>
         <Border CornerRadius="5"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="White" Offset="0"/><GradientStop Color="#00FFFFFF" Offset="1"/></LinearGradientBrush></Border.Background></Border>
         <Border CornerRadius="5"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#00000000" Offset="0"/><GradientStop Color="Black" Offset="1"/></LinearGradientBrush></Border.Background></Border>
-        <Canvas x:Name="ColorPlane" Background="Transparent" Cursor="None" Focusable="True" AutomationProperties.Name="Tabella colore: clicca o trascina; usa le frecce per regolare" ToolTip="Clicca o trascina per scegliere il colore. Frecce per regolare; Maiusc per maggiore precisione.">
+        <Canvas x:Name="ColorPlane" Background="Transparent" Cursor="None" Focusable="True" AutomationProperties.Name="{DynamicResource L_planeName}" ToolTip="{DynamicResource L_planeHelp}">
          <Ellipse x:Name="ColorPointer" Width="14" Height="14" Stroke="White" StrokeThickness="2" IsHitTestVisible="False"><Ellipse.Effect><DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.8"/></Ellipse.Effect></Ellipse>
          <Grid x:Name="HoverPoint" Width="16" Height="16" IsHitTestVisible="False" Visibility="Collapsed"><Ellipse Margin="1" Stroke="Black" StrokeThickness="3"/><Ellipse Margin="1" Stroke="White" StrokeThickness="1"/><Ellipse Width="3" Height="3" Fill="White" Stroke="Black" StrokeThickness="1"/></Grid>
         </Canvas>
        </Grid>
-       <Grid Margin="0,8,0,0" Height="24">
+       <Grid Margin="0,8,0,0" Height="24" FlowDirection="LeftToRight">
         <Border Height="10" VerticalAlignment="Center" CornerRadius="5"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="Red" Offset="0"/><GradientStop Color="Yellow" Offset="0.1667"/><GradientStop Color="Lime" Offset="0.3333"/><GradientStop Color="Cyan" Offset="0.5"/><GradientStop Color="Blue" Offset="0.6667"/><GradientStop Color="Magenta" Offset="0.8333"/><GradientStop Color="Red" Offset="1"/></LinearGradientBrush></Border.Background></Border>
-        <Slider x:Name="Hue" Minimum="0" Maximum="359.99" SmallChange="1" LargeChange="15" Background="Transparent" ToolTip="Tonalita" AutomationProperties.Name="Tonalita">
+        <Slider x:Name="Hue" Minimum="0" Maximum="359.99" SmallChange="1" LargeChange="15" Background="Transparent" ToolTip="{DynamicResource L_hue}" AutomationProperties.Name="{DynamicResource L_hue}">
          <Slider.Template><ControlTemplate TargetType="Slider"><Track x:Name="PART_Track" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}" Value="{TemplateBinding Value}"><Track.DecreaseRepeatButton><RepeatButton Command="Slider.DecreaseLarge" Opacity="0"/></Track.DecreaseRepeatButton><Track.IncreaseRepeatButton><RepeatButton Command="Slider.IncreaseLarge" Opacity="0"/></Track.IncreaseRepeatButton><Track.Thumb><Thumb Width="18" Height="22"><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="White" BorderBrush="#66000000" BorderThickness="1" CornerRadius="5"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb></Track></ControlTemplate></Slider.Template>
         </Slider>
        </Grid>
       </StackPanel>
       <StackPanel Grid.Column="2">
-       <Border Height="60" CornerRadius="6" Background="{DynamicResource Page}" Margin="0,0,0,12"><Viewbox Margin="8"><Grid Width="256" Height="256">
+       <Border Height="60" CornerRadius="6" Background="{DynamicResource Page}" Margin="0,0,0,12"><Viewbox Margin="8"><Grid Width="256" Height="256" FlowDirection="LeftToRight">
          <Path x:Name="FolderFront" Fill="#4A90E2" Data="M 52,10 L 192,10 L 192,139 L 204,152 L 204,208 L 52,208 Z"/>
          <Path x:Name="FolderBack" Fill="#60A0E6" Data="M 52,10 L 101,47 L 101,245 L 52,208 Z"/>
          <Image x:Name="UploadedPreview" Visibility="Collapsed" Stretch="Uniform" Margin="8"/>
        </Grid></Viewbox></Border>
-       <TextBlock Text="Colore HEX" Foreground="{DynamicResource Secondary}" Margin="0,0,0,7"/><TextBox x:Name="Hex" Text="#4A90E2" FontFamily="Consolas" MaxLength="7" AutomationProperties.Name="Colore HEX"/>
+       <TextBlock Text="{DynamicResource L_hex}" TextWrapping="Wrap" Foreground="{DynamicResource Secondary}" Margin="0,0,0,7"/><TextBox x:Name="Hex" FlowDirection="LeftToRight" Text="#4A90E2" FontFamily="Consolas" MaxLength="7" AutomationProperties.Name="{DynamicResource L_hex}"/>
       </StackPanel>
      </Grid>
     </Border>
-    <Grid Margin="0,8,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="124"/></Grid.ColumnDefinitions>
-     <StackPanel><TextBlock Text="Nome del colore" Margin="0,0,0,8"/><TextBox x:Name="ColorName" AutomationProperties.Name="Nome del colore"/></StackPanel><Button x:Name="Save" Grid.Column="2" Content="Salva colore" VerticalAlignment="Bottom" Height="39"/>
+    <Grid Margin="0,8,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="Auto" MinWidth="124"/></Grid.ColumnDefinitions>
+     <StackPanel><TextBlock Text="{DynamicResource L_name}" Margin="0,0,0,8"/><TextBox x:Name="ColorName" AutomationProperties.Name="{DynamicResource L_name}"/></StackPanel><Button x:Name="Save" Grid.Column="2" MinWidth="124" Content="{DynamicResource L_save}" VerticalAlignment="Bottom" Height="39"/>
     </Grid>
-    <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="Colori salvati" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="+ Nuovo" Padding="14,6"/></Grid>
+    <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{DynamicResource L_saved}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/><Button x:Name="New" Grid.Column="1" Content="{DynamicResource L_new}" Padding="14,6"/></Grid>
     <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="8">
      <ListBox x:Name="Colors" Height="106" Padding="0" Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
       <ListBox.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Ellipse Width="14" Height="20" Fill="{Binding Hex}" HorizontalAlignment="Left"/><TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></Grid></DataTemplate></ListBox.ItemTemplate>
      </ListBox>
     </Border>
-    <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="Empty" Text="Salva il tuo primo colore." Foreground="{DynamicResource Secondary}" VerticalAlignment="Center"/><Button x:Name="Delete" Grid.Column="1" Content="Elimina" Padding="12,5" Visibility="Collapsed"/></Grid>
+    <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="Empty" Text="{DynamicResource L_empty}" TextWrapping="Wrap" Foreground="{DynamicResource Secondary}" VerticalAlignment="Center"/><Button x:Name="Delete" Grid.Column="1" Content="{DynamicResource L_delete}" Padding="12,5" Visibility="Collapsed"/></Grid>
    </StackPanel>
   </ScrollViewer>
   <StackPanel Grid.Row="2" Margin="0,10,0,0">
-   <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Button x:Name="Pick" ToolTip="Preleva un colore dal desktop. Esc per annullare." AutomationProperties.Name="Pipetta colore" Padding="10,6"><Viewbox Width="20" Height="20"><Path Width="24" Height="24" Stretch="Uniform" Fill="{DynamicResource Text}" Data="M 16,2 Q 17,1 18,2 L 22,6 Q 23,7 22,8 L 19,11 L 20,12 L 18,14 L 16,12 L 8,20 L 3,21 L 4,16 L 12,8 L 10,6 L 12,4 L 13,5 Z M 6,17 L 5.5,18.5 L 7,18 L 14.5,10.5 L 13,9 Z"/></Viewbox></Button><Button x:Name="Upload" Grid.Column="1" Content="Carica PNG" Margin="8,0,0,0" Padding="12,6"/><Button x:Name="UseColor" Grid.Column="2" Content="Usa colore" HorizontalAlignment="Right" Padding="12,6" Visibility="Collapsed"/></Grid>
+   <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Button x:Name="Pick" ToolTip="{DynamicResource L_pickHelp}" AutomationProperties.Name="{DynamicResource L_pick}" Padding="10,6"><Viewbox Width="20" Height="20"><Path Width="24" Height="24" Stretch="Uniform" Fill="{DynamicResource Text}" Data="M 16,2 Q 17,1 18,2 L 22,6 Q 23,7 22,8 L 19,11 L 20,12 L 18,14 L 16,12 L 8,20 L 3,21 L 4,16 L 12,8 L 10,6 L 12,4 L 13,5 Z M 6,17 L 5.5,18.5 L 7,18 L 14.5,10.5 L 13,9 Z"/></Viewbox></Button><Button x:Name="Upload" Grid.Column="1" Content="{DynamicResource L_upload}" Margin="8,0,0,0" Padding="12,6"/><Button x:Name="UseColor" Grid.Column="2" Content="{DynamicResource L_use}" HorizontalAlignment="Right" Padding="12,6" Visibility="Collapsed"/></Grid>
    <TextBlock x:Name="Status" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed" Foreground="{DynamicResource Text}"/>
-   <Button x:Name="Apply" Content="Applica alla cartella" Style="{StaticResource Primary}" Height="42"/>
+   <Button x:Name="Apply" Content="{DynamicResource L_apply}" Style="{StaticResource Primary}" Height="42"/>
   </StackPanel>
  </Grid>
 </Window>
@@ -116,7 +116,7 @@ $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
 foreach ($key in $tokens.Keys) { $window.Resources[$key]=[Windows.Media.BrushConverter]::new().ConvertFromString($tokens[$key]) }
 $ui=@{}
-foreach ($id in @('Root','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint')) { $ui[$id]=$window.FindName($id) }
+foreach ($id in @('Root','FolderName','HueBase','ColorPlane','ColorPointer','Hue','FolderBack','FolderFront','Hex','ColorName','Save','Colors','New','Delete','Empty','Apply','Status','Upload','UseColor','UploadedPreview','Pick','HoverPoint','LanguageButton','LanguageName')) { $ui[$id]=$window.FindName($id) }
 $script:pngSelection=$null
 $ui.ColorPlane.Cursor=[Windows.Input.Cursors]::None
 $ui.ColorPlane.ForceCursor=$true
@@ -127,10 +127,10 @@ $window.Add_QueryCursor({ param($sender,$e)
 })
 $ui.FolderName.Text=[IO.Path]::GetFileName($Folder); $ui.FolderName.ToolTip=$Folder
 $script:collection=New-Object 'Collections.ObjectModel.ObservableCollection[object]'
-try { foreach ($c in @(Read-Palette)) { $script:collection.Add($c) } } catch { [Windows.MessageBox]::Show($_.Exception.Message,'CartelleColorate') | Out-Null; exit 1 }
+try { foreach ($c in @(Read-Palette)) { $script:collection.Add($c) } } catch { [Windows.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null; exit 1 }
 if ($Preview) {
     $script:collection.Clear()
-    foreach ($c in @(@{Name='Progetti';Hex='#4A90E2'},@{Name='Personale';Hex='#A78BFA'},@{Name='Da completare';Hex='#F59E0B'},@{Name='Archivio';Hex='#34B890'})) { $script:collection.Add([pscustomobject]$c) }
+    foreach ($c in @(@{Name=(T 'projects');Hex='#4A90E2'},@{Name=(T 'personal');Hex='#A78BFA'},@{Name=(T 'todo');Hex='#F59E0B'},@{Name=(T 'archive');Hex='#34B890'})) { $script:collection.Add([pscustomobject]$c) }
 }
 $ui.Colors.ItemsSource=$script:collection
 $script:syncing=$false; $script:saturation=0.67; $script:brightness=0.89
@@ -147,7 +147,7 @@ function Update-Pointer {
 function Update-Preview([string]$HexValue) {
     $script:pngSelection=$null; $ui.UploadedPreview.Visibility='Collapsed'
     $ui.FolderFront.Visibility='Visible'; $ui.FolderBack.Visibility='Visible'
-    $ui.UseColor.Visibility='Collapsed'; $ui.Save.IsEnabled=$true; $ui.Upload.Content='Carica PNG'
+    $ui.UseColor.Visibility='Collapsed'; $ui.Save.IsEnabled=$true; $ui.Upload.Content=(T 'upload')
     $ui.FolderFront.Fill=Brush $HexValue; $c=[Drawing.ColorTranslator]::FromHtml($HexValue)
     $shade='#{0:X2}{1:X2}{2:X2}' -f [int]($c.R+(255-$c.R)*0.12),[int]($c.G+(255-$c.G)*0.12),[int]($c.B+(255-$c.B)*0.12)
     $ui.FolderBack.Fill=Brush $shade
@@ -166,9 +166,9 @@ function Set-PickerFromHex([string]$HexValue) {
 }
 function Valid-Hex {
     $v=$ui.Hex.Text.Trim().ToUpperInvariant(); if ($v -match '^[0-9A-F]{6}$') { $v='#'+$v }
-    if ($v -notmatch '^#[0-9A-F]{6}$') { throw 'Inserisci un codice HEX valido, per esempio #4A90E2.' }; $v
+    if ($v -notmatch '^#[0-9A-F]{6}$') { throw (T 'hexError') }; $v
 }
-function Show-Status([string]$Text) { $ui.Status.Text=$Text; $ui.Status.Visibility='Visible' }
+function Show-Status([string]$Text) { $ui.Status.Text=Translate-Error $Text; $ui.Status.Visibility='Visible' }
 function Update-Empty { $ui.Empty.Visibility='Collapsed'; if ($script:collection.Count -eq 0) { $ui.Empty.Visibility='Visible' } }
 function Save-Colors {
     $items=@($script:collection | ForEach-Object { [pscustomobject]@{Name=$_.Name;Hex=$_.Hex} })
@@ -234,15 +234,15 @@ $ui.Hue.Add_ValueChanged({
 $ui.Hex.Add_TextChanged({ if (!$script:syncing) { try { Set-PickerFromHex (Valid-Hex); $ui.Status.Visibility='Collapsed' } catch {} } })
 $ui.Colors.Add_SelectionChanged({
     $c=$ui.Colors.SelectedItem
-    if ($c) { $ui.ColorName.Text=$c.Name; $ui.Hex.Text=$c.Hex; $ui.Save.Content='Salva modifiche'; $ui.Delete.Visibility='Visible' }
-    else { $ui.Save.Content='Salva colore'; $ui.Delete.Visibility='Collapsed' }; $ui.Status.Visibility='Collapsed'
+    if ($c) { $ui.ColorName.Text=$c.Name; $ui.Hex.Text=$c.Hex; $ui.Save.Content=(T 'saveChanges'); $ui.Delete.Visibility='Visible' }
+    else { $ui.Save.Content=(T 'save'); $ui.Delete.Visibility='Collapsed' }; $ui.Status.Visibility='Collapsed'
 })
 $ui.New.Add_Click({ $ui.Colors.SelectedIndex=-1; $ui.ColorName.Clear(); [void]$ui.ColorName.Focus(); $ui.Status.Visibility='Collapsed' })
 $ui.Save.Add_Click({ try {
     $v=Valid-Hex; $n=$ui.ColorName.Text.Trim(); if (!$n) { $n=$v }; $idx=$ui.Colors.SelectedIndex
     $item=[pscustomobject]@{Name=$n;Hex=$v}
     if ($idx -ge 0) { $script:collection[$idx]=$item } else { $script:collection.Add($item); $idx=$script:collection.Count-1 }
-    Save-Colors; $ui.Colors.SelectedIndex=$idx; $ui.ColorName.Text=$n; $ui.Save.Content='Salva modifiche'; $ui.Delete.Visibility='Visible'; $ui.Status.Visibility='Collapsed'
+    Save-Colors; $ui.Colors.SelectedIndex=$idx; $ui.ColorName.Text=$n; $ui.Save.Content=(T 'saveChanges'); $ui.Delete.Visibility='Visible'; $ui.Status.Visibility='Collapsed'
 } catch { Show-Status $_.Exception.Message } })
 $ui.Delete.Add_Click({ try { $idx=$ui.Colors.SelectedIndex; if ($idx -ge 0) { $script:collection.RemoveAt($idx); Save-Colors; $ui.ColorName.Clear() } } catch { Show-Status $_.Exception.Message } })
 function Set-PngPreview([string]$Path) {
@@ -252,30 +252,31 @@ function Set-PngPreview([string]$Path) {
     $ui.UploadedPreview.Source=$image; $ui.UploadedPreview.Visibility='Visible'
     $ui.FolderFront.Visibility='Collapsed'; $ui.FolderBack.Visibility='Collapsed'
     $script:pngSelection=$Path; $ui.UseColor.Visibility='Visible'; $ui.Save.IsEnabled=$false
-    $ui.Upload.Content='Cambia PNG'; $ui.Status.Visibility='Collapsed'
+    $ui.Upload.Content=(T 'changePng'); $ui.Status.Visibility='Collapsed'
 }
 $ui.Upload.Add_Click({
     $dialog=[Microsoft.Win32.OpenFileDialog]::new()
-    $dialog.Filter='Immagini PNG (*.png)|*.png'; $dialog.Title='Scegli l''immagine della cartella'
-    if ($dialog.ShowDialog($window)) { try { Set-PngPreview $dialog.FileName } catch { Show-Status 'Impossibile caricare il PNG selezionato.' } }
+    $dialog.Filter=(T 'pngFilter'); $dialog.Title=(T 'pngTitle')
+    if ($dialog.ShowDialog($window)) { try { Set-PngPreview $dialog.FileName } catch { Show-Status (T 'pngError') } }
 })
 $ui.UseColor.Add_Click({ try { Update-Preview (Valid-Hex) } catch { Show-Status $_.Exception.Message } })
 [xml]$lensXaml=@'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="194" Height="220" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" Background="Transparent" ShowInTaskbar="False" ShowActivated="False" Topmost="True" IsHitTestVisible="False" WindowStartupLocation="Manual">
  <Border Background="#ED202020" BorderBrush="#606060" BorderThickness="1" CornerRadius="10" Padding="13">
   <StackPanel>
-   <Grid Width="150" Height="150" ClipToBounds="True">
-    <Image x:Name="Magnified" Stretch="Fill" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+   <Grid Width="150" Height="150" ClipToBounds="True" FlowDirection="LeftToRight">
+    <Image x:Name="Magnified" Stretch="Fill" FlowDirection="LeftToRight" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
     <Rectangle Width="14" Height="14" Stroke="Black" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     <Rectangle Width="12" Height="12" Stroke="White" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
    </Grid>
    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,9,0,0"><Border x:Name="SampleSwatch" Width="14" Height="14" CornerRadius="3" Margin="0,0,8,0"/><TextBlock x:Name="SampleHex" Foreground="White" FontFamily="Consolas" FontSize="14"/></StackPanel>
-   <TextBlock Text="Clic per scegliere | Esc annulla" Foreground="#BBBBBB" FontFamily="Segoe UI" FontSize="10" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+   <TextBlock Text="{DynamicResource L_lensHint}" Foreground="#BBBBBB" FontFamily="Segoe UI" FontSize="10" HorizontalAlignment="Center" Margin="0,6,0,0"/>
   </StackPanel>
  </Border>
 </Window>
 '@
 $lens=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($lensXaml))
+$lens.FindName('SampleHex').FlowDirection='LeftToRight'
 $lensImage=$lens.FindName('Magnified'); $lensHex=$lens.FindName('SampleHex'); $lensSwatch=$lens.FindName('SampleSwatch')
 $lens.Add_SourceInitialized({ [DesktopPicker]::MakeOverlay([Windows.Interop.WindowInteropHelper]::new($lens).Handle) })
 function Set-LensImage([byte[]]$Bytes,[string]$HexValue) {
@@ -318,11 +319,11 @@ $pickerTimer.Add_Tick({
         $pickerTimer.Stop(); [DesktopPicker]::Stop(); $lens.Hide()
         $window.Show(); [void]$window.Activate()
         if (!$cancel -and $color) { $ui.Hex.Text=$color; Set-PickerFromHex $color; $ui.Status.Visibility='Collapsed' }
-        elseif (!$cancel) { Show-Status 'Non riesco a leggere quel punto. Riprova con la pipetta.' }
+        elseif (!$cancel) { Show-Status (T 'pixelError') }
     } else {
         try { Update-Lens } catch {
             $pickerTimer.Stop(); [DesktopPicker]::Stop(); $lens.Hide(); $window.Show()
-            Show-Status 'Impossibile leggere i pixel dello schermo. Riprova con la pipetta.'
+            Show-Status (T 'pixelError')
         }
     }
 })
@@ -343,11 +344,46 @@ $window.Add_SourceInitialized({
     $corner=2; [void][FluentWindow]::DwmSetWindowAttribute($hwnd,33,[ref]$corner,4)
     $mode=[int]$dark; [void][FluentWindow]::DwmSetWindowAttribute($hwnd,20,[ref]$mode,4)
 })
+
+function Apply-InterfaceLanguage {
+    Set-LanguageResources $window
+    Set-LanguageResources $lens
+    $ui.LanguageName.Text=$script:activeLanguage.nativeName
+    $ui.Save.Content=if ($ui.Colors.SelectedIndex -ge 0) { T 'saveChanges' } else { T 'save' }
+    $ui.Upload.Content=if ($script:pngSelection) { T 'changePng' } else { T 'upload' }
+    $ui.Status.Visibility='Collapsed'
+}
+$ui.LanguageButton.Add_Click({
+    try {
+        if (Show-LanguageDialog $window) {
+            Apply-InterfaceLanguage
+            if (!$Preview) { Update-Menu }
+        }
+    } catch { Show-Status $_.Exception.Message }
+})
+Apply-InterfaceLanguage
+if (!$Preview -and !$script:hasLanguagePreference) {
+    if (!(Show-LanguageDialog $null)) { $window.Close(); exit }
+    Apply-InterfaceLanguage
+    Update-Menu
+}
+
 Set-PickerFromHex '#4A90E2'; Update-Empty
 if ($Preview) {
     $window.WindowStartupLocation='Manual'; $window.Left=-3000; $window.Top=-3000; $window.ShowInTaskbar=$false
     $window.Show(); $window.UpdateLayout()
     if ($UITest) {
+        $originalLanguage=$script:activeLanguage
+        $originalHex=$ui.Hex.Text; $originalNames=@($script:collection | ForEach-Object { $_.Name }) -join '|'
+        foreach ($localeEntry in $script:languageCatalog.languages) {
+            $script:activeLanguage=$localeEntry; Apply-InterfaceLanguage; $window.UpdateLayout()
+            if ($window.Title -ne $localeEntry.strings.change -or $ui.Apply.Content -ne $localeEntry.strings.apply -or $ui.LanguageName.Text -ne $localeEntry.nativeName) { throw ('Cambio lingua interfaccia errato: '+$localeEntry.code) }
+            $expectedDirection=if ($localeEntry.rtl) { 'RightToLeft' } else { 'LeftToRight' }
+            if ($window.FlowDirection.ToString() -ne $expectedDirection -or $ui.ColorPlane.FlowDirection.ToString() -ne 'LeftToRight' -or $ui.Hex.FlowDirection.ToString() -ne 'LeftToRight' -or $lensImage.FlowDirection.ToString() -ne 'LeftToRight') { throw ('Direzione interfaccia errata: '+$localeEntry.code) }
+            if ($ui.Hex.Text -ne $originalHex -or (@($script:collection | ForEach-Object { $_.Name }) -join '|') -ne $originalNames) { throw 'Cambio lingua altera colore o nomi personali.' }
+        }
+        $script:activeLanguage=$originalLanguage; Apply-InterfaceLanguage; $window.UpdateLayout()
+
         $enter=[Windows.Input.MouseEventArgs]::new([Windows.Input.Mouse]::PrimaryDevice,[Environment]::TickCount)
         $enter.RoutedEvent=[Windows.Input.Mouse]::MouseEnterEvent
         $ui.ColorPlane.RaiseEvent($enter)
@@ -404,7 +440,7 @@ if ($Preview) {
         if (@(Read-Palette).Count -ne 4) { throw 'Eliminazione non riuscita' }
         $ui.Hex.Text='errore'; $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
         if ($ui.Status.Visibility -ne 'Visible' -or @(Read-Palette).Count -ne 4) { throw 'Validazione HEX errata' }
-        $ui.Colors.SelectedIndex=0; $ui.ColorName.Text='Progetti'; $ui.Hex.Text='#4A90E2'; $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        $ui.Colors.SelectedIndex=0; $ui.ColorName.Text=(T 'projects'); $ui.Hex.Text='#4A90E2'; $ui.Save.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
         Write-Output 'OK: tabella cliccabile, selezione precisa, estremi e trascinamento fuori bordo; palette e HEX.'
     } else { $ui.Colors.SelectedIndex=0 }
     $window.UpdateLayout()

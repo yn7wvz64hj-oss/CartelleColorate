@@ -1,4 +1,4 @@
-﻿param([string]$Folder, [string]$Color, [switch]$Restore, [switch]$RefreshMenu, [switch]$SelfTest, [string]$Preview, [ValidateSet('System','Light','Dark')][string]$Theme='System', [switch]$UITest, [switch]$NoConsoleTest, [switch]$Worker)
+﻿param([string]$Folder, [string]$Color, [switch]$Restore, [switch]$RefreshMenu, [switch]$SelfTest, [string]$Preview, [ValidateSet('System','Light','Dark')][string]$Theme='System', [switch]$UITest, [switch]$NoConsoleTest, [switch]$Worker, [string]$Language)
 if ($UITest -and !$Preview) { throw 'UITest richiede Preview.' }
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
@@ -19,11 +19,13 @@ $root = Join-Path $env:LOCALAPPDATA 'CartelleColorate'
 if ($SelfTest -or $Preview) { $root = Join-Path $PSScriptRoot 'test-data' }
 New-Item -ItemType Directory -Path $root -Force | Out-Null
 $palettePath = Join-Path $root 'colori.json'
+. (Join-Path $PSScriptRoot 'Localization.ps1')
+Initialize-Language $root $Language
 function Read-Palette {
     $items = @()
     if (Test-Path -LiteralPath $palettePath) { $items = @(Get-Content -LiteralPath $palettePath -Raw | ConvertFrom-Json) }
     foreach ($c in $items) {
-        if (!$c -or $c.Hex -notmatch '^#[0-9A-Fa-f]{6}$') { throw 'La raccolta contiene un colore non valido.' }
+        if (!$c -or $c.Hex -notmatch '^#[0-9A-Fa-f]{6}$') { throw (T 'paletteError') }
         $c
     }
 }
@@ -40,7 +42,7 @@ function Update-Menu {
     # Only this application's own menu is replaced.
     if (Test-Path -LiteralPath $key) { Remove-Item -LiteralPath $key -Recurse }
     New-Item -Path $key -Force | Out-Null
-    New-ItemProperty -LiteralPath $key -Name MUIVerb -Value 'Cambia colore' -Force | Out-Null
+    New-ItemProperty -LiteralPath $key -Name MUIVerb -Value (T 'change') -Force | Out-Null
     New-ItemProperty -LiteralPath $key -Name Icon -Value 'shell32.dll,3' -Force | Out-Null
     New-ItemProperty -LiteralPath $key -Name MultiSelectModel -Value 'Single' -Force | Out-Null
     New-ItemProperty -LiteralPath $key -Name ExtendedSubCommandsKey -Value 'CartelleColorate.Menu' -Force | Out-Null
@@ -63,11 +65,11 @@ function Update-Menu {
     }
     $manage="$shell\yManage"
     New-Item -Path "$manage\command" -Force | Out-Null
-    New-ItemProperty -LiteralPath $manage -Name MUIVerb -Value 'Personalizza colori...' -Force | Out-Null
+    New-ItemProperty -LiteralPath $manage -Name MUIVerb -Value (T 'menuCustomize') -Force | Out-Null
     Set-Item -LiteralPath "$manage\command" -Value $base
     $original="$shell\zRestore"
     New-Item -Path "$original\command" -Force | Out-Null
-    New-ItemProperty -LiteralPath $original -Name MUIVerb -Value 'Ripristina originale' -Force | Out-Null
+    New-ItemProperty -LiteralPath $original -Name MUIVerb -Value (T 'menuRestore') -Force | Out-Null
     Set-Item -LiteralPath "$original\command" -Value ('"{0}" //B //Nologo "{1}" --restore "%1"' -f $hostPath,$fast)
     [FolderShell]::SHChangeNotify(0x08000000,0,[string]$null,[IntPtr]::Zero)
 }
@@ -126,7 +128,7 @@ function Set-FolderPng([string]$Target,[string]$PngPath) {
 function New-PngIcon([string]$PngPath,[string]$IconPath) {
     $source=[Drawing.Image]::FromFile($PngPath)
     try {
-        if ($source.RawFormat.Guid -ne [Drawing.Imaging.ImageFormat]::Png.Guid) { throw 'Scegli un file PNG valido.' }
+        if ($source.RawFormat.Guid -ne [Drawing.Imaging.ImageFormat]::Png.Guid) { throw (T 'pngInvalid') }
         $frames=New-Object Collections.ArrayList
         foreach ($size in @(16,24,32,48,64,128,256)) {
             $bitmap=[Drawing.Bitmap]::new($size,$size,[Drawing.Imaging.PixelFormat]::Format32bppArgb)
@@ -161,7 +163,7 @@ function New-PngIcon([string]$PngPath,[string]$IconPath) {
 }
 function Set-FolderIcon([string]$Target,[string]$iconPath) {
     $dir = Get-Item -LiteralPath $Target -Force
-    if (!$dir.PSIsContainer) { throw 'Seleziona una cartella.' }
+    if (!$dir.PSIsContainer) { throw (T 'folderInvalid') }
     $ini = Join-Path $Target 'desktop.ini'
     $statePath = Get-StatePath $Target
     if (!(Test-Path -LiteralPath $statePath)) {
@@ -174,14 +176,14 @@ function Set-FolderIcon([string]$Target,[string]$iconPath) {
     }
     if (Test-Path -LiteralPath $ini) { [IO.File]::SetAttributes($ini,[IO.FileAttributes]::Normal) }
     else { [IO.File]::WriteAllText($ini,"[.ShellClassInfo]`r`n",[Text.Encoding]::Unicode) }
-    if (![FolderShell]::WritePrivateProfileString('.ShellClassInfo','IconResource',($iconPath + ',0'),$ini)) { throw 'Impossibile aggiornare desktop.ini.' }
+    if (![FolderShell]::WritePrivateProfileString('.ShellClassInfo','IconResource',($iconPath + ',0'),$ini)) { throw (T 'iniError') }
     [IO.File]::SetAttributes($ini,([IO.FileAttributes]::Hidden -bor [IO.FileAttributes]::System))
     [IO.File]::SetAttributes($Target,($dir.Attributes -bor [IO.FileAttributes]::ReadOnly))
     Update-FolderIcon $Target
 }
 function Restore-Folder([string]$Target) {
     $statePath = Get-StatePath $Target
-    if (!(Test-Path -LiteralPath $statePath)) { throw 'Questa cartella non ha un backup creato da CartelleColorate.' }
+    if (!(Test-Path -LiteralPath $statePath)) { throw (T 'backupError') }
     $state = Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json
     $ini = Join-Path $Target 'desktop.ini'
     if (Test-Path -LiteralPath $ini) { [IO.File]::SetAttributes($ini,[IO.FileAttributes]::Normal) }
@@ -258,12 +260,13 @@ if ($Worker) {
         while (([DateTime]::UtcNow-$lastRequest).TotalMinutes -lt 20 -and !(Test-Path -LiteralPath $stop)) {
             if (([DateTime]::UtcNow-$lastBeat).TotalSeconds -gt 2) { [IO.File]::WriteAllText($heartbeat,'ready'); $lastBeat=[DateTime]::UtcNow }
             foreach ($request in [IO.Directory]::GetFiles($queue,'*.cmd')) {
+                Read-LanguagePreference
                 try {
                     $lines=[IO.File]::ReadAllLines($request,[Text.Encoding]::Unicode)
                     if ($lines.Length -eq 3 -and $lines[0] -eq '--color' -and $lines[2] -match '^#[0-9A-Fa-f]{6}$') { Set-FolderColor $lines[1] $lines[2].ToUpperInvariant() }
                     elseif ($lines.Length -eq 2 -and $lines[0] -eq '--restore') { Restore-Folder $lines[1] }
-                    else { throw 'Richiesta non valida.' }
-                } catch { [Windows.Forms.MessageBox]::Show($_.Exception.Message,'CartelleColorate') | Out-Null }
+                    else { throw (T 'requestError') }
+                } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null }
                 finally { [IO.File]::Delete($request); $lastRequest=[DateTime]::UtcNow }
             }
             Start-Sleep -Milliseconds 40
@@ -280,16 +283,16 @@ if ($Worker) {
 }
 if ($RefreshMenu) { Update-Menu; exit }
 [Windows.Forms.Application]::EnableVisualStyles()
-if (!$Folder -or !(Test-Path -LiteralPath $Folder -PathType Container)) { [Windows.Forms.MessageBox]::Show('Apri questa applicazione dal menu di una cartella.','CartelleColorate') | Out-Null; exit }
+if (!$Folder -or !(Test-Path -LiteralPath $Folder -PathType Container)) { [Windows.Forms.MessageBox]::Show((T 'openFromFolder'),'CartelleColorate') | Out-Null; exit }
 $Folder = (Get-Item -LiteralPath $Folder -Force).FullName
 if ($Color -or $Restore) {
     try {
         if ($Restore) { Restore-Folder $Folder }
         else {
-            if ($Color -notmatch '^#[0-9A-Fa-f]{6}$') { throw 'Colore non valido.' }
+            if ($Color -notmatch '^#[0-9A-Fa-f]{6}$') { throw (T 'colorInvalid') }
             Set-FolderColor $Folder $Color.ToUpperInvariant()
         }
-    } catch { [Windows.Forms.MessageBox]::Show($_.Exception.Message,'CartelleColorate') | Out-Null; exit 1 }
+    } catch { [Windows.Forms.MessageBox]::Show((Translate-Error $_.Exception.Message),'CartelleColorate') | Out-Null; exit 1 }
     exit
 }
 . (Join-Path $PSScriptRoot 'Interfaccia.ps1')

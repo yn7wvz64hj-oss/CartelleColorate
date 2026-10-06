@@ -1,1 +1,2 @@
 779f2aa92b1dfe3561a1e9a9d3f317fc83a1eeababf074a7890b9df8e28f4385  CartelleColorate-0.1.0-beta.1-windows.zip
+316ba29d8b0ad86a289590e5c50a8605de2d701a9e6ab617c8a231065af11196  CartelleColorate-0.2.0-beta.1-windows.zip

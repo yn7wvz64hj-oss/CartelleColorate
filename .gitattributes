@@ -4,3 +4,5 @@
 *.cs text eol=lf
 *.md text eol=lf
 *.png binary
+src/LauncherMessages.txt binary
+*.json text eol=lf

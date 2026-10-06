@@ -1,5 +1,14 @@
 # Note di versione
 
+## 0.2.0-beta.1 — 6 ottobre 2026
+
+- Interfaccia e menu contestuale in 15 lingue, con scelta al primo avvio.
+- Preferenza salvata e pulsante con globo per cambiarla senza riaprire l'app.
+- Disposizione da destra a sinistra per arabo e urdu, con selettore e HEX invariati.
+- Messaggi applicativi e del launcher tradotti, disponibili senza Internet.
+- Pulsanti adattati alle traduzioni più lunghe.
+- Test su scelta iniziale, preferenze, cambio lingua e conservazione della palette.
+
 ## 0.1.0-beta.1 — 6 ottobre 2026
 
 Prima anteprima pubblica di CartelleColorate.

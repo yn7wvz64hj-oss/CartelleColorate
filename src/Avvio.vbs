@@ -8,7 +8,7 @@ command = Quote(powershell) & " -NoProfile -NonInteractive -STA -WindowStyle Hid
 If WScript.Arguments.Count = 1 And WScript.Arguments(0) = "--self-test" Then
     command = command & " -SelfTest -NoConsoleTest"
 Else
-    If WScript.Arguments.Count < 1 Or WScript.Arguments.Count > 3 Then Fail "Apri Cambia colore dal menu di una cartella."
+    If WScript.Arguments.Count < 1 Or WScript.Arguments.Count > 3 Then Fail "openFromFolder"
     folder = WScript.Arguments(0)
     command = command & " -Folder " & Quote(folder)
     If WScript.Arguments.Count > 1 Then
@@ -20,26 +20,68 @@ Else
             Dim regex
             Set regex = New RegExp
             regex.Pattern = "^#[0-9A-Fa-f]{6}$"
-            If Not regex.Test(color) Then Fail "Colore non valido."
+            If Not regex.Test(color) Then Fail "colorInvalid"
             command = command & " -Color " & Quote(color)
         Else
-            Fail "Comando non valido."
+            Fail "invalidCommand"
         End If
     End If
 End If
 On Error Resume Next
 result = shell.Run(command, 0, True)
 If Err.Number <> 0 Then
-    MsgBox "Impossibile avviare Cambia colore: " & Err.Description, 16, "CartelleColorate"
+    Dim launchError
+    launchError = Err.Description
+    MsgBox TranslateMessage("launchError") & launchError, 16, "CartelleColorate"
     WScript.Quit 1
 End If
 On Error GoTo 0
 WScript.Quit result
 
 Sub Fail(message)
-    MsgBox message, 16, "CartelleColorate"
+    MsgBox TranslateMessage(message), 16, "CartelleColorate"
     WScript.Quit 1
 End Sub
+
+
+Function TranslateMessage(key)
+    Dim code, localeName, settingsFile, text, regex, matches, reader, line, prefix, fallback
+    code = "en"
+    fallback = key
+    On Error Resume Next
+    localeName = shell.RegRead("HKCU\Control Panel\International\LocaleName")
+    If Err.Number = 0 Then code = LCase(Split(localeName, "-")(0))
+    Err.Clear
+    settingsFile = root & "\impostazioni.json"
+    If files.FileExists(settingsFile) Then
+        Set reader = files.OpenTextFile(settingsFile, 1, False, 0)
+        text = reader.ReadAll
+        reader.Close
+        Set regex = New RegExp
+        regex.Pattern = Chr(34) & "language" & Chr(34) & "\s*:\s*" & Chr(34) & "([a-z]{2})" & Chr(34)
+        Set matches = regex.Execute(text)
+        If matches.Count > 0 Then code = matches(0).SubMatches(0)
+    End If
+    prefix = code & "." & key & "="
+    Err.Clear
+    Set reader = files.OpenTextFile(root & "\LauncherMessages.txt", 1, False, -1)
+    If Err.Number <> 0 Then
+        TranslateMessage = fallback
+        Exit Function
+    End If
+    Do Until reader.AtEndOfStream
+        line = reader.ReadLine
+        If Left(line, Len("en." & key & "=")) = "en." & key & "=" Then fallback = Mid(line, Len("en." & key & "=") + 1)
+        If Left(line, Len(prefix)) = prefix Then
+            TranslateMessage = Mid(line, Len(prefix) + 1)
+            reader.Close
+            Exit Function
+        End If
+    Loop
+    reader.Close
+    TranslateMessage = fallback
+    On Error GoTo 0
+End Function
 
 Function Quote(value)
     Dim i, char, slashes, output

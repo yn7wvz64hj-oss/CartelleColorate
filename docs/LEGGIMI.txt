@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.1.0-beta.1
+CARTELLECOLORATE 0.2.0-beta.1
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -61,3 +61,8 @@ permanentemente la policy. L'app non usa Internet, account o telemetria.
 Il file MANIFEST-SHA256.txt elenca i checksum dei file del pacchetto.
 La licenza completa e' nel file LICENSE. CartelleColorate non e' un prodotto
 Microsoft e non include icone estratte da Windows.
+
+LINGUA / LANGUAGE
+Al primo avvio scegli la lingua; puoi cambiarla dal pulsante con il globo.
+On first launch choose your language; use the globe button to change it later.
+15 lingue incluse, utilizzabili anche senza Internet.

@@ -4,6 +4,12 @@
 
 La build con `-Test` verifica:
 
+- Completezza dei 15 cataloghi e coerenza dei segnaposti.
+- Lingua di Windows, preferenze mancanti o danneggiate e salvataggio atomico.
+- Annullamento e conferma della schermata iniziale, con nome dei colori conservato.
+- Cambio lingua senza riaprire la finestra; disposizione RTL e HEX/riquadro LTR.
+- Test dell’interfaccia e anteprime in tutte le 15 lingue.
+
 - Generazione ICO e cambio/ripristino con e senza `desktop.ini` precedente.
 - Conservazione dei metadati originari e degli attributi della cartella.
 - PNG in sette dimensioni, trasparenza e proporzioni.
@@ -21,6 +27,8 @@ Sono verifiche funzionali nell'ambiente di sviluppo, non una certificazione Wind
 Su almeno un altro PC Windows 11, con una cartella di prova contenente copie di file:
 
 - Installazione dello ZIP scaricato, esecuzione dal menu, aggiornamento e rimozione.
+- Schermata lingua al primo avvio, scelta ricordata e menu contestuale tradotto.
+- Revisione delle traduzioni da parte di parlanti madrelingua e font su un altro PC.
 - Pipetta: clic reale, Esc, monitor multipli e fattori di scala diversi.
 - Fluidità reale del riquadro e dello zoom.
 - Icona aggiornata nella vista corrente di Esplora file e sul desktop.
