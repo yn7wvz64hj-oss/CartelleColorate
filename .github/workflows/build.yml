@@ -14,9 +14,18 @@ jobs:
       - name: Compila e verifica
         shell: powershell
         run: powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/Build.ps1 -Test
+      - name: Verifica avvio nascosto del pacchetto
+        shell: powershell
+        run: |
+          $zip = Get-ChildItem dist/CartelleColorate-*-windows.zip | Select-Object -First 1
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath work/launcher-check
+          cscript.exe //Nologo work/launcher-check/CartelleColorate/Avvio.vbs --self-test
+          if ($LASTEXITCODE -ne 0) { throw 'Avvio VBS fallito.' }
+          if (!(Test-Path work/launcher-check/CartelleColorate/test-data/verifica-avvio.txt)) { throw 'Il launcher non ha eseguito il test.' }
       - name: Conserva il pacchetto per revisione
         uses: actions/upload-artifact@v4
         with:
           name: CartelleColorate-windows
           path: dist/*
           if-no-files-found: error
+
