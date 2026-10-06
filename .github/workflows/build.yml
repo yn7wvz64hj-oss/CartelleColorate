@@ -1,0 +1,22 @@
+name: Build e verifiche Windows
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compila e verifica
+        shell: powershell
+        run: powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/Build.ps1 -Test
+      - name: Conserva il pacchetto per revisione
+        uses: actions/upload-artifact@v4
+        with:
+          name: CartelleColorate-windows
+          path: dist/*
+          if-no-files-found: error

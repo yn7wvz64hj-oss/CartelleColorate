@@ -1,0 +1,9 @@
+/dist/
+/work/
+*.dll
+*.exe
+test-data/
+worker.attivo
+worker.stop
+colori.json
+coda/

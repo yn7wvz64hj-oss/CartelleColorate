@@ -1,0 +1,63 @@
+CARTELLECOLORATE 0.1.0-beta.1
+Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
+
+INSTALLAZIONE
+1. Estrai tutto lo ZIP.
+2. Chiudi eventuali finestre del selettore e apri Installa.cmd.
+3. Tasto destro su una cartella > Mostra altre opzioni > Cambia colore.
+Non serve normalmente essere amministratore. Per aggiornare una versione
+precedente, esegui il nuovo Installa.cmd: colori e backup vengono mantenuti.
+
+COLORI E IMMAGINI
+Seleziona un colore dal sottomenu oppure apri Personalizza colori.
+Nel riquadro sfumato puoi cliccare e trascinare; la barra cambia la tonalita'.
+Puoi inserire il codice HEX. Le frecce regolano il punto; Maiusc + frecce
+permette movimenti piu' precisi. Il riquadro mostra un piccolo mirino.
+Scrivi un nome e salva il colore. Seleziona un colore salvato per modificarne
+il nome o il valore. + Nuovo aggiunge un altro colore. Elimina lo rimuove
+dalla raccolta senza cambiare le cartelle gia' colorate.
+La raccolta non ha un limite imposto dall'app; restano i limiti del computer.
+
+PIPETTA
+Il pulsante con disegno di pipetta nasconde la finestra e mostra una lente
+10x vicino al puntatore. Un clic preleva il pixel centrale; Esc annulla.
+I pixel dello zoom restano in memoria e non vengono salvati su disco.
+
+PNG
+Carica PNG sceglie un'immagine per sostituire l'intera icona della cartella,
+con proporzioni e trasparenza conservate. Applica alla cartella conferma.
+Dopo l'applicazione puoi spostare/eliminare il PNG originale. Usa colore
+torna all'icona colorata.
+
+RIPRISTINO E RIMOZIONE
+Ripristina originale recupera desktop.ini e gli attributi salvati al primo
+cambio. Ripristina prima di spostare o rinominare una cartella: il backup
+e' associato al percorso iniziale. Eventuali modifiche successive di altre
+applicazioni a desktop.ini vengono sostituite dal backup originario.
+Rimuovi-menu.cmd rimuove il menu e ferma il processo in background. Non
+ripristina tutte le cartelle e non cancella colori, icone o backup.
+
+DATI E PRESTAZIONI
+I dati restano in %LOCALAPPDATA%\CartelleColorate. colori.json e' la palette.
+Le icone non vengono trasferite automaticamente ad altri PC o utenti.
+Un processo nascosto applica i colori del menu senza riavviare il selettore
+ogni volta; termina dopo 20 minuti di inattivita'. Il primo comando dopo
+l'arresto deve avviare il processo. Il ridisegno dipende da Esplora file.
+Il terminale compare solo durante installazione/rimozione.
+Usa una finestra del selettore alla volta per modificare i colori.
+
+REQUISITI E LIMITI
+Windows 11, Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host
+e VBScript funzionanti. I componenti possono essere disabilitati su alcuni
+PC. Le cartelle devono essere reali e scrivibili. La pipetta puo' non leggere
+schermate protette. Non sono supportate raccolte virtuali o cambi ricorsivi.
+La release e' beta: serve ancora verificare l'uso su PC e monitor diversi.
+Il pacchetto non e' firmato digitalmente. Se antivirus o criteri aziendali
+lo bloccano, non disattivare le protezioni: controlla il sorgente e segnala
+il messaggio al manutentore del repository dal quale hai scaricato lo ZIP.
+ExecutionPolicy Bypass viene usato solo nei processi di avvio, senza cambiare
+permanentemente la policy. L'app non usa Internet, account o telemetria.
+
+Il file MANIFEST-SHA256.txt elenca i checksum dei file del pacchetto.
+La licenza completa e' nel file LICENSE. CartelleColorate non e' un prodotto
+Microsoft e non include icone estratte da Windows.
