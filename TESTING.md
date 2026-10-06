@@ -4,6 +4,8 @@
 
 La build con `-Test` verifica:
 
+- Riproduzione del blocco 0x80131515 su DLL con ZoneId=3, segnalazione/log dell'errore e ricompilazione locale delle librerie.
+
 - Completezza dei 15 cataloghi e coerenza dei segnaposti.
 - Lingua di Windows, preferenze mancanti o danneggiate e salvataggio atomico.
 - Annullamento e conferma della schermata iniziale, con nome dei colori conservato.
@@ -39,6 +41,8 @@ Su almeno un altro PC Windows 11, con una cartella di prova contenente copie di 
 - Conservazione dei dati quando si rimuove soltanto il menu.
 
 ## Evidenza locale
+
+La mancata apertura della 0.2.0-beta.1 è stata riprodotta sui file installati: le DLL ereditavano ZoneId=3 dal download dello ZIP. La 0.2.0-beta.2 genera DLL locali durante l'installazione; il test con la stessa marcatura Internet ora passa. Il launcher VBS è stato verificato con successo anche in GitHub Actions.
 
 Il 6 ottobre 2026 la compilazione dai sorgenti, i test sulle icone e i test dell'interfaccia sono passati. Il controllo di Windows Script Host ha restituito “Accesso negato” nell'ambiente di esecuzione: l'avvio VBS e l'installazione completa non sono stati verificati in questa sessione. L'installer mantiene un controllo esplicito per segnalare tale requisito sul PC destinatario. La build non aggira le restrizioni del sistema e non considera quel controllo superato.
 

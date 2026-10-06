@@ -61,7 +61,8 @@
         "archive": "Archivio",
         "launchError": "Impossibile avviare Cambia colore: ",
         "invalidCommand": "Comando non valido.",
-        "planeName": "Tabella colore: clicca o trascina; usa le frecce per regolare"
+        "planeName": "Tabella colore: clicca o trascina; usa le frecce per regolare",
+        "startupError": "CartelleColorate non riesce ad avviarsi. I dettagli sono in avvio-errore.log."
       }
     },
     {
@@ -124,7 +125,8 @@
         "archive": "Archive",
         "launchError": "Unable to start Change color: ",
         "invalidCommand": "Invalid command.",
-        "planeName": "Click or drag to choose a color. Use arrow keys to adjust; Shift for finer steps."
+        "planeName": "Click or drag to choose a color. Use arrow keys to adjust; Shift for finer steps.",
+        "startupError": "CartelleColorate could not start. Details are in avvio-errore.log."
       }
     },
     {
@@ -187,7 +189,8 @@
         "archive": "归档",
         "launchError": "无法启动更改颜色：",
         "invalidCommand": "无效命令。",
-        "planeName": "点击或拖动选择颜色。使用方向键调整，按住 Shift 精细调整。"
+        "planeName": "点击或拖动选择颜色。使用方向键调整，按住 Shift 精细调整。",
+        "startupError": "CartelleColorate 无法启动。详细信息见 avvio-errore.log。"
       }
     },
     {
@@ -250,7 +253,8 @@
         "archive": "Archivo",
         "launchError": "No se pudo iniciar Cambiar color: ",
         "invalidCommand": "Comando no válido.",
-        "planeName": "Haz clic o arrastra para elegir un color. Ajusta con las flechas; Mayús para mayor precisión."
+        "planeName": "Haz clic o arrastra para elegir un color. Ajusta con las flechas; Mayús para mayor precisión.",
+        "startupError": "CartelleColorate no pudo iniciarse. Consulta avvio-errore.log."
       }
     },
     {
@@ -313,7 +317,8 @@
         "archive": "संग्रह",
         "launchError": "रंग बदलें शुरू नहीं हो सका: ",
         "invalidCommand": "अमान्य आदेश।",
-        "planeName": "रंग चुनने के लिए क्लिक करें या खींचें। तीर कुंजियों से बदलें; Shift से बारीकी से बदलें।"
+        "planeName": "रंग चुनने के लिए क्लिक करें या खींचें। तीर कुंजियों से बदलें; Shift से बारीकी से बदलें।",
+        "startupError": "CartelleColorate शुरू नहीं हो सका। विवरण avvio-errore.log में हैं।"
       }
     },
     {
@@ -376,7 +381,8 @@
         "archive": "أرشيف",
         "launchError": "تعذر تشغيل تغيير اللون: ",
         "invalidCommand": "أمر غير صالح.",
-        "planeName": "انقر أو اسحب لاختيار اللون. استخدم الأسهم للتعديل وShift لضبط أدق."
+        "planeName": "انقر أو اسحب لاختيار اللون. استخدم الأسهم للتعديل وShift لضبط أدق.",
+        "startupError": "تعذر تشغيل CartelleColorate. التفاصيل في avvio-errore.log."
       }
     },
     {
@@ -439,7 +445,8 @@
         "archive": "Arquivo",
         "launchError": "Não foi possível iniciar Alterar cor: ",
         "invalidCommand": "Comando inválido.",
-        "planeName": "Clique ou arraste para escolher a cor. Ajuste com as setas; Shift para maior precisão."
+        "planeName": "Clique ou arraste para escolher a cor. Ajuste com as setas; Shift para maior precisão.",
+        "startupError": "Não foi possível iniciar o CartelleColorate. Veja avvio-errore.log."
       }
     },
     {
@@ -502,7 +509,8 @@
         "archive": "সংরক্ষণাগার",
         "launchError": "রং বদলান চালু করা যায়নি: ",
         "invalidCommand": "অবৈধ নির্দেশ।",
-        "planeName": "রং বেছে নিতে ক্লিক করুন বা টানুন। তীর কী দিয়ে বদলান; সূক্ষ্মভাবে বদলাতে Shift চাপুন।"
+        "planeName": "রং বেছে নিতে ক্লিক করুন বা টানুন। তীর কী দিয়ে বদলান; সূক্ষ্মভাবে বদলাতে Shift চাপুন।",
+        "startupError": "CartelleColorate চালু করা যায়নি। বিস্তারিত avvio-errore.log-এ আছে।"
       }
     },
     {
@@ -565,7 +573,8 @@
         "archive": "Архив",
         "launchError": "Не удалось запустить Изменить цвет: ",
         "invalidCommand": "Недопустимая команда.",
-        "planeName": "Щёлкните или перетащите, чтобы выбрать цвет. Стрелки — настройка, Shift — точнее."
+        "planeName": "Щёлкните или перетащите, чтобы выбрать цвет. Стрелки — настройка, Shift — точнее.",
+        "startupError": "Не удалось запустить CartelleColorate. Подробности в avvio-errore.log."
       }
     },
     {
@@ -628,7 +637,8 @@
         "archive": "Archives",
         "launchError": "Impossible de lancer Changer la couleur : ",
         "invalidCommand": "Commande non valide.",
-        "planeName": "Cliquez ou faites glisser pour choisir. Ajustez avec les flèches ; Maj pour plus de précision."
+        "planeName": "Cliquez ou faites glisser pour choisir. Ajustez avec les flèches ; Maj pour plus de précision.",
+        "startupError": "Impossible de démarrer CartelleColorate. Consultez avvio-errore.log."
       }
     },
     {
@@ -691,7 +701,8 @@
         "archive": "Archiv",
         "launchError": "Farbe ändern konnte nicht gestartet werden: ",
         "invalidCommand": "Ungültiger Befehl.",
-        "planeName": "Klicken oder ziehen, um eine Farbe zu wählen. Pfeiltasten zum Anpassen, Umschalt für feinere Schritte."
+        "planeName": "Klicken oder ziehen, um eine Farbe zu wählen. Pfeiltasten zum Anpassen, Umschalt für feinere Schritte.",
+        "startupError": "CartelleColorate konnte nicht starten. Details stehen in avvio-errore.log."
       }
     },
     {
@@ -754,7 +765,8 @@
         "archive": "アーカイブ",
         "launchError": "色を変更を起動できません：",
         "invalidCommand": "無効なコマンドです。",
-        "planeName": "クリックまたはドラッグで色を選択。矢印キーで調整し、Shift で細かく調整できます。"
+        "planeName": "クリックまたはドラッグで色を選択。矢印キーで調整し、Shift で細かく調整できます。",
+        "startupError": "CartelleColorate を起動できません。詳細は avvio-errore.log を確認してください。"
       }
     },
     {
@@ -817,7 +829,8 @@
         "archive": "보관",
         "launchError": "색 변경을 시작할 수 없습니다: ",
         "invalidCommand": "유효하지 않은 명령입니다.",
-        "planeName": "클릭하거나 드래그하여 색을 고르세요. 방향키로 조절하고 Shift로 미세 조절하세요."
+        "planeName": "클릭하거나 드래그하여 색을 고르세요. 방향키로 조절하고 Shift로 미세 조절하세요.",
+        "startupError": "CartelleColorate를 시작할 수 없습니다. avvio-errore.log를 확인하세요."
       }
     },
     {
@@ -880,7 +893,8 @@
         "archive": "Arsip",
         "launchError": "Ubah warna tidak dapat dijalankan: ",
         "invalidCommand": "Perintah tidak valid.",
-        "planeName": "Klik atau seret untuk memilih warna. Sesuaikan dengan tombol panah; Shift untuk langkah lebih kecil."
+        "planeName": "Klik atau seret untuk memilih warna. Sesuaikan dengan tombol panah; Shift untuk langkah lebih kecil.",
+        "startupError": "CartelleColorate tidak dapat dimulai. Lihat avvio-errore.log."
       }
     },
     {
@@ -943,7 +957,8 @@
         "archive": "محفوظات",
         "launchError": "رنگ بدلیں شروع نہیں ہو سکا: ",
         "invalidCommand": "غلط حکم۔",
-        "planeName": "رنگ چننے کے لیے کلک کریں یا کھینچیں۔ تیر کی کلیدوں سے بدلیں؛ باریک تبدیلی کے لیے Shift دبائیں۔"
+        "planeName": "رنگ چننے کے لیے کلک کریں یا کھینچیں۔ تیر کی کلیدوں سے بدلیں؛ باریک تبدیلی کے لیے Shift دبائیں۔",
+        "startupError": "CartelleColorate شروع نہیں ہو سکا۔ تفصیل avvio-errore.log میں ہے۔"
       }
     }
   ]

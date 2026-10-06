@@ -10,7 +10,7 @@ $work=Join-Path $repo ('work\build-'+[Guid]::NewGuid().ToString('N'))
 $package=Join-Path $work 'CartelleColorate'
 $dist=Join-Path $repo 'dist'
 New-Item -ItemType Directory -Path $package,$dist -Force | Out-Null
-$files=@('CartelleColorate.ps1','Interfaccia.ps1','Localization.ps1','Languages.json','LauncherMessages.txt','Avvio.vbs','Rapido.vbs','Setup.ps1','Installa.cmd','Rimuovi-menu.cmd','Verifica.vbs','FolderShell.cs','DesktopPicker.cs')
+$files=@('CartelleColorate.ps1','Interfaccia.ps1','Localization.ps1','Avvio.ps1','NativeLibraries.ps1','Languages.json','LauncherMessages.txt','Avvio.vbs','Rapido.vbs','Setup.ps1','Installa.cmd','Rimuovi-menu.cmd','Verifica.vbs','FolderShell.cs','DesktopPicker.cs')
 foreach ($file in $files) { Copy-Item -LiteralPath (Join-Path $repo ('src\'+$file)) -Destination $package }
 foreach ($name in @('FolderShell','DesktopPicker')) {
     $source=Join-Path $package ($name+'.cs')
@@ -26,6 +26,8 @@ if ($Test) {
     if ($LASTEXITCODE -ne 0) { throw 'Test icone falliti.' }
     & $ps -NoProfile -STA -ExecutionPolicy Bypass -File (Join-Path $repo 'scripts/TestLocalization.ps1') -Package $package -OutputDirectory $work
     if ($LASTEXITCODE -ne 0) { throw 'Test lingue falliti.' }
+    & $ps -NoProfile -STA -ExecutionPolicy Bypass -File (Join-Path $repo 'scripts/TestDownloadedPackage.ps1') -Package $package -OutputDirectory $work
+    if ($LASTEXITCODE -ne 0) { throw 'Test pacchetto scaricato falliti.' }
     $preview=Join-Path $work 'anteprima.png'
     & $ps -NoProfile -STA -ExecutionPolicy Bypass -File (Join-Path $package 'CartelleColorate.ps1') -Folder $package -Theme Dark -UITest -Preview $preview
     if ($LASTEXITCODE -ne 0) { throw 'Test interfaccia falliti.' }

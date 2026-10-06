@@ -28,4 +28,3 @@ jobs:
           name: CartelleColorate-windows
           path: dist/*
           if-no-files-found: error
-

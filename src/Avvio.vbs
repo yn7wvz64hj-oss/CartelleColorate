@@ -4,7 +4,7 @@ Set shell = CreateObject("WScript.Shell")
 Set files = CreateObject("Scripting.FileSystemObject")
 root = files.GetParentFolderName(WScript.ScriptFullName)
 powershell = shell.ExpandEnvironmentStrings("%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe")
-command = Quote(powershell) & " -NoProfile -NonInteractive -STA -WindowStyle Hidden -ExecutionPolicy Bypass -File " & Quote(root & "\CartelleColorate.ps1")
+command = Quote(powershell) & " -NoProfile -NonInteractive -STA -WindowStyle Hidden -ExecutionPolicy Bypass -File " & Quote(root & "\Avvio.ps1")
 If WScript.Arguments.Count = 1 And WScript.Arguments(0) = "--self-test" Then
     command = command & " -SelfTest -NoConsoleTest"
 Else

@@ -1,4 +1,4 @@
-CARTELLECOLORATE 0.2.0-beta.1
+CARTELLECOLORATE 0.2.0-beta.2
 Prima anteprima pubblica gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE

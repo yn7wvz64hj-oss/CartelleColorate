@@ -1,5 +1,11 @@
 # Note di versione
 
+## 0.2.0-beta.2 — 6 ottobre 2026
+
+- Corretto l'avvio dopo il download dello ZIP: l'installer genera le due librerie dai sorgenti sul PC, evitando il blocco .NET 0x80131515 delle DLL marcate come provenienti da Internet.
+- Gli errori di avvio vengono mostrati e registrati in avvio-errore.log.
+- Aggiunti test sul pacchetto con marcatura Internet e sull'avvio VBS nascosto.
+
 ## 0.2.0-beta.1 — 6 ottobre 2026
 
 - Interfaccia e menu contestuale in 15 lingue, con scelta al primo avvio.

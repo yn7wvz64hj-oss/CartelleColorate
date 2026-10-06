@@ -5,7 +5,7 @@ $root = Join-Path $env:LOCALAPPDATA 'CartelleColorate'
 Initialize-Language $root
 try {
     if (!$Remove) {
-        foreach ($file in @('CartelleColorate.ps1','Interfaccia.ps1','Avvio.vbs','Rapido.vbs','FolderShell.dll','DesktopPicker.dll','Verifica.vbs','Localization.ps1','Languages.json','LauncherMessages.txt')) {
+        foreach ($file in @('CartelleColorate.ps1','Interfaccia.ps1','Avvio.vbs','Rapido.vbs','FolderShell.dll','DesktopPicker.dll','Verifica.vbs','Avvio.ps1','NativeLibraries.ps1','FolderShell.cs','DesktopPicker.cs','Localization.ps1','Languages.json','LauncherMessages.txt')) {
             if (!(Test-Path -LiteralPath (Join-Path $PSScriptRoot $file))) { throw (T 'missingFiles' @($file)) }
         }
         $checkHost=Join-Path $env:SystemRoot 'System32\cscript.exe'
@@ -34,8 +34,9 @@ try {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'CartelleColorate.ps1') -Destination $root -Force
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Interfaccia.ps1') -Destination $root -Force
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Avvio.vbs') -Destination $root -Force
-        Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'FolderShell.dll') -Destination $root -Force
-        Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'DesktopPicker.dll') -Destination $root -Force
+        . (Join-Path $PSScriptRoot 'NativeLibraries.ps1')
+        Install-NativeLibraries $PSScriptRoot $root
+        Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Avvio.ps1') -Destination $root -Force
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Rapido.vbs') -Destination $root -Force
         foreach ($file in @('Localization.ps1','Languages.json','LauncherMessages.txt')) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination $root -Force }
         & (Join-Path $root 'CartelleColorate.ps1') -RefreshMenu
