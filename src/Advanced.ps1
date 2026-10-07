@@ -11,18 +11,22 @@ function Save-RecentColor([string]$Hex) {
     Write-AdvancedJson (Join-Path $root 'recenti.json') $colors
 }
 function Invoke-FolderBatch([string[]]$Targets,[string]$Hex,[string]$Png) {
+    if($script:proBatchBusy){throw 'Attendi il completamento della operazione in corso.'}
     $unique=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
     $records=@(); foreach ($target in $Targets) { $entry=Get-Item -LiteralPath $target -Force; if (!$entry.PSIsContainer) { throw (T 'folderInvalid') }; if ($unique.Add($entry.FullName)) { $records+=New-FolderUndo $entry.FullName } }
     if (!$records.Count) { throw (T 'folderInvalid') }
+    Assert-ProBatch $records.Count
     $path=Join-Path $root 'ultima-modifica.json'; $previous=$null; if ([IO.File]::Exists($path)) { $previous=[IO.File]::ReadAllBytes($path) }
     Save-FolderUndo ([pscustomobject]@{Batch=$records})
-    try { foreach ($record in $records) { if ($Png) { Set-FolderPng $record.Current $Png } else { Set-FolderColor $record.Current $Hex } } }
+    $progress=if($records.Count -gt 2 -and $window -and !$SelfTest){New-ProBatchProgress $records.Count}else{$null};$completed=0;$script:proBatchBusy=$true
+    try { foreach ($record in $records) { if($progress){$progress.Text.Text=([string]$completed)+' / '+$records.Count+' cartelle';$progress.Bar.Value=$completed;[Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Background);if($progress.Cancelled){throw 'Operazione interrotta: il gruppo viene ripristinato.'}}; if ($Png) { Set-FolderPng $record.Current $Png } else { Set-FolderColor $record.Current $Hex };$completed++ } }
     catch {
-        $failure=$_; $rolledBack=$true
+        $script:proBatchBusy=$false;if($progress){$progress.Complete=$true;$progress.Window.Close()};$failure=$_; $rolledBack=$true
         foreach ($record in $records) { try { $null=Restore-UndoRecord $record } catch { $rolledBack=$false } }
         if ($rolledBack) { if ($null -ne $previous) { [IO.File]::WriteAllBytes($path,$previous) } else { [IO.File]::Delete($path) } }
         throw $failure
     }
+    $script:proBatchBusy=$false;if($progress){$progress.Complete=$true;$progress.Window.Close();Show-Toast ('Operazione completata: '+$completed+' cartelle. Puoi annullare il gruppo.')}
     Save-FolderActivity ([pscustomobject]@{Batch=$records}) 'apply'
 }
 function Render-PreparedImage([Drawing.Image]$Source,[double]$Zoom=1,[double]$X=0,[double]$Y=0,[bool]$Crop=$false,[ValidateSet('none','star','check','lock','heart','document','music','photo')][string]$Badge='none',[string]$BadgeHex='#233755') {
@@ -122,7 +126,7 @@ function Get-PreparedIcon([string]$Badge) {
     $source=$null; $icon=$null
     try {
         if ($script:pngSelection) { $source=[Drawing.Image]::FromFile($script:pngSelection) }
-        else { $path=Join-Path $root ('badge-base-'+(Valid-Hex).TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon (Valid-Hex) $path }; $icon=[Drawing.Icon]::new($path,256,256); $source=$icon.ToBitmap() }
+        else { $path=Join-Path $root ('badge-base-'+(Valid-Hex).TrimStart('#')+'.ico'); if (![IO.File]::Exists($path)) { New-ColorIcon (Valid-Hex) $path }; $bytes=[IO.File]::ReadAllBytes($path);$offset=[BitConverter]::ToUInt32($bytes,18);$length=[BitConverter]::ToUInt32($bytes,14);$memory=[IO.MemoryStream]::new($bytes,[int]$offset,[int]$length);$decoded=$null;try{$decoded=[Drawing.Bitmap]::new($memory);$source=[Drawing.Bitmap]::new($decoded)}finally{if($decoded){$decoded.Dispose()};$memory.Dispose()} }
         $bitmap=Render-PreparedImage $source 1 0 0 $false $Badge $script:badgeHex; $path=Join-Path $root ('badge-'+[Guid]::NewGuid().ToString('N')+'.png'); try { $bitmap.Save($path,[Drawing.Imaging.ImageFormat]::Png) } finally { $bitmap.Dispose() }; return $path
     } finally { if ($source) { $source.Dispose() }; if ($icon) { $icon.Dispose() } }
 }

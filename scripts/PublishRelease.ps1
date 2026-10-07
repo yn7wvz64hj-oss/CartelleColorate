@@ -45,7 +45,7 @@ Write-Output ('OK: pacchetto ufficiale '+$version+', sorgenti, manifest e SHA256
 if ($VerifyOnly) { exit 0 }
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:GITHUB_REPOSITORY -ne 'yn7wvz64hj-oss/CartelleColorate' -or $env:GITHUB_REF -ne 'refs/heads/main' -or $env:GITHUB_SHA -notmatch '^[a-f0-9]{40}$') { throw 'La pubblicazione richiede il workflow del repository ufficiale su main.' }
 $tag='v'+$version
-$displayVersion=if (([version]$version).Build -eq 0) { ([version]$version).ToString(2) } else { $version }; $releaseTitle='CartelleColorate '+$displayVersion+' — Official Release / Release ufficiale'
+$displayVersion=if (([version]$version).Build -eq 0) { ([version]$version).ToString(2) } else { $version }; $releaseTitle='CartelleColorate '+$displayVersion+' Studio — All features free / Tutte le funzioni gratuite'
 $notesPath=Join-Path $repo ('docs/RELEASE-'+$version+'.md')
 $stage=Join-Path $repo ('work/release-'+[Guid]::NewGuid().ToString('N')); [IO.Directory]::CreateDirectory($stage)|Out-Null
 $sums=Join-Path $stage 'SHA256SUMS.txt'; [IO.File]::WriteAllText($sums,$lines[0]+[Environment]::NewLine,[Text.Encoding]::ASCII)

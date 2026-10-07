@@ -21,6 +21,7 @@ if ($SelfTest -or $Preview) { $root = Join-Path $PSScriptRoot 'test-data' }
 New-Item -ItemType Directory -Path $root -Force | Out-Null
 $palettePath = Join-Path $root 'colori.json'
 . (Join-Path $PSScriptRoot 'Localization.ps1')
+$script:proLegacyAtLaunch=[IO.File]::Exists((Join-Path $root 'impostazioni.json')) -or [IO.File]::Exists((Join-Path $root 'colori.json'))
 Initialize-Language $root $Language
 function Read-Palette {
     $items = @()
@@ -38,6 +39,7 @@ function Get-MenuEntries {
     }
 }
 function Update-Menu {
+    if ($env:CC_PRO_PREVIEW -eq '1') { return }
     $key = 'HKCU:\Software\Classes\Directory\shell\CartelleColorate'
     $entries = @(Get-MenuEntries)
     # Only this application's own menu is replaced.
@@ -90,20 +92,26 @@ function Update-Menu {
     Set-Item -LiteralPath "$original\command" -Value ('"{0}" //B //Nologo "{1}" --restore "%1"' -f $hostPath,$fast)
     [FolderShell]::SHChangeNotify(0x08000000,0,[string]$null,[IntPtr]::Zero)
 }
+function Get-FolderShade([Drawing.Color]$Color,[double]$Amount) {
+    $channels=@($Color.R,$Color.G,$Color.B);$result=@()
+    foreach($channel in $channels){$value=if($Amount -ge 0){$channel+(255-$channel)*$Amount}else{$channel*(1+$Amount)};$result+=[int][Math]::Round($value)}
+    return [Drawing.Color]::FromArgb(255,$result[0],$result[1],$result[2])
+}
 function New-ColorIcon([string]$Hex, [string]$Path) {
     $color = [Drawing.ColorTranslator]::FromHtml($Hex)
     $bmp = New-Object Drawing.Bitmap 256,256
     $g = [Drawing.Graphics]::FromImage($bmp)
     $g.SmoothingMode = [Drawing.Drawing2D.SmoothingMode]::AntiAlias
     $g.Clear([Drawing.Color]::Transparent)
-    $side = [Drawing.Color]::FromArgb(255,[int]($color.R+(255-$color.R)*0.12),[int]($color.G+(255-$color.G)*0.12),[int]($color.B+(255-$color.B)*0.12))
-    $back = New-Object Drawing.SolidBrush $side
-    $front = New-Object Drawing.SolidBrush $color
+    $bounds=[Drawing.Rectangle]::new(16,54,224,168)
+    $back=[Drawing.Drawing2D.LinearGradientBrush]::new($bounds,(Get-FolderShade $color 0.4),(Get-FolderShade $color 0.12),90.0)
+    $front=[Drawing.Drawing2D.LinearGradientBrush]::new($bounds,(Get-FolderShade $color 0.18),(Get-FolderShade $color -0.08),90.0)
+    $blend=[Drawing.Drawing2D.ColorBlend]::new(3);$blend.Positions=[single[]]@(0,0.55,1);$blend.Colors=[Drawing.Color[]]@((Get-FolderShade $color 0.18),$color,(Get-FolderShade $color -0.08));$front.InterpolationColors=$blend
+    $face=[Drawing.Drawing2D.GraphicsPath]::new();$fold=[Drawing.Drawing2D.GraphicsPath]::new()
     try {
-        $face=[Drawing.PointF[]]@([Drawing.PointF]::new(52,10),[Drawing.PointF]::new(192,10),[Drawing.PointF]::new(192,139),[Drawing.PointF]::new(204,152),[Drawing.PointF]::new(204,208),[Drawing.PointF]::new(52,208))
-        $fold=[Drawing.PointF[]]@([Drawing.PointF]::new(52,10),[Drawing.PointF]::new(101,47),[Drawing.PointF]::new(101,245),[Drawing.PointF]::new(52,208))
-        $g.FillPolygon($front,$face)
-        $g.FillPolygon($back,$fold)
+        $fold.AddLine(24,88,24,68);$fold.AddBezier(24,68,24,56,24,56,36,56);$fold.AddLine(36,56,96,56);$fold.AddBezier(96,56,102,56,102,56,107,62);$fold.AddLine(107,62,122,78);$fold.AddBezier(122,78,126,81,126,81,134,81);$fold.AddLine(134,81,220,81);$fold.AddBezier(220,81,232,81,232,81,232,94);$fold.AddLine(232,94,232,200);$fold.AddBezier(232,200,232,214,232,214,218,214);$fold.AddLine(218,214,38,214);$fold.AddBezier(38,214,24,214,24,214,24,200);$fold.CloseFigure()
+        $face.AddLine(32,94,229,94);$face.AddBezier(229,94,240,94,240,94,238,106);$face.AddLine(238,106,230,204);$face.AddBezier(230,204,229,218,229,218,215,218);$face.AddLine(215,218,41,218);$face.AddBezier(41,218,27,218,27,218,26,204);$face.AddLine(26,204,19,107);$face.AddBezier(19,107,17,94,17,94,32,94);$face.CloseFigure()
+        $g.FillPath($back,$fold);$g.FillPath($front,$face)
         $png = New-Object IO.MemoryStream
         try {
             $bmp.Save($png,[Drawing.Imaging.ImageFormat]::Png)
@@ -117,7 +125,7 @@ function New-ColorIcon([string]$Hex, [string]$Path) {
                 $writer.Write([uint32]$data.Length); $writer.Write([uint32]22); $writer.Write($data)
             } finally { $writer.Dispose(); $stream.Dispose() }
         } finally { $png.Dispose() }
-    } finally { $g.Dispose(); $bmp.Dispose(); $back.Dispose(); $front.Dispose() }
+    } finally { $g.Dispose(); $bmp.Dispose(); $back.Dispose(); $front.Dispose();$face.Dispose();$fold.Dispose() }
 }
 function Get-StatePath([string]$Target) {
     $sha = [Security.Cryptography.SHA256]::Create()

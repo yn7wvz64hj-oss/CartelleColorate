@@ -70,6 +70,7 @@ function New-ProductWindow([string]$Title,[int]$Width=450,[int]$Height=440) {
 function Select-ProductFolders([string[]]$Targets) {
     $valid=@(); foreach ($target in $Targets) { $item=Get-Item -LiteralPath $target -Force -ErrorAction Stop; if (!$item.PSIsContainer) { throw (T 'folderInvalid') }; $valid+=$item.FullName }; $valid=@($valid | Select-Object -Unique)
     if (!$valid.Count) { throw (T 'folderInvalid') }
+    Assert-ProBatch $valid.Count
     $script:batchTargets=$valid; $script:currentFolder=$valid[0]; $script:singleFolder=$valid[0]; $ui.FolderName.IsEnabled=$valid.Count -eq 1; $ui.RenameFolder.IsEnabled=$valid.Count -eq 1; $ui.FolderName.Text=if ($valid.Count -gt 1) { T 'folderCount' @($valid.Count) } else { [IO.Path]::GetFileName($valid[0]) }; $ui.FolderName.ToolTip=$valid -join [Environment]::NewLine; Update-UndoButton
 }
 function Apply-CompletePreset($Preset) {
@@ -253,3 +254,156 @@ function Test-ProductInterface([string]$Png) {
 }
 
 . (Join-Path $PSScriptRoot 'Enhancements.ps1')
+
+function Initialize-ProPreview { $script:proEdition=[pscustomobject]@{Mode='Free';LegacyBatch=$true} }
+function Assert-ProBatch([int]$Count) { }
+function Get-ProFolderPreview([string]$Base,[string]$Pattern='*',[string]$Exclude='') {
+    $queue=[Collections.Generic.Queue[string]]::new(); $queue.Enqueue((Get-Item -LiteralPath $Base -ErrorAction Stop).FullName)
+    $results=@(); while ($queue.Count) {
+        $directory=$queue.Dequeue(); foreach ($child in @(Get-ChildItem -LiteralPath $directory -Directory -ErrorAction Stop)) {
+            if ($child.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+            if ($Exclude -and $child.Name -like $Exclude) { continue }
+            $queue.Enqueue($child.FullName); if ($child.Name -like $Pattern) { $results+=$child.FullName }
+            if ($results.Count -gt 5000) { throw 'Anteprima troppo grande: restringi la cartella o il filtro.' }
+        }
+    }; return $results
+}
+function Show-ProPreview {
+    Initialize-ProPreview
+    $dialog=New-ProductWindow 'Seleziona sottocartelle' 490 610
+    $panel=[Windows.Controls.StackPanel]::new(); $panel.Margin=[Windows.Thickness]::new(18)
+    $label=[Windows.Controls.TextBlock]::new(); $label.Text='Sottocartelle: filtro nome (* e ?). Ctrl+clic per escludere righe.'; $label.Margin=[Windows.Thickness]::new(0,16,0,4); $panel.Children.Add($label)|Out-Null
+    $pattern=[Windows.Controls.TextBox]::new(); $pattern.Text=if($script:proPendingOperation){$script:proPendingOperation.Pattern}else{'*'}; $panel.Children.Add($pattern)|Out-Null
+    $label=[Windows.Controls.TextBlock]::new(); $label.Text='Escludi cartelle e discendenti (es. Backup*)'; $label.Margin=[Windows.Thickness]::new(0,10,0,4); $panel.Children.Add($label)|Out-Null
+    $exclude=[Windows.Controls.TextBox]::new(); if($script:proPendingOperation){$exclude.Text=$script:proPendingOperation.Exclude}; $panel.Children.Add($exclude)|Out-Null
+    $preview=[Windows.Controls.ListBox]::new(); $preview.SelectionMode='Multiple'; $preview.Height=100; [Windows.Controls.ScrollViewer]::SetHorizontalScrollBarVisibility($preview,[Windows.Controls.ScrollBarVisibility]::Disabled); $preview.HorizontalContentAlignment='Stretch'; $preview.ItemTemplate=[Windows.Markup.XamlReader]::Parse('<DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"><TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="11"/></DataTemplate>'); $rowStyle=[Windows.Style]::new([Windows.Controls.ListBoxItem],$window.Resources[[Windows.Controls.ListBoxItem]]); $rowStyle.Setters.Add([Windows.Setter]::new([Windows.FrameworkElement]::MaxWidthProperty,[double]::PositiveInfinity)); $rowStyle.Setters.Add([Windows.Setter]::new([Windows.Controls.Control]::HorizontalContentAlignmentProperty,[Windows.HorizontalAlignment]::Stretch)); $rowStyle.Setters.Add([Windows.Setter]::new([Windows.FrameworkElement]::MaxWidthProperty,[double]400)); $preview.ItemContainerStyle=$rowStyle; $preview.Margin=[Windows.Thickness]::new(0,12,0,10); $panel.Children.Add($preview)|Out-Null
+    $scan=[Windows.Controls.Button]::new(); $scan.Content='Mostra anteprima delle sottocartelle'; $panel.Children.Add($scan)|Out-Null
+    $select=[Windows.Controls.Button]::new(); $select.Content='Seleziona le cartelle evidenziate'; $select.Margin=[Windows.Thickness]::new(0,8,0,0); $select.IsEnabled=$false; $panel.Children.Add($select)|Out-Null
+    $status=[Windows.Controls.TextBlock]::new(); $status.TextWrapping='Wrap'; $status.Margin=[Windows.Thickness]::new(0,10,0,0); $panel.Children.Add($status)|Out-Null
+    $script:proDialog=@{Dialog=$dialog;Scan=$scan;Pattern=$pattern;Exclude=$exclude;Preview=$preview;Select=$select;Status=$status;Targets=@()}
+    $scan.Add_Click({ try {
+        $script:proDialog.Targets=@(Get-ProFolderPreview $script:currentFolder $script:proDialog.Pattern.Text $script:proDialog.Exclude.Text)
+        $script:proDialog.Preview.ItemsSource=$script:proDialog.Targets; $script:proDialog.Preview.SelectAll(); $script:proDialog.Select.IsEnabled=$script:proDialog.Targets.Count -gt 0
+        $script:proDialog.Status.Text=([string]$script:proDialog.Targets.Count)+' cartelle. Nessuna icona modificata. Collegamenti esclusi.'
+    } catch { $script:proDialog.Select.IsEnabled=$false; $script:proDialog.Status.Text=$_.Exception.Message } })
+    $select.Add_Click({try { Select-ProductFolders @($script:proDialog.Preview.SelectedItems); $script:proDialog.Dialog.Close() }catch{$script:proDialog.Status.Text=$_.Exception.Message}})
+    $dialog.Content=$panel; Show-AdaptiveDialog $dialog|Out-Null
+}
+
+
+
+function Update-ProBanner { }
+function Assert-ProFeature([string]$Feature) { return $true }
+function Save-ProOperation([string]$Name,[string]$Base,[string]$Pattern,[string]$Exclude,[string]$Hex) {
+    if (!$Name.Trim() -or $Name.Length -gt 80 -or $Hex -notmatch '^#[a-fA-F0-9]{6}$' -or ![IO.Directory]::Exists($Base)) { throw 'Nome, percorso o colore non valido.' }
+    $items=@(Read-ProductList 'pro-operazioni.json' | Where-Object Name -ne $Name.Trim())
+    $item=[pscustomobject]@{Name=$Name.Trim();Base=$Base;Pattern=$Pattern;Exclude=$Exclude;Hex=$Hex}
+    Write-AdvancedJson (Join-Path $root 'pro-operazioni.json') ($items+@($item))
+}
+function New-ProProject([string]$Base,[string]$Profile) {
+    $names=switch ($Profile) {'Studio'{@('Appunti','Materiale','Consegne')} 'Foto'{@('Originali','Selezionate','Esportate')} default {@('Documenti','Immagini','Fatture')}}
+    $colors=@('#477FE7','#45B99A','#E5A044'); $targets=@($names|ForEach-Object{Join-Path $Base $_})
+    foreach($path in $targets){if(Test-Path -LiteralPath $path){throw 'Una cartella del profilo esiste gia. Scegli una cartella vuota.'}}
+    $created=@(); try {for($i=0;$i -lt $targets.Count;$i++){[IO.Directory]::CreateDirectory($targets[$i])|Out-Null; $created+=$targets[$i]; Set-FolderColor $targets[$i] $colors[$i]}}catch{throw ('Creazione interrotta. Controlla le cartelle create: '+($_.Exception.Message))}
+    return $targets
+}
+function Install-ProCollection([string]$Pack) {
+    $colors=if($Pack -eq 'Natura'){@('#268C68','#7AAF54','#CE9E44')}else{@('#507CE0','#9965CF','#E28848')}
+    $badges=@('document','photo','star'); for($i=0;$i -lt 3;$i++){$null=Save-CompletePreset ($Pack+' '+($i+1)) $colors[$i] '' $badges[$i] '#FFFFFF'}
+}
+function Start-ProRule([string]$Base,[string]$Pattern,[string]$Exclude,[string]$Hex) {
+    if($Hex -notmatch '^#[a-fA-F0-9]{6}$'){throw 'Colore non valido.'}
+    $baseItem=Get-Item -LiteralPath $Base -ErrorAction Stop; if(!$baseItem.PSIsContainer -or ($baseItem.Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Percorso della regola non valido.'}
+    $script:proRule=[pscustomobject]@{Base=$baseItem.FullName;Pattern=$Pattern;Exclude=$Exclude;Hex=$Hex;Enabled=$true}
+    $script:proRuleSeen=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    foreach($item in Get-ChildItem -LiteralPath $Base -Directory){$null=$script:proRuleSeen.Add($item.FullName)}
+    Write-AdvancedJson (Join-Path $root 'pro-regola.json') $script:proRule
+    if(!$script:proRuleTimer){$script:proRuleTimer=[Windows.Threading.DispatcherTimer]::new();$script:proRuleTimer.Interval=[TimeSpan]::FromSeconds(4);$script:proRuleTimer.Add_Tick({Invoke-ProRuleTick})}
+    $script:proRuleTimer.Start()
+}
+function Invoke-ProRuleTick {
+    if($script:proBatchBusy -or !(Test-ProAccess) -or !$script:proRule.Enabled){return}
+    try { $targets=@(); foreach($item in Get-ChildItem -LiteralPath $script:proRule.Base -Directory -ErrorAction Stop){
+        if($script:proRuleSeen.Add($item.FullName) -and !($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $item.Name -like $script:proRule.Pattern -and (!$script:proRule.Exclude -or $item.Name -notlike $script:proRule.Exclude)){$targets+=$item.FullName}
+    }; if($targets.Count){Invoke-FolderBatch $targets $script:proRule.Hex ''; Show-Toast ('Regola automatica: '+$targets.Count+' cartelle aggiornate.');Update-UndoButton} }
+    catch {$script:proRule.Enabled=$false;$script:proRuleTimer.Stop();Show-Status ('Regola sospesa: '+$_.Exception.Message)}
+}
+function Show-ProTools {
+    if(!(Assert-ProFeature 'tools')){return}
+    $dialog=New-ProductWindow 'Strumenti' 450 560
+    $panel=[Windows.Controls.StackPanel]::new();$panel.Margin=[Windows.Thickness]::new(14);$panel.Children.Add((New-ProBackButton {Invoke-ProToolAction 'close'}))|Out-Null
+    $intro=[Windows.Controls.TextBlock]::new();$intro.Text='Scegli uno strumento. Le regole operano soltanto mentre questa app e aperta.';$intro.TextWrapping='Wrap';$panel.Children.Add($intro)|Out-Null
+    Add-ProFieldLabel $panel 'Profilo progetto';$selector=[Windows.Controls.ComboBox]::new();foreach($name in @('Lavoro','Studio','Foto')){$selector.Items.Add($name)|Out-Null};$selector.SelectedIndex=0;$selector.Margin=[Windows.Thickness]::new(0,12,0,8);$panel.Children.Add($selector)|Out-Null
+    Add-ProFieldLabel $panel 'Filtro dei nomi per regole e operazioni (* e ?)';$rulePattern=[Windows.Controls.TextBox]::new();$rulePattern.Text='Foto*';$rulePattern.ToolTip='Regola: filtro dei nomi';$panel.Children.Add($rulePattern)|Out-Null
+    Add-ProFieldLabel $panel 'Nome per salvare l operazione';$name=[Windows.Controls.TextBox]::new();$name.Text='La mia operazione';$name.ToolTip='Nome operazione salvata';$name.Margin=[Windows.Thickness]::new(0,8,0,8);$panel.Children.Add($name)|Out-Null
+    Add-ProFieldLabel $panel 'Operazione da caricare';$saved=[Windows.Controls.ComboBox]::new();$saved.ItemsSource=@(Read-ProductList 'pro-operazioni.json');$saved.DisplayMemberPath='Name';$panel.Children.Add($saved)|Out-Null
+    $status=[Windows.Controls.TextBlock]::new();$status.TextWrapping='Wrap';$status.Margin=[Windows.Thickness]::new(0,10,0,0)
+    $script:proTools=@{Dialog=$dialog;Profile=$selector;Pattern=$rulePattern;Name=$name;Saved=$saved;Status=$status;ConfirmProfile=$false;ConfirmRule=$false}
+    foreach($entry in @(
+        @('preview','Anteprima modificabile delle cartelle'),@('save','Salva operazione corrente'),@('load','Carica operazione salvata'),@('project','Anteprima e creazione profilo progetto'),@('pack','Aggiungi raccolta Studio'),@('nature','Aggiungi raccolta Natura'),@('rule','Anteprima / attiva regola sulle nuove cartelle'),@('stop','Ferma regola automatica'),@('background','Personalizza lo sfondo')
+    )){$button=New-ProListButton $entry[1];$button.Tag=$entry[0];$button.Add_Click({param($sender)Invoke-ProToolAction ([string]$sender.Tag)});$panel.Children.Add($button)|Out-Null}
+    $panel.Children.Add($status)|Out-Null;$dialog.Content=$panel;Show-AdaptiveDialog $dialog|Out-Null
+}
+function Invoke-ProToolAction([string]$Action) {
+    $ctx=$script:proTools;try {switch($Action){
+        'preview'{Show-ProPreview}
+        'save'{Save-ProOperation $ctx.Name.Text $script:currentFolder $ctx.Pattern.Text $(if($script:proDialog){$script:proDialog.Exclude.Text}else{''}) (Valid-Hex);$ctx.Saved.ItemsSource=@(Read-ProductList 'pro-operazioni.json');$ctx.Status.Text='Operazione salvata.'}
+        'load'{ $item=$ctx.Saved.SelectedItem;if(!$item){throw 'Scegli una operazione.'};Select-ProductFolders @($item.Base);$ui.Hex.Text=$item.Hex;$ctx.Pattern.Text=$item.Pattern;$script:proPendingOperation=$item;$ctx.Status.Text='Operazione caricata. Apri l''anteprima prima di applicare.'}
+        'project'{if(!$ctx.ConfirmProfile -or $ctx.ProjectBase -ne $script:currentFolder -or $ctx.ProjectProfile -ne [string]$ctx.Profile.SelectedItem){$ctx.ConfirmProfile=$true;$ctx.ProjectBase=$script:currentFolder;$ctx.ProjectProfile=[string]$ctx.Profile.SelectedItem;$ctx.Status.Text='Profilo '+$ctx.Profile.SelectedItem+' in '+$script:currentFolder+'. Crea tre cartelle con colori coordinati. Premi ancora per confermare.'}else{$targets=@(New-ProProject $script:currentFolder $ctx.Profile.SelectedItem);$ctx.ConfirmProfile=$false;$ctx.Status.Text='Profilo creato: '+($targets -join ', ')}}
+        'pack'{Install-ProCollection 'Studio';$ctx.Status.Text='Raccolta aggiunta ai preset completi: puoi vederla e applicarla dal menu.'}
+        'nature'{Install-ProCollection 'Natura';$ctx.Status.Text='Raccolta aggiunta ai preset completi.'}
+        'rule'{if(!$ctx.ConfirmRule -or $ctx.RuleBase -ne $script:currentFolder -or $ctx.RulePattern -ne $ctx.Pattern.Text -or $ctx.RuleHex -ne (Valid-Hex)){$ctx.ConfirmRule=$true;$ctx.RuleBase=$script:currentFolder;$ctx.RulePattern=$ctx.Pattern.Text;$ctx.RuleHex=Valid-Hex;$ctx.Status.Text='Regola in '+$script:currentFolder+': nuove cartelle con nome '+$ctx.Pattern.Text+', colore '+(Valid-Hex)+'. Quelle esistenti non cambiano. Premi ancora per attivare.'}else{Start-ProRule $script:currentFolder $ctx.Pattern.Text '' (Valid-Hex);$ctx.ConfirmRule=$false;$ctx.Status.Text='Regola attiva mentre l''app rimane aperta.'}}
+        'stop'{if($script:proRuleTimer){$script:proRuleTimer.Stop()};if($script:proRule){$script:proRule.Enabled=$false};$ctx.Status.Text='Regola fermata.'}
+        'background'{Show-BackgroundDialog}
+        'close'{$ctx.Dialog.Close()}
+    }}catch{$ctx.Status.Text=$_.Exception.Message}
+}
+
+function New-ProBatchProgress([int]$Total) {
+    $dialog=New-ProductWindow 'Operazione sulle cartelle' 380 280;$panel=[Windows.Controls.StackPanel]::new();$panel.Margin=[Windows.Thickness]::new(18)
+    $text=[Windows.Controls.TextBlock]::new();$text.Text='Preparazione di '+$Total+' cartelle';$text.TextWrapping='Wrap';$panel.Children.Add($text)|Out-Null
+    $bar=[Windows.Controls.ProgressBar]::new();$bar.Minimum=0;$bar.Maximum=$Total;$bar.Height=10;$bar.Margin=[Windows.Thickness]::new(0,16,0,16);$panel.Children.Add($bar)|Out-Null
+    $button=[Windows.Controls.Button]::new();$button.Content='Interrompi e annulla il gruppo';$panel.Children.Add($button)|Out-Null
+    $script:proProgress=@{Window=$dialog;Text=$text;Bar=$bar;Cancelled=$false;Complete=$false}
+    $button.Add_Click({$script:proProgress.Cancelled=$true});$dialog.Add_Closing({if(!$script:proProgress.Complete){$script:proProgress.Cancelled=$true}});$dialog.Content=$panel;$dialog.Show();return $script:proProgress
+}
+
+function Test-ProToolsInterface {
+    $script:toolsUiChecked=$false;$script:toolsUiFailure=''
+    $script:toolsUiTimer=[Windows.Threading.DispatcherTimer]::new();$script:toolsUiTimer.Interval=[TimeSpan]::FromMilliseconds(250)
+    $script:toolsUiTimer.Add_Tick({$script:toolsUiTimer.Stop();try{
+        $dialog=$script:proTools.Dialog;$dialog.UpdateLayout();$bitmap=[Windows.Media.Imaging.RenderTargetBitmap]::new([int]$dialog.ActualWidth,[int]$dialog.ActualHeight,96,96,[Windows.Media.PixelFormats]::Pbgra32);$bitmap.Render($dialog)
+        $encoder=[Windows.Media.Imaging.PngBitmapEncoder]::new();$encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($bitmap));$stream=[IO.File]::Create((Join-Path ([IO.Path]::GetDirectoryName($script:Preview)) 'strumenti-pro.png'));try{$encoder.Save($stream)}finally{$stream.Dispose()}
+        $script:toolsUiChecked=$true
+    }catch{$script:toolsUiFailure=$_.Exception.Message}finally{Invoke-ProToolAction 'close'}})
+    try{$script:toolsUiTimer.Start();Show-ProTools;if(!$script:toolsUiChecked -or $script:toolsUiFailure){throw ('Pro tools UI: '+$script:toolsUiFailure)}}finally{$script:toolsUiTimer.Stop()}
+    'OK: pagina strumenti Pro e ritorno alla finestra principale.'
+}
+
+function Add-ProFieldLabel($Panel,[string]$Text) {
+    $label=[Windows.Controls.TextBlock]::new();$label.Text=$Text;$label.TextWrapping='Wrap';$label.FontSize=11;$label.Margin=[Windows.Thickness]::new(0,8,0,4);$Panel.Children.Add($label)|Out-Null
+}
+function Test-ProProgressInterface {
+    $targets=@('Progress A','Progress B','Progress C'|ForEach-Object{Join-Path $root $_});foreach($target in $targets){[IO.Directory]::CreateDirectory($target)|Out-Null}
+    $script:cancelProgressTimer=[Windows.Threading.DispatcherTimer]::new();$script:cancelProgressTimer.Interval=[TimeSpan]::FromMilliseconds(1);$script:cancelProgressTimer.Add_Tick({if($script:proProgress){$script:proProgress.Cancelled=$true;$script:cancelProgressTimer.Stop()}})
+    $cancelled=$false;try{$script:cancelProgressTimer.Start();Invoke-FolderBatch $targets '#123456' ''}catch{$cancelled=$_.Exception.Message.Contains('interrotta')}finally{$script:cancelProgressTimer.Stop()}
+    if(!$cancelled){throw 'Batch cancellation not handled'};foreach($target in $targets){if(Test-Path (Join-Path $target 'desktop.ini')){throw 'Cancelled batch left modified folder'}}
+    'OK: interruzione del gruppo e ripristino delle cartelle.'
+}
+
+
+
+function New-ProBackButton([scriptblock]$Action) {
+    $button=[Windows.Controls.Button]::new();$button.Width=30;$button.Height=30;$button.MinHeight=30;$button.HorizontalAlignment='Left';$button.Margin=[Windows.Thickness]::new(0,0,0,8);$button.Padding=[Windows.Thickness]::new(6);$button.Background=[Windows.Media.Brushes]::Transparent;$button.BorderThickness=[Windows.Thickness]::new(0);$button.ToolTip='Torna indietro';[Windows.Automation.AutomationProperties]::SetName($button,'Torna indietro alla finestra principale')
+    $button.Template=[Windows.Markup.XamlReader]::Parse('<ControlTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" TargetType="Button"><Border x:Name="Surface" Background="Transparent" Padding="6"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Background" Value="{DynamicResource Hover}"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Surface" Property="BorderBrush" Value="{DynamicResource Accent}"/><Setter TargetName="Surface" Property="BorderThickness" Value="1"/></Trigger></ControlTemplate.Triggers></ControlTemplate>')
+    $arrow=[Windows.Shapes.Path]::new();$arrow.Data=[Windows.Media.Geometry]::Parse('M18,12 L6,12 M11,7 L6,12 L11,17');$arrow.Width=16;$arrow.Height=16;$arrow.Stretch='Uniform';$arrow.StrokeThickness=1.8;$arrow.SetResourceReference([Windows.Shapes.Shape]::StrokeProperty,'Text');$button.Content=$arrow;$button.Add_Click($Action);return $button
+}
+function New-ProListButton([string]$Title) {
+    $button=[Windows.Controls.Button]::new();$button.MinHeight=26;$button.Padding=[Windows.Thickness]::new(5,4,5,4);$button.HorizontalContentAlignment='Left';$button.Margin=[Windows.Thickness]::new(0,1,0,0);$button.Background=[Windows.Media.Brushes]::Transparent;$button.BorderThickness=[Windows.Thickness]::new(0)
+    $text=[Windows.Controls.TextBlock]::new();$text.Text=([string][char]0x2022)+'  '+$Title;$text.FontSize=12;$text.TextWrapping='Wrap';$button.Content=$text
+    $button.Template=[Windows.Markup.XamlReader]::Parse('<ControlTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" TargetType="Button"><Border x:Name="Row" Background="Transparent" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Left"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Hover}"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/><Setter TargetName="Row" Property="BorderThickness" Value="1"/></Trigger></ControlTemplate.Triggers></ControlTemplate>');return $button
+}
+
+
+function Test-ProAccess { return $true }
+Initialize-ProPreview

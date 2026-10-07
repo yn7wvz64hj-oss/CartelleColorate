@@ -31,7 +31,7 @@ if ($Test) {
     & $ps -NoProfile -STA -ExecutionPolicy Bypass -File (Join-Path $repo 'scripts/TestDownloadedPackage.ps1') -Package $package -OutputDirectory $work
     if ($LASTEXITCODE -ne 0) { throw 'Test pacchetto scaricato falliti.' }
     $preview=Join-Path $work 'anteprima.png'
-    & $ps -NoProfile -STA -ExecutionPolicy Bypass -File (Join-Path $package 'CartelleColorate.ps1') -Folder $package -Theme Dark -Language it -UITest -Preview $preview
+    & $ps -NoProfile -STA -ExecutionPolicy Bypass -File (Join-Path $repo 'scripts/TestStudio.ps1') -Package $package -OutputDirectory $work
     if ($LASTEXITCODE -ne 0) { throw 'Test interfaccia falliti.' }
     $testData=Join-Path $package 'test-data'
     if (Test-Path -LiteralPath $testData) {

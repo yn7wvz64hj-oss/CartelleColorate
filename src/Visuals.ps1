@@ -122,6 +122,7 @@ function Set-BackgroundPoint($Point) {
     $ctx.Hex.Text=Get-HsvHex $ctx.Hue.Value $ctx.Saturation $ctx.Brightness
 }
 function Show-BackgroundDialog {
+    if (!(Assert-ProFeature 'background')) { return }
     $dialog=New-ProductWindow (T 'background') 400 530; $dialog.ResizeMode='CanResizeWithGrip'
     [xml]$markup=@'
 <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions><ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel Margin="18,14,18,6">

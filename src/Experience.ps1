@@ -142,11 +142,15 @@ function Test-ExperienceBackend {
     Write-Output 'OK: pacchetto aggiornamento verificato prima di estrarre; checksum e versione errati respinti.'
 }
 function Test-ExperienceInterface([string]$Png) {
-    $menu=$ui.PaletteTools.ContextMenu; $folders=@($menu.Items | Where-Object { $_.Tag -eq 'folderTools' }); $library=@($menu.Items | Where-Object { $_.Tag -eq 'libraryTools' }); if ($menu.Items.Count -ne 6 -or $folders.Count -ne 1 -or $library[0].Items.Count -ne 5) { throw 'Grouped menu lost actions' }
+    $menu=$ui.PaletteTools.ContextMenu; $folders=@($menu.Items | Where-Object { $_.Tag -eq 'folderTools' }); $library=@($menu.Items | Where-Object { $_.Tag -eq 'libraryTools' }); if ($menu.Items.Count -ne 7 -or $folders.Count -ne 1 -or $library[0].Items.Count -ne 5) { throw 'Grouped menu lost actions' }
     $script:visualCancelTest=$true; $before=Get-DataHash ([IO.File]::ReadAllBytes((Join-Path $root 'sfondi.json'))); $beforeColor=$ui.PersonalBackground.Background.Color.ToString(); Show-BackgroundDialog; $script:visualCancelTest=$false
     if ((Get-DataHash ([IO.File]::ReadAllBytes((Join-Path $root 'sfondi.json')))) -ne $before -or $script:backgroundDraft -or $ui.PersonalBackground.Background.Color.ToString() -ne $beforeColor) { throw 'Cancelled background wrote preferences or did not restore preview' }
     Save-BackgroundChoice 'MacOS' 'Image' '#123456' $Png 4 2 35; Apply-Appearance 'MacOS'; $brush=$ui.PersonalBackground.Background
     if ($brush.AlignmentX -ne 'Right' -or $brush.Viewbox.Width -ne 0.5 -or $ui.BackgroundShade.Background.Color.A -ne $(if ($script:dark) { 204 } else { 230 })) { throw 'Background image layout failed' }; $same=New-BackgroundBrush ((Read-BackgroundChoices)['MacOS']); if (![object]::ReferenceEquals($brush.ImageSource,$same.ImageSource)) { throw 'Background reloads during preview' }
+    Test-ProCheckoutInterface
+    Test-ProPreviewInterface
+    Test-ProToolsInterface
+    Test-ProProgressInterface
     Test-ComfortInterface
     $height=$window.Height; $width=$window.Width; $minHeight=$window.MinHeight; $minWidth=$window.MinWidth; $maxHeight=$window.MaxHeight; $maxWidth=$window.MaxWidth
     try { Set-AdaptiveWindow $window ([Windows.Rect]::new(0,0,480,470)); $window.UpdateLayout(); $point=$ui.Apply.TransformToAncestor($ui.Root).Transform([Windows.Point]::new(0,$ui.Apply.ActualHeight)); if ($point.Y -gt $ui.Root.ActualHeight+1) { throw 'Apply button outside compact window' }

@@ -1,3 +1,27 @@
+# CartelleColorate Studio 2.0 — Tutto gratis / All features free
+
+## Italiano
+CartelleColorate Studio 2.0 rinnova completamente l’interfaccia e rende tutte le funzioni gratuite.
+
+- Nuova anteprima con cartelle ridisegnate e tema scuro corretto.
+- Colori precisi, pipetta, immagini PNG e stili personali salvabili.
+- Sfondi personalizzati, selezione multipla, raccolte, progetti e regole automatiche disponibili a tutti.
+- Nessun acquisto, account o codice di licenza richiesto.
+
+Scarica `CartelleColorate-2.0.0-windows.zip`, estrailo e avvia `Installa.cmd`. Su Windows 11 il menu può comparire in “Mostra altre opzioni”. Le regole automatiche funzionano mentre l’app rimane aperta.
+
+## English
+CartelleColorate Studio 2.0 introduces a redesigned interface and makes every feature free.
+
+- Redesigned folder preview with a corrected dark theme.
+- Precise colors, eyedropper, PNG images and reusable personal styles.
+- Custom backgrounds, multiple folders, collections, projects and automatic rules available to everyone.
+- No purchase, account or license key required.
+
+Download `CartelleColorate-2.0.0-windows.zip`, extract it and run `Installa.cmd`. On Windows 11, the menu may appear under “Show more options”. Automatic rules run while the app stays open.
+
+![Studio](docs/images/interfaccia.png)
+
 # CartelleColorate
 
 Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del tasto destro.
@@ -12,7 +36,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate 1.5 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.5.0/CartelleColorate-1.5.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.5.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.5.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate Studio 2.0 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v2.0.0/CartelleColorate-2.0.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v2.0.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-2.0.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
