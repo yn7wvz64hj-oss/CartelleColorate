@@ -173,11 +173,15 @@
         "positionRight": "A destra",
         "updateIntegrity": "Verifica del pacchetto non riuscita.",
         "releaseLoading": "Caricamento delle novità…",
-        "updateSteps": "Scarica il pacchetto verificato, poi premi Installa aggiornamento. L’app si chiuderà; colori e preferenze saranno conservati.",
+        "updateSteps": "Premi Aggiorna adesso: l’app scarica e verifica il pacchetto, installa l’aggiornamento e si riapre. Colori e preferenze vengono conservati.",
         "updateReady": "Pacchetto verificato e pronto. Premi Installa aggiornamento per continuare.",
         "installUpdate": "Installa aggiornamento",
         "releaseUnavailable": "Le note di questa release non sono disponibili. Riprova più tardi.",
-        "updateDownloading": "Download in corso…"
+        "updateDownloading": "Download in corso…",
+        "autoUpdate": "Aggiorna adesso",
+        "updateInstalling": "Installazione dell’aggiornamento…",
+        "updateComplete": "Aggiornamento completato. Riavvio dell’app…",
+        "downloadProgress": "Download {0}% · {1} / {2} KB"
       }
     },
     {
@@ -352,11 +356,15 @@
         "positionRight": "Right",
         "updateIntegrity": "Package verification failed.",
         "releaseLoading": "Loading release notes…",
-        "updateSteps": "Download the verified package, then choose Install update. The app will close; your colors and preferences will be kept.",
+        "updateSteps": "Choose Update now: the app downloads and verifies the package, installs the update and reopens. Your colors and preferences are kept.",
         "updateReady": "Package verified and ready. Choose Install update to continue.",
         "installUpdate": "Install update",
         "releaseUnavailable": "Release notes are unavailable. Please try again later.",
-        "updateDownloading": "Downloading…"
+        "updateDownloading": "Downloading…",
+        "autoUpdate": "Update now",
+        "updateInstalling": "Installing update…",
+        "updateComplete": "Update complete. Restarting the app…",
+        "downloadProgress": "Download {0}% · {1} / {2} KB"
       }
     },
     {
@@ -531,11 +539,15 @@
         "positionRight": "右侧",
         "updateIntegrity": "安装包验证失败。",
         "releaseLoading": "正在加载更新说明…",
-        "updateSteps": "下载已验证的安装包，然后选择安装更新。应用将关闭，颜色和设置会保留。",
+        "updateSteps": "选择立即更新：应用将下载并验证安装包，安装更新后重新打开。颜色和设置会保留。",
         "updateReady": "安装包已验证。选择安装更新继续。",
         "installUpdate": "安装更新",
         "releaseUnavailable": "更新说明不可用，请稍后重试。",
-        "updateDownloading": "正在下载…"
+        "updateDownloading": "正在下载…",
+        "autoUpdate": "立即更新",
+        "updateInstalling": "正在安装更新…",
+        "updateComplete": "更新完成，正在重启应用…",
+        "downloadProgress": "下载 {0}% · {1} / {2} KB"
       }
     },
     {
@@ -710,11 +722,15 @@
         "positionRight": "Derecha",
         "updateIntegrity": "La verificación del paquete falló.",
         "releaseLoading": "Cargando novedades…",
-        "updateSteps": "Descarga el paquete verificado y pulsa Instalar actualización. La app se cerrará; tus colores y preferencias se conservarán.",
+        "updateSteps": "Pulsa Actualizar ahora: la app descarga y verifica el paquete, instala la actualización y se vuelve a abrir. Colores y preferencias se conservan.",
         "updateReady": "Paquete verificado. Pulsa Instalar actualización para continuar.",
         "installUpdate": "Instalar actualización",
         "releaseUnavailable": "Las notas no están disponibles. Inténtalo más tarde.",
-        "updateDownloading": "Descargando…"
+        "updateDownloading": "Descargando…",
+        "autoUpdate": "Actualizar ahora",
+        "updateInstalling": "Instalando actualización…",
+        "updateComplete": "Actualización completada. Reiniciando la app…",
+        "downloadProgress": "Descarga {0}% · {1} / {2} KB"
       }
     },
     {
@@ -889,11 +905,15 @@
         "positionRight": "दाएँ",
         "updateIntegrity": "पैकेज सत्यापन विफल।",
         "releaseLoading": "बदलाव लोड हो रहे हैं…",
-        "updateSteps": "सत्यापित पैकेज डाउनलोड करें, फिर अपडेट स्थापित करें चुनें। ऐप बंद होगा; रंग और प्राथमिकताएँ सुरक्षित रहेंगी।",
+        "updateSteps": "अभी अपडेट करें चुनें: ऐप पैकेज डाउनलोड और सत्यापित करके अपडेट स्थापित करेगा और फिर खुलेगा। रंग और प्राथमिकताएँ सुरक्षित रहेंगी।",
         "updateReady": "पैकेज सत्यापित है। आगे बढ़ने के लिए अपडेट स्थापित करें चुनें।",
         "installUpdate": "अपडेट स्थापित करें",
         "releaseUnavailable": "रिलीज़ विवरण उपलब्ध नहीं है। बाद में प्रयास करें।",
-        "updateDownloading": "डाउनलोड हो रहा है…"
+        "updateDownloading": "डाउनलोड हो रहा है…",
+        "autoUpdate": "अभी अपडेट करें",
+        "updateInstalling": "अपडेट स्थापित हो रहा है…",
+        "updateComplete": "अपडेट पूरा हुआ। ऐप फिर शुरू हो रहा है…",
+        "downloadProgress": "डाउनलोड {0}% · {1} / {2} KB"
       }
     },
     {
@@ -1068,11 +1088,15 @@
         "positionRight": "اليمين",
         "updateIntegrity": "فشل التحقق من الحزمة.",
         "releaseLoading": "جارٍ تحميل المستجدات…",
-        "updateSteps": "نزّل الحزمة التي تم التحقق منها ثم اختر تثبيت التحديث. سيُغلق التطبيق مع الاحتفاظ بالألوان والتفضيلات.",
+        "updateSteps": "اختر التحديث الآن: ينزّل التطبيق الحزمة ويتحقق منها ويثبت التحديث ثم يُفتح مجددًا. تُحفظ الألوان والتفضيلات.",
         "updateReady": "الحزمة جاهزة. اختر تثبيت التحديث للمتابعة.",
         "installUpdate": "تثبيت التحديث",
         "releaseUnavailable": "ملاحظات الإصدار غير متاحة. حاول لاحقًا.",
-        "updateDownloading": "جارٍ التنزيل…"
+        "updateDownloading": "جارٍ التنزيل…",
+        "autoUpdate": "التحديث الآن",
+        "updateInstalling": "جارٍ تثبيت التحديث…",
+        "updateComplete": "اكتمل التحديث. جارٍ إعادة تشغيل التطبيق…",
+        "downloadProgress": "التنزيل {0}% · {1} / {2} KB"
       }
     },
     {
@@ -1247,11 +1271,15 @@
         "positionRight": "Direita",
         "updateIntegrity": "Falha ao verificar o pacote.",
         "releaseLoading": "Carregando novidades…",
-        "updateSteps": "Baixe o pacote verificado e escolha Instalar atualização. O app será fechado; cores e preferências serão mantidas.",
+        "updateSteps": "Escolha Atualizar agora: o app baixa e verifica o pacote, instala a atualização e reabre. Cores e preferências são mantidas.",
         "updateReady": "Pacote verificado. Escolha Instalar atualização para continuar.",
         "installUpdate": "Instalar atualização",
         "releaseUnavailable": "As notas não estão disponíveis. Tente mais tarde.",
-        "updateDownloading": "Baixando…"
+        "updateDownloading": "Baixando…",
+        "autoUpdate": "Atualizar agora",
+        "updateInstalling": "Instalando atualização…",
+        "updateComplete": "Atualização concluída. Reiniciando o app…",
+        "downloadProgress": "Download {0}% · {1} / {2} KB"
       }
     },
     {
@@ -1426,11 +1454,15 @@
         "positionRight": "ডানে",
         "updateIntegrity": "প্যাকেজ যাচাই ব্যর্থ হয়েছে।",
         "releaseLoading": "নতুন তথ্য লোড হচ্ছে…",
-        "updateSteps": "যাচাইকৃত প্যাকেজ ডাউনলোড করে আপডেট ইনস্টল করুন নির্বাচন করুন। অ্যাপ বন্ধ হবে; রং ও পছন্দ সংরক্ষিত থাকবে।",
+        "updateSteps": "এখন আপডেট করুন নির্বাচন করুন: অ্যাপ প্যাকেজ ডাউনলোড ও যাচাই করে আপডেট ইনস্টল করবে এবং আবার খুলবে। রং ও পছন্দ সংরক্ষিত থাকবে।",
         "updateReady": "প্যাকেজ যাচাইকৃত। চালিয়ে যেতে আপডেট ইনস্টল করুন নির্বাচন করুন।",
         "installUpdate": "আপডেট ইনস্টল করুন",
         "releaseUnavailable": "রিলিজের বিবরণ পাওয়া যাচ্ছে না। পরে চেষ্টা করুন।",
-        "updateDownloading": "ডাউনলোড হচ্ছে…"
+        "updateDownloading": "ডাউনলোড হচ্ছে…",
+        "autoUpdate": "এখন আপডেট করুন",
+        "updateInstalling": "আপডেট ইনস্টল হচ্ছে…",
+        "updateComplete": "আপডেট সম্পূর্ণ। অ্যাপ আবার চালু হচ্ছে…",
+        "downloadProgress": "ডাউনলোড {0}% · {1} / {2} KB"
       }
     },
     {
@@ -1605,11 +1637,15 @@
         "positionRight": "Справа",
         "updateIntegrity": "Проверка пакета не пройдена.",
         "releaseLoading": "Загрузка списка изменений…",
-        "updateSteps": "Скачайте проверенный пакет и выберите Установить обновление. Приложение закроется; цвета и настройки сохранятся.",
+        "updateSteps": "Выберите Обновить сейчас: приложение скачает и проверит пакет, установит обновление и откроется снова. Цвета и настройки сохранятся.",
         "updateReady": "Пакет проверен. Выберите Установить обновление для продолжения.",
         "installUpdate": "Установить обновление",
         "releaseUnavailable": "Список изменений недоступен. Повторите позже.",
-        "updateDownloading": "Скачивание…"
+        "updateDownloading": "Скачивание…",
+        "autoUpdate": "Обновить сейчас",
+        "updateInstalling": "Установка обновления…",
+        "updateComplete": "Обновление завершено. Перезапуск приложения…",
+        "downloadProgress": "Загрузка {0}% · {1} / {2} KB"
       }
     },
     {
@@ -1784,11 +1820,15 @@
         "positionRight": "À droite",
         "updateIntegrity": "La vérification du paquet a échoué.",
         "releaseLoading": "Chargement des nouveautés…",
-        "updateSteps": "Téléchargez le paquet vérifié puis choisissez Installer la mise à jour. L’app se fermera ; couleurs et préférences seront conservées.",
+        "updateSteps": "Choisissez Mettre à jour : l’app télécharge et vérifie le paquet, installe la mise à jour puis se rouvre. Couleurs et préférences sont conservées.",
         "updateReady": "Paquet vérifié. Choisissez Installer la mise à jour pour continuer.",
         "installUpdate": "Installer la mise à jour",
         "releaseUnavailable": "Les notes sont indisponibles. Réessayez plus tard.",
-        "updateDownloading": "Téléchargement…"
+        "updateDownloading": "Téléchargement…",
+        "autoUpdate": "Mettre à jour",
+        "updateInstalling": "Installation de la mise à jour…",
+        "updateComplete": "Mise à jour terminée. Redémarrage de l’app…",
+        "downloadProgress": "Téléchargement {0}% · {1} / {2} KB"
       }
     },
     {
@@ -1963,11 +2003,15 @@
         "positionRight": "Rechts",
         "updateIntegrity": "Paketprüfung fehlgeschlagen.",
         "releaseLoading": "Änderungen werden geladen…",
-        "updateSteps": "Lade das geprüfte Paket herunter und wähle Update installieren. Die App wird geschlossen; Farben und Einstellungen bleiben erhalten.",
+        "updateSteps": "Wähle Jetzt aktualisieren: Die App lädt das Paket herunter, prüft und installiert es und öffnet sich wieder. Farben und Einstellungen bleiben erhalten.",
         "updateReady": "Paket geprüft. Wähle Update installieren, um fortzufahren.",
         "installUpdate": "Update installieren",
         "releaseUnavailable": "Versionshinweise sind nicht verfügbar. Versuche es später erneut.",
-        "updateDownloading": "Wird heruntergeladen…"
+        "updateDownloading": "Wird heruntergeladen…",
+        "autoUpdate": "Jetzt aktualisieren",
+        "updateInstalling": "Update wird installiert…",
+        "updateComplete": "Update abgeschlossen. Die App startet neu…",
+        "downloadProgress": "Download {0}% · {1} / {2} KB"
       }
     },
     {
@@ -2142,11 +2186,15 @@
         "positionRight": "右",
         "updateIntegrity": "パッケージの検証に失敗しました。",
         "releaseLoading": "更新内容を読み込み中…",
-        "updateSteps": "検証済みパッケージをダウンロードし、更新をインストールを選択してください。アプリは終了し、色と設定は保持されます。",
+        "updateSteps": "今すぐ更新を選択すると、パッケージをダウンロードして検証し、更新をインストールしてアプリを再起動します。色と設定は保持されます。",
         "updateReady": "検証が完了しました。更新をインストールを選択してください。",
         "installUpdate": "更新をインストール",
         "releaseUnavailable": "更新内容を取得できません。後で再試行してください。",
-        "updateDownloading": "ダウンロード中…"
+        "updateDownloading": "ダウンロード中…",
+        "autoUpdate": "今すぐ更新",
+        "updateInstalling": "更新をインストール中…",
+        "updateComplete": "更新が完了しました。アプリを再起動中…",
+        "downloadProgress": "ダウンロード {0}% · {1} / {2} KB"
       }
     },
     {
@@ -2321,11 +2369,15 @@
         "positionRight": "오른쪽",
         "updateIntegrity": "패키지 검증에 실패했습니다.",
         "releaseLoading": "변경 사항 불러오는 중…",
-        "updateSteps": "검증된 패키지를 다운로드한 뒤 업데이트 설치를 선택하세요. 앱이 종료되며 색상과 설정은 유지됩니다.",
+        "updateSteps": "지금 업데이트를 선택하면 앱이 패키지를 다운로드하고 검증한 뒤 업데이트를 설치하고 다시 열립니다. 색상과 설정은 유지됩니다.",
         "updateReady": "패키지가 검증되었습니다. 업데이트 설치를 선택하세요.",
         "installUpdate": "업데이트 설치",
         "releaseUnavailable": "릴리스 내용을 사용할 수 없습니다. 나중에 다시 시도하세요.",
-        "updateDownloading": "다운로드 중…"
+        "updateDownloading": "다운로드 중…",
+        "autoUpdate": "지금 업데이트",
+        "updateInstalling": "업데이트 설치 중…",
+        "updateComplete": "업데이트 완료. 앱 다시 시작 중…",
+        "downloadProgress": "다운로드 {0}% · {1} / {2} KB"
       }
     },
     {
@@ -2500,11 +2552,15 @@
         "positionRight": "Kanan",
         "updateIntegrity": "Verifikasi paket gagal.",
         "releaseLoading": "Memuat perubahan…",
-        "updateSteps": "Unduh paket terverifikasi lalu pilih Instal pembaruan. Aplikasi akan ditutup; warna dan preferensi tetap tersimpan.",
+        "updateSteps": "Pilih Perbarui sekarang: aplikasi mengunduh dan memverifikasi paket, memasang pembaruan lalu membuka kembali. Warna dan preferensi tetap tersimpan.",
         "updateReady": "Paket terverifikasi. Pilih Instal pembaruan untuk melanjutkan.",
         "installUpdate": "Instal pembaruan",
         "releaseUnavailable": "Catatan rilis tidak tersedia. Coba lagi nanti.",
-        "updateDownloading": "Mengunduh…"
+        "updateDownloading": "Mengunduh…",
+        "autoUpdate": "Perbarui sekarang",
+        "updateInstalling": "Memasang pembaruan…",
+        "updateComplete": "Pembaruan selesai. Membuka ulang aplikasi…",
+        "downloadProgress": "Unduhan {0}% · {1} / {2} KB"
       }
     },
     {
@@ -2679,11 +2735,15 @@
         "positionRight": "دائیں",
         "updateIntegrity": "پیکج کی تصدیق ناکام ہوئی۔",
         "releaseLoading": "نئی تبدیلیاں لوڈ ہو رہی ہیں…",
-        "updateSteps": "تصدیق شدہ پیکج ڈاؤن لوڈ کریں، پھر اپ ڈیٹ انسٹال کریں منتخب کریں۔ ایپ بند ہوگی؛ رنگ اور ترجیحات محفوظ رہیں گی۔",
+        "updateSteps": "ابھی اپ ڈیٹ کریں منتخب کریں: ایپ پیکج ڈاؤن لوڈ اور تصدیق کرکے اپ ڈیٹ انسٹال کرے گی اور دوبارہ کھلے گی۔ رنگ اور ترجیحات محفوظ رہیں گی۔",
         "updateReady": "پیکج کی تصدیق ہوگئی۔ جاری رکھنے کے لیے اپ ڈیٹ انسٹال کریں منتخب کریں۔",
         "installUpdate": "اپ ڈیٹ انسٹال کریں",
         "releaseUnavailable": "ریلیز کی تفصیل دستیاب نہیں۔ بعد میں کوشش کریں۔",
-        "updateDownloading": "ڈاؤن لوڈ ہو رہا ہے…"
+        "updateDownloading": "ڈاؤن لوڈ ہو رہا ہے…",
+        "autoUpdate": "ابھی اپ ڈیٹ کریں",
+        "updateInstalling": "اپ ڈیٹ انسٹال ہو رہی ہے…",
+        "updateComplete": "اپ ڈیٹ مکمل۔ ایپ دوبارہ کھل رہی ہے…",
+        "downloadProgress": "ڈاؤن لوڈ {0}% · {1} / {2} KB"
       }
     }
   ]

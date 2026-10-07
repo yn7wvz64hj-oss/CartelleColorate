@@ -1,5 +1,13 @@
 # Note di versione
 
+## 1.3.0 — 7 ottobre 2026
+
+- Download dall’app con avanzamento reale in percentuale e dimensione trasferita.
+- Verifica del pacchetto, installazione automatica nascosta e riapertura sulla cartella selezionata.
+- Dati personali conservati e tentativo di ripristino dei file precedenti in caso di errore.
+- Messaggi aggiornati nelle 15 lingue.
+
+
 ## 1.0.0 — 6 ottobre 2026
 
 - Prima release ufficiale, basata sulle funzioni verificate della 0.10.

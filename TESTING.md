@@ -103,3 +103,7 @@ e guida installabile. Il job di pubblicazione parte solo dopo i test Windows riu
 crea una release non prerelease e riscarica entrambi gli allegati per confrontarli.
 
 Il confronto dei sorgenti accetta soltanto le differenze CRLF/LF applicate dal checkout Git; una modifica reale del contenuto viene rifiutata. SHA256 dello ZIP e manifest restano confronti esatti.
+
+## Aggiornamento automatico 1.3
+
+TestTransfer.ps1 verifica download a flusso, avanzamento intermedio monotono, dimensione attesa e annullamento. Il test applicativo verifica manifest, dati personali conservati e ripristino dopo un’installazione parziale. TestAutoInstall.ps1 esegue il vero installer nascosto su un ambiente isolato nel runner GitHub, verifica VERSION e conservazione esatta di palette e preferenze; la riapertura grafica viene esclusa in questo test.

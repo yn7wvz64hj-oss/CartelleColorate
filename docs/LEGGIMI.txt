@@ -1,4 +1,4 @@
-CARTELLECOLORATE 1.2.0
+﻿CARTELLECOLORATE 1.2.0
 Prima release ufficiale gratuita, con codice sorgente e licenza MIT.
 
 INSTALLAZIONE
@@ -160,7 +160,7 @@ e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfa
 RELEASE UFFICIALE 1.0
 Questa release comprende tutte le funzioni della versione 0.10, con installazione
 e aggiornamento che mantengono colori, preset, preferenze e backup esistenti.
-Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.2.0
+Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.3.0
 
 NOVITÀ 1.1 — SFONDI E MENU
 Dal menu ⋯ scegli Sfondo: colore uniforme con selettore grafico e HEX,
@@ -176,6 +176,14 @@ Menu ⋯ compatto: Cartelle, Icone e Libreria raccolgono gli strumenti.
 Sfondo: posizione, zoom e velatura; anteprima dal vivo. Annulla ripristina
 lo sfondo precedente senza salvare. Le regolazioni sono incluse nei backup.
 Aggiornamento guidato: note in italiano o inglese e download verificato.
-Installa aggiornamento avvia l’installazione solo su richiesta.
+Dalla 1.3, Aggiorna adesso scarica e installa automaticamente.
 Finestre adattate allo spazio disponibile, contenuti scorrevoli e rendering
 verificato al 125%, 150% e 200%.
+
+NOVITÀ 1.3 — AGGIORNAMENTO AUTOMATICO
+Premi Aggiorna adesso: download con barra e percentuale, verifica del pacchetto,
+installazione senza browser o terminale e riapertura della cartella selezionata.
+Colori e preferenze vengono conservati. Se l’installazione fallisce, viene tentato
+il ripristino dei file precedenti. È necessaria la connessione Internet.
+Dalla 1.2 e precedenti installa la 1.3 manualmente una volta con Installa.cmd;
+gli aggiornamenti successivi usano il nuovo sistema integrato.

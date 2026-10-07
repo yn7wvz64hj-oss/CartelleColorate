@@ -27,6 +27,11 @@ jobs:
         run: |
           powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/TestPresetMenu.ps1 -Package work/launcher-check/CartelleColorate
           if ($LASTEXITCODE -ne 0) { throw 'Preset nel menu non funzionante.' }
+      - name: Verifica installazione automatica silenziosa
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/TestAutoInstall.ps1 -Package work/launcher-check/CartelleColorate
+          if ($LASTEXITCODE -ne 0) { throw 'Aggiornamento automatico fallito.' }
       - name: Verifica fonte degli aggiornamenti
         shell: powershell
         run: |

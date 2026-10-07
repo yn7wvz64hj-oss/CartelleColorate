@@ -99,9 +99,11 @@ function Initialize-GuidedUpdate($Dialog,$Panel) {
     $help=[Windows.Controls.TextBlock]::new(); $help.Text=T 'updateSteps'; $help.TextWrapping='Wrap'; $help.Margin=[Windows.Thickness]::new(0,12,0,0); $Panel.Children.Add($help)|Out-Null
     # The download button remains reachable when the display has little vertical space.
     $layout=[Windows.Controls.DockPanel]::new(); $footer=[Windows.Controls.StackPanel]::new(); $footer.Margin=[Windows.Thickness]::new(20,4,20,16); $Panel.Children.Remove($script:updateDownload); $footer.Children.Add($script:updateDownload)|Out-Null; $Panel.Children.Remove($help); $footer.Children.Add($help)|Out-Null
+    $progress=[Windows.Controls.ProgressBar]::new(); $progress.Minimum=0; $progress.Maximum=100; $progress.Height=6; $progress.Visibility='Collapsed'; $progress.Margin=[Windows.Thickness]::new(0,8,0,6); $footer.Children.Insert(0,$progress)
+    $progressText=[Windows.Controls.TextBlock]::new(); $progressText.Foreground=$window.Resources['Text']; $progressText.Visibility='Collapsed'; $progressText.Margin=[Windows.Thickness]::new(0,0,0,4); $footer.Children.Insert(1,$progressText)
     [Windows.Controls.DockPanel]::SetDock($footer,'Bottom'); $layout.Children.Add($footer)|Out-Null; $outer=[Windows.Controls.ScrollViewer]::new(); $outer.VerticalScrollBarVisibility='Auto'; $outer.Content=$Panel; $layout.Children.Add($outer)|Out-Null; $Dialog.Content=$layout
     Add-Type -AssemblyName System.Net.Http; $client=[Net.Http.HttpClient]::new(); $client.Timeout=[TimeSpan]::FromSeconds(30); $client.DefaultRequestHeaders.UserAgent.ParseAdd('CartelleColorate/'+$script:productVersion)
-    $script:guidedUpdate=@{Window=$Dialog;Notes=$notes;Help=$help;Client=$client;Task=$null;Phase='';Offer=$null;Requested='';Installer=''}
+    $script:guidedUpdate=@{Window=$Dialog;Notes=$notes;Help=$help;Client=$client;Task=$null;Phase='';Offer=$null;Requested='';Installer='';Progress=$progress;ProgressText=$progressText;Transfer=$null}
     $timer=[Windows.Threading.DispatcherTimer]::new(); $timer.Interval=[TimeSpan]::FromMilliseconds(120); $script:guidedUpdate.Timer=$timer; $timer.Add_Tick({ Invoke-GuidedUpdateTick })
     Refresh-GuidedRelease
 }
@@ -111,21 +113,20 @@ function Refresh-GuidedRelease {
     $ctx.Task=$ctx.Client.GetStringAsync('https://api.github.com/repos/yn7wvz64hj-oss/CartelleColorate/releases/tags/v'+$ctx.Requested); $ctx.Timer.Start()
 }
 function Invoke-GuidedDownload {
-    $ctx=$script:guidedUpdate; if (!$ctx -or $UITest -or $Preview) { return }
-    if ($ctx.Installer) { try { Start-Process -FilePath $ctx.Installer -WorkingDirectory ([IO.Path]::GetDirectoryName($ctx.Installer)); $ctx.Window.Close(); $window.Close() } catch { $ctx.Help.Text=T 'updateError' }; return }
-    if (!$ctx.Offer -or $ctx.Phase -eq 'Download') { return }; $ctx.Phase='Download'; $script:updateDownload.IsEnabled=$false; $script:updateDownload.Content=T 'updateDownloading'; $ctx.Task=$ctx.Client.GetByteArrayAsync($ctx.Offer.Url); $ctx.Timer.Start()
+    $ctx=$script:guidedUpdate; if (!$ctx -or $UITest -or $Preview -or !$ctx.Offer -or $ctx.Phase -eq 'Download') { return }
+    try { Initialize-Transfer; if ($ctx.Transfer) { $ctx.Transfer.Dispose() }; $ctx.Transfer=[CartelleColorate.Transfer]::new($script:productVersion); $ctx.Phase='Download'; $ctx.Progress.Visibility='Visible'; $ctx.ProgressText.Visibility='Visible'; $ctx.Progress.IsIndeterminate=$false; $ctx.Progress.Value=0; $script:updateDownload.IsEnabled=$false; $script:updateDownload.Content=T 'updateDownloading'; $ctx.Task=$ctx.Transfer.DownloadAsync($ctx.Offer.Url,$ctx.Offer.Size); $ctx.Timer.Start() } catch { $ctx.Help.Text=T 'updateError'; $script:updateDownload.IsEnabled=$true }
 }
 function Invoke-GuidedUpdateTick {
-    $ctx=$script:guidedUpdate; if (!$ctx -or !$ctx.Task -or !$ctx.Task.IsCompleted) { return }; $ctx.Timer.Stop()
+    $ctx=$script:guidedUpdate; if (!$ctx -or !$ctx.Task) { return }; if ($ctx.Phase -eq 'Download') { Set-DownloadProgress $ctx }; if (!$ctx.Task.IsCompleted) { return }; $ctx.Timer.Stop()
     try {
         $result=$ctx.Task.GetAwaiter().GetResult()
-        if ($ctx.Phase -eq 'Release') { $ctx.Offer=Get-ReleaseOffer ($result | ConvertFrom-Json) $ctx.Requested; $ctx.Notes.Text=$ctx.Offer.Notes; $script:updateDownload.Content=T 'downloadUpdate'; $script:updateDownload.IsEnabled=$true }
-        elseif ($ctx.Phase -eq 'Download') { $destination=Join-Path $root ('updates/package-'+[Guid]::NewGuid().ToString('N')); $ctx.Installer=Expand-VerifiedUpdate $result $ctx.Offer $destination; $ctx.Help.Text=T 'updateReady'; $script:updateDownload.Content=T 'installUpdate'; $script:updateDownload.IsEnabled=$true }
-    } catch { $ctx.Help.Text=T 'updateError'; $ctx.Notes.Text=if ($ctx.Offer) { $ctx.Offer.Notes } else { T 'releaseUnavailable' }; $script:updateDownload.Content=T 'downloadUpdate'; $script:updateDownload.IsEnabled=[bool]$ctx.Offer }
+        if ($ctx.Phase -eq 'Release') { $ctx.Offer=Get-ReleaseOffer ($result | ConvertFrom-Json) $ctx.Requested; $ctx.Notes.Text=$ctx.Offer.Notes; $script:updateDownload.Content=T 'autoUpdate'; $script:updateDownload.IsEnabled=$true }
+        elseif ($ctx.Phase -eq 'Download') { $destination=Join-Path $root ('updates/package-'+[Guid]::NewGuid().ToString('N')); $ctx.Progress.Value=100; $ctx.Help.Text=T 'updateInstalling'; $ctx.Progress.IsIndeterminate=$true; $ctx.Window.UpdateLayout(); $ctx.Installer=Expand-VerifiedUpdate $result $ctx.Offer $destination; Start-AutoInstallation $ctx }
+    } catch { $ctx.Progress.IsIndeterminate=$false; $ctx.Help.Text=T 'updateError'; $ctx.Notes.Text=if ($ctx.Offer) { $ctx.Offer.Notes } else { T 'releaseUnavailable' }; $script:updateDownload.Content=T 'autoUpdate'; $script:updateDownload.IsEnabled=[bool]$ctx.Offer }
     finally { $ctx.Phase='' }
 }
 function Stop-GuidedUpdate {
-    $ctx=$script:guidedUpdate; if (!$ctx) { return }; $ctx.Timer.Stop(); $ctx.Client.CancelPendingRequests(); $ctx.Client.Dispose(); $script:guidedUpdate=$null
+    $ctx=$script:guidedUpdate; if (!$ctx) { return }; $ctx.Timer.Stop(); if ($ctx.Transfer) { $ctx.Transfer.Dispose() }; $ctx.Client.CancelPendingRequests(); $ctx.Client.Dispose(); $script:guidedUpdate=$null
 }
 function Test-ExperienceBackend {
     $case=Join-Path $root ('update-check-'+[Guid]::NewGuid().ToString('N')); [IO.Directory]::CreateDirectory($case)|Out-Null
@@ -158,3 +159,5 @@ function Show-AdaptiveDialog($Dialog) {
     if ($Dialog -is [Windows.Window]) { Set-AdaptiveWindow $Dialog; if ($Dialog.Content -is [Windows.Controls.StackPanel] -or $Dialog.Content -is [Windows.Controls.WrapPanel]) { $content=$Dialog.Content; $Dialog.Content=$null; $scroll=[Windows.Controls.ScrollViewer]::new(); $scroll.VerticalScrollBarVisibility='Auto'; $scroll.HorizontalScrollBarVisibility='Disabled'; $scroll.Content=$content; $Dialog.Content=$scroll } }
     return $Dialog.ShowDialog()
 }
+
+. (Join-Path $PSScriptRoot 'AutoUpdates.ps1')
