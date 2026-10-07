@@ -111,3 +111,7 @@ TestTransfer.ps1 verifica download a flusso, avanzamento intermedio monotono, di
 ## Interfaccia 1.4
 
 La suite apre il confronto e verifica che desktop.ini resti identico; controlla il contrasto minimo 4.5 dei pulsanti e dei testi su sfondi immagine chiari/scuri, la ricerca da tastiera e il ripristino dell’aspetto senza cambiare palette e lingua. Il runner Windows controlla preferiti, sottomenu Altri colori e comandi di applicazione. Le verifiche vengono eseguite nelle 15 lingue.
+
+## Lingue 1.5
+
+35 cataloghi con convalida delle traduzioni presenti e del fallback; ricerca per nome/codice, anteprima RTL, importazione persistente di una lingua rara, risorse inglesi al cambio di lingua, variante zh-Hant per zh-TW, modello esportato, segnaposti errati respinti senza perdita del pacchetto e codici con percorsi rifiutati. Rendering delle 35 interfacce, compresi i 20 cataloghi parziali.

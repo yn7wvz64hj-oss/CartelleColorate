@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate 1.4 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.4.0/CartelleColorate-1.4.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.4.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.4.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate 1.5 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.5.0/CartelleColorate-1.5.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.5.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.5.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -20,9 +20,9 @@ L'installazione riguarda l'utente corrente e normalmente non richiede privilegi 
 
 ## Lingue
 
-Italiano, English, 简体中文, Español, हिन्दी, العربية, Português, বাংলা, Русский, Français, Deutsch, 日本語, 한국어, Bahasa Indonesia e اردو.
+35 lingue selezionabili: 15 cataloghi completi e 20 traduzioni provvisorie delle voci principali. Le voci mancanti vengono mostrate in inglese. Cerca una lingua per nome o codice; puoi anche importare un pacchetto della comunità o esportare il modello da tradurre.
 
-La schermata iniziale propone la lingua di Windows, se supportata, oppure l’inglese. Il pulsante con il globo cambia la lingua in qualsiasi momento, aggiornando anche il menu del tasto destro. Arabo e urdu hanno disposizione da destra a sinistra; colori, codici HEX e nomi personali vengono conservati. Le traduzioni sono incluse nel pacchetto e funzionano senza Internet.
+La schermata iniziale propone la lingua di Windows, se supportata, oppure l’inglese. Il pulsante con il globo cambia la lingua in qualsiasi momento, aggiornando anche il menu del tasto destro. Arabo, urdu, persiano ed ebraico hanno disposizione da destra a sinistra; colori, codici HEX e nomi personali vengono conservati. Le traduzioni sono incluse nel pacchetto e funzionano senza Internet.
 
 ## Funzioni
 
@@ -79,7 +79,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 1.4: anteprima della cartella, contrasto e accessibilità migliorati.** Verifiche automatiche nelle 15 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
+**Versione 1.5: 35 lingue, ricerca e pacchetti di lingua importabili.** Verifiche automatiche nelle 35 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 
@@ -120,3 +120,11 @@ Il contrasto protegge testi e pulsanti anche su immagini molto chiare o scure. L
 Scorciatoie: Ctrl+Enter applica, Ctrl+S salva il colore, Ctrl+F cerca, Ctrl+Z annulla, Ctrl+Shift+Z ripete e Ctrl+P apre il confronto. Nei campi di testo Ctrl+Z mantiene l’annullamento del testo. Tab e Shift+Tab spostano il focus, reso visibile anche sul selettore del colore e sui cursori.
 
 Gli aggiornamenti mostrano velocità e tempo residuo stimato, con Riprova dopo un errore. Da ⋯ → Aspetto e vetro → Ripristina aspetto iniziale puoi ripristinare stile, tema e sfondi senza modificare colori, preset, lingua o cartelle personalizzate.
+
+## Lingue e pacchetti locali
+
+Sono disponibili **35 lingue: 15 cataloghi completi e 20 nuove traduzioni parziali, indicate come Provvisorie**. Le nuove lingue sono turco, vietnamita, thailandese, persiano, tamil, telugu, marathi, punjabi, filippino, malese, swahili, polacco, olandese, ucraino, ebraico, rumeno, svedese, greco, ceco e ungherese. Non sono ancora revisionate da madrelingua; le voci mancanti usano l’inglese.
+
+Nel selettore aperto dal globo puoi cercare per nome originale, nome inglese o codice, importare un pacchetto `.cclang`/JSON e esportare un modello da tradurre. La lingua di Windows viene proposta automaticamente alla prima apertura; i pacchetti regionali vengono preferiti alla lingua di base quando disponibili. Colori, nomi personali e preferenze restano invariati.
+
+Leggi la [guida bilingue ai pacchetti di lingua](docs/LANGUAGE-PACKS.md) o scarica il [modello da tradurre](docs/language-template.cclang). Le lingue importate funzionano offline e restano disponibili dopo gli aggiornamenti. Questo sistema consente di aggiungere altre lingue, senza affermare che tutte le lingue del mondo siano già tradotte.

@@ -58,7 +58,7 @@ Function TranslateMessage(key)
         text = reader.ReadAll
         reader.Close
         Set regex = New RegExp
-        regex.Pattern = Chr(34) & "language" & Chr(34) & "\s*:\s*" & Chr(34) & "([a-z]{2})" & Chr(34)
+        regex.Pattern = Chr(34) & "language" & Chr(34) & "\s*:\s*" & Chr(34) & "([a-z]{2,8}(-[a-z0-9]{2,8})*)" & Chr(34)
         Set matches = regex.Execute(text)
         If matches.Count > 0 Then code = matches(0).SubMatches(0)
     End If

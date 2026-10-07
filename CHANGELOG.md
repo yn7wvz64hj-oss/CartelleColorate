@@ -1,5 +1,14 @@
 # Note di versione
 
+## 1.5.0 — 7 ottobre 2026
+
+- 35 lingue disponibili: 15 cataloghi completi e 20 nuove traduzioni parziali provvisorie.
+- Ricerca della lingua per nome e codice e riconoscimento delle varianti regionali.
+- Importazione di pacchetti locali ed esportazione del modello, con verifica delle chiavi e dei segnaposti.
+- Risorse mancanti riportate all’inglese quando si cambia lingua.
+- Pacchetti conservati dopo gli aggiornamenti, senza modificare colori e preferenze.
+
+
 ## 1.4.0 — 7 ottobre 2026
 
 - Confronto con l’icona attuale letta da Windows, senza applicare modifiche.

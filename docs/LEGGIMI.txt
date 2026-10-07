@@ -159,7 +159,7 @@ e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfa
 RELEASE UFFICIALE 1.0
 Questa release comprende tutte le funzioni della versione 0.10, con installazione
 e aggiornamento che mantengono colori, preset, preferenze e backup esistenti.
-Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.4.0
+Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.5.0
 
 NOVITÀ 1.1 — SFONDI E MENU
 Dal menu ⋯ scegli Sfondo: colore uniforme con selettore grafico e HEX,
@@ -196,3 +196,13 @@ Ctrl+Enter applica, Ctrl+S salva, Ctrl+F cerca, Ctrl+Z annulla, Ctrl+Shift+Z rip
 Nei campi di testo Ctrl+Z annulla il testo. Focus visibile con Tab e Shift+Tab.
 Download con velocità, tempo stimato e Riprova. Nessun browser richiesto.
 Ripristina aspetto iniziale in Aspetto e vetro conserva colori, lingua e cartelle.
+
+NOVITÀ 1.5 — LINGUE E PACCHETTI
+35 lingue disponibili: 15 cataloghi completi e 20 nuove traduzioni provvisorie
+dei comandi principali. Le voci mancanti sono in inglese.
+Apri il globo per cercare per nome o codice, importare un file .cclang/JSON
+oppure esportare un modello da tradurre. Conferma con Continua per cambiare lingua.
+La lingua di Windows viene proposta al primo avvio, con riconoscimento delle varianti.
+I pacchetti importati sono conservati negli aggiornamenti e funzionano senza Internet.
+Per trasferirli su un altro PC importa lo stesso file .cclang; non fanno parte del
+backup .ccbackup della libreria. Colori e impostazioni personali non vengono modificati.
