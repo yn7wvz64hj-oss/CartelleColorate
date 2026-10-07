@@ -1,5 +1,14 @@
 # Note di versione
 
+## 1.4.0 — 7 ottobre 2026
+
+- Confronto con l’icona attuale letta da Windows, senza applicare modifiche.
+- Menu del tasto destro compatto con preferiti e altri colori.
+- Contrasto su sfondi e pulsanti, focus e scorciatoie da tastiera, impostazioni di accessibilità di Windows.
+- Velocità e tempo stimato del download, Riprova e timeout.
+- Ripristino di stile, tema e sfondi mantenendo i dati personali.
+
+
 ## 1.3.0 — 7 ottobre 2026
 
 - Download dall’app con avanzamento reale in percentuale e dimensione trasferita.

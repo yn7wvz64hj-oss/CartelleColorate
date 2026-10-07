@@ -181,7 +181,14 @@
         "autoUpdate": "Aggiorna adesso",
         "updateInstalling": "Installazione dell’aggiornamento…",
         "updateComplete": "Aggiornamento completato. Riavvio dell’app…",
-        "downloadProgress": "Download {0}% · {1} / {2} KB"
+        "downloadProgress": "Download {0}% · {1} / {2} KB",
+        "folderPreview": "Anteprima della cartella",
+        "currentIcon": "Icona attuale",
+        "proposedIcon": "Anteprima",
+        "moreColors": "Altri colori",
+        "resetAppearance": "Ripristina aspetto iniziale",
+        "retryUpdate": "Riprova",
+        "downloadTiming": "{0} KB/s · circa {1} s"
       }
     },
     {
@@ -364,7 +371,14 @@
         "autoUpdate": "Update now",
         "updateInstalling": "Installing update…",
         "updateComplete": "Update complete. Restarting the app…",
-        "downloadProgress": "Download {0}% · {1} / {2} KB"
+        "downloadProgress": "Download {0}% · {1} / {2} KB",
+        "folderPreview": "Folder preview",
+        "currentIcon": "Current icon",
+        "proposedIcon": "Preview",
+        "moreColors": "More colors",
+        "resetAppearance": "Reset appearance",
+        "retryUpdate": "Retry",
+        "downloadTiming": "{0} KB/s · about {1} s"
       }
     },
     {
@@ -547,7 +561,14 @@
         "autoUpdate": "立即更新",
         "updateInstalling": "正在安装更新…",
         "updateComplete": "更新完成，正在重启应用…",
-        "downloadProgress": "下载 {0}% · {1} / {2} KB"
+        "downloadProgress": "下载 {0}% · {1} / {2} KB",
+        "folderPreview": "文件夹预览",
+        "currentIcon": "当前图标",
+        "proposedIcon": "预览",
+        "moreColors": "更多颜色",
+        "resetAppearance": "重置外观",
+        "retryUpdate": "重试",
+        "downloadTiming": "{0} KB/s · 约 {1} 秒"
       }
     },
     {
@@ -730,7 +751,14 @@
         "autoUpdate": "Actualizar ahora",
         "updateInstalling": "Instalando actualización…",
         "updateComplete": "Actualización completada. Reiniciando la app…",
-        "downloadProgress": "Descarga {0}% · {1} / {2} KB"
+        "downloadProgress": "Descarga {0}% · {1} / {2} KB",
+        "folderPreview": "Vista previa de la carpeta",
+        "currentIcon": "Icono actual",
+        "proposedIcon": "Vista previa",
+        "moreColors": "Más colores",
+        "resetAppearance": "Restablecer apariencia",
+        "retryUpdate": "Reintentar",
+        "downloadTiming": "{0} KB/s · unos {1} s"
       }
     },
     {
@@ -913,7 +941,14 @@
         "autoUpdate": "अभी अपडेट करें",
         "updateInstalling": "अपडेट स्थापित हो रहा है…",
         "updateComplete": "अपडेट पूरा हुआ। ऐप फिर शुरू हो रहा है…",
-        "downloadProgress": "डाउनलोड {0}% · {1} / {2} KB"
+        "downloadProgress": "डाउनलोड {0}% · {1} / {2} KB",
+        "folderPreview": "फ़ोल्डर पूर्वावलोकन",
+        "currentIcon": "वर्तमान आइकन",
+        "proposedIcon": "पूर्वावलोकन",
+        "moreColors": "अन्य रंग",
+        "resetAppearance": "रूप रीसेट करें",
+        "retryUpdate": "फिर प्रयास करें",
+        "downloadTiming": "{0} KB/s · लगभग {1} सेकंड"
       }
     },
     {
@@ -1096,7 +1131,14 @@
         "autoUpdate": "التحديث الآن",
         "updateInstalling": "جارٍ تثبيت التحديث…",
         "updateComplete": "اكتمل التحديث. جارٍ إعادة تشغيل التطبيق…",
-        "downloadProgress": "التنزيل {0}% · {1} / {2} KB"
+        "downloadProgress": "التنزيل {0}% · {1} / {2} KB",
+        "folderPreview": "معاينة المجلد",
+        "currentIcon": "الأيقونة الحالية",
+        "proposedIcon": "معاينة",
+        "moreColors": "ألوان أخرى",
+        "resetAppearance": "إعادة ضبط المظهر",
+        "retryUpdate": "إعادة المحاولة",
+        "downloadTiming": "{0} KB/s · نحو {1} ث"
       }
     },
     {
@@ -1279,7 +1321,14 @@
         "autoUpdate": "Atualizar agora",
         "updateInstalling": "Instalando atualização…",
         "updateComplete": "Atualização concluída. Reiniciando o app…",
-        "downloadProgress": "Download {0}% · {1} / {2} KB"
+        "downloadProgress": "Download {0}% · {1} / {2} KB",
+        "folderPreview": "Prévia da pasta",
+        "currentIcon": "Ícone atual",
+        "proposedIcon": "Prévia",
+        "moreColors": "Mais cores",
+        "resetAppearance": "Redefinir aparência",
+        "retryUpdate": "Tentar novamente",
+        "downloadTiming": "{0} KB/s · cerca de {1} s"
       }
     },
     {
@@ -1462,7 +1511,14 @@
         "autoUpdate": "এখন আপডেট করুন",
         "updateInstalling": "আপডেট ইনস্টল হচ্ছে…",
         "updateComplete": "আপডেট সম্পূর্ণ। অ্যাপ আবার চালু হচ্ছে…",
-        "downloadProgress": "ডাউনলোড {0}% · {1} / {2} KB"
+        "downloadProgress": "ডাউনলোড {0}% · {1} / {2} KB",
+        "folderPreview": "ফোল্ডারের পূর্বরূপ",
+        "currentIcon": "বর্তমান আইকন",
+        "proposedIcon": "পূর্বরূপ",
+        "moreColors": "আরও রং",
+        "resetAppearance": "চেহারা পুনরায় সেট করুন",
+        "retryUpdate": "আবার চেষ্টা করুন",
+        "downloadTiming": "{0} KB/s · প্রায় {1} সেকেন্ড"
       }
     },
     {
@@ -1645,7 +1701,14 @@
         "autoUpdate": "Обновить сейчас",
         "updateInstalling": "Установка обновления…",
         "updateComplete": "Обновление завершено. Перезапуск приложения…",
-        "downloadProgress": "Загрузка {0}% · {1} / {2} KB"
+        "downloadProgress": "Загрузка {0}% · {1} / {2} KB",
+        "folderPreview": "Предпросмотр папки",
+        "currentIcon": "Текущий значок",
+        "proposedIcon": "Предпросмотр",
+        "moreColors": "Другие цвета",
+        "resetAppearance": "Сбросить оформление",
+        "retryUpdate": "Повторить",
+        "downloadTiming": "{0} КБ/с · около {1} с"
       }
     },
     {
@@ -1828,7 +1891,14 @@
         "autoUpdate": "Mettre à jour",
         "updateInstalling": "Installation de la mise à jour…",
         "updateComplete": "Mise à jour terminée. Redémarrage de l’app…",
-        "downloadProgress": "Téléchargement {0}% · {1} / {2} KB"
+        "downloadProgress": "Téléchargement {0}% · {1} / {2} KB",
+        "folderPreview": "Aperçu du dossier",
+        "currentIcon": "Icône actuelle",
+        "proposedIcon": "Aperçu",
+        "moreColors": "Autres couleurs",
+        "resetAppearance": "Réinitialiser l’apparence",
+        "retryUpdate": "Réessayer",
+        "downloadTiming": "{0} Ko/s · environ {1} s"
       }
     },
     {
@@ -2011,7 +2081,14 @@
         "autoUpdate": "Jetzt aktualisieren",
         "updateInstalling": "Update wird installiert…",
         "updateComplete": "Update abgeschlossen. Die App startet neu…",
-        "downloadProgress": "Download {0}% · {1} / {2} KB"
+        "downloadProgress": "Download {0}% · {1} / {2} KB",
+        "folderPreview": "Ordnervorschau",
+        "currentIcon": "Aktuelles Symbol",
+        "proposedIcon": "Vorschau",
+        "moreColors": "Weitere Farben",
+        "resetAppearance": "Darstellung zurücksetzen",
+        "retryUpdate": "Erneut versuchen",
+        "downloadTiming": "{0} KB/s · etwa {1} s"
       }
     },
     {
@@ -2194,7 +2271,14 @@
         "autoUpdate": "今すぐ更新",
         "updateInstalling": "更新をインストール中…",
         "updateComplete": "更新が完了しました。アプリを再起動中…",
-        "downloadProgress": "ダウンロード {0}% · {1} / {2} KB"
+        "downloadProgress": "ダウンロード {0}% · {1} / {2} KB",
+        "folderPreview": "フォルダーのプレビュー",
+        "currentIcon": "現在のアイコン",
+        "proposedIcon": "プレビュー",
+        "moreColors": "その他の色",
+        "resetAppearance": "外観をリセット",
+        "retryUpdate": "再試行",
+        "downloadTiming": "{0} KB/s · 約 {1} 秒"
       }
     },
     {
@@ -2377,7 +2461,14 @@
         "autoUpdate": "지금 업데이트",
         "updateInstalling": "업데이트 설치 중…",
         "updateComplete": "업데이트 완료. 앱 다시 시작 중…",
-        "downloadProgress": "다운로드 {0}% · {1} / {2} KB"
+        "downloadProgress": "다운로드 {0}% · {1} / {2} KB",
+        "folderPreview": "폴더 미리 보기",
+        "currentIcon": "현재 아이콘",
+        "proposedIcon": "미리 보기",
+        "moreColors": "다른 색상",
+        "resetAppearance": "모양 초기화",
+        "retryUpdate": "다시 시도",
+        "downloadTiming": "{0} KB/s · 약 {1}초"
       }
     },
     {
@@ -2560,7 +2651,14 @@
         "autoUpdate": "Perbarui sekarang",
         "updateInstalling": "Memasang pembaruan…",
         "updateComplete": "Pembaruan selesai. Membuka ulang aplikasi…",
-        "downloadProgress": "Unduhan {0}% · {1} / {2} KB"
+        "downloadProgress": "Unduhan {0}% · {1} / {2} KB",
+        "folderPreview": "Pratinjau folder",
+        "currentIcon": "Ikon saat ini",
+        "proposedIcon": "Pratinjau",
+        "moreColors": "Warna lainnya",
+        "resetAppearance": "Atur ulang tampilan",
+        "retryUpdate": "Coba lagi",
+        "downloadTiming": "{0} KB/s · sekitar {1} dtk"
       }
     },
     {
@@ -2743,7 +2841,14 @@
         "autoUpdate": "ابھی اپ ڈیٹ کریں",
         "updateInstalling": "اپ ڈیٹ انسٹال ہو رہی ہے…",
         "updateComplete": "اپ ڈیٹ مکمل۔ ایپ دوبارہ کھل رہی ہے…",
-        "downloadProgress": "ڈاؤن لوڈ {0}% · {1} / {2} KB"
+        "downloadProgress": "ڈاؤن لوڈ {0}% · {1} / {2} KB",
+        "folderPreview": "فولڈر کا پیش منظر",
+        "currentIcon": "موجودہ آئیکن",
+        "proposedIcon": "پیش منظر",
+        "moreColors": "مزید رنگ",
+        "resetAppearance": "ظاہری شکل بحال کریں",
+        "retryUpdate": "دوبارہ کوشش کریں",
+        "downloadTiming": "{0} KB/s · تقریباً {1} سیکنڈ"
       }
     }
   ]

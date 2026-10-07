@@ -21,7 +21,10 @@ try { $graphics.Clear([Drawing.Color]::RoyalBlue); $bitmap.Save($png,[Drawing.Im
 $preset=Save-CompletePreset 'Favorite & PNG' '#1278AC' $png 'heart' '#FF2255'; Set-PresetFavorite $preset.Id
 $presetStore='HKCU:\Software\Classes\CartelleColorate.Presets'
 try {
+    $colors=@(0..7 | ForEach-Object { [pscustomobject]@{Name=('Color '+$_);Hex=('#{0:X6}' -f (0x113355+$_));Favorite=($_ -eq 7);Group=''} }); Write-AdvancedJson $palettePath $colors
     Update-Menu
+    $colorRoot='HKCU:\Software\Classes\CartelleColorate.Menu\shell'; $more=Join-Path $colorRoot 'xMore\shell'
+    if (!(Test-Path (Join-Path $colorRoot 'c00000007')) -or @(Get-ChildItem $more).Count -ne 7 -or (Get-Item (Join-Path $more 'c00000000\command')).GetValue('') -notmatch '--color') { throw 'Compact color menu lost favorites or other colors' }
     $entry=Join-Path $presetStore ('shell\'+$preset.Id); $label=Get-ItemPropertyValue -LiteralPath $entry -Name MUIVerb
     $command=(Get-Item -LiteralPath ($entry+'\command')).GetValue('')
     if ($label -ne 'Favorite && PNG' -or !$command.Contains('--preset') -or !$command.Contains($preset.Id)) { throw 'Il menu non contiene il preset preferito.' }

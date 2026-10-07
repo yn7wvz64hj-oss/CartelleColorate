@@ -5,8 +5,8 @@ INSTALLAZIONE
 1. Estrai tutto lo ZIP.
 2. Chiudi eventuali finestre del selettore e apri Installa.cmd.
 3. Tasto destro su una cartella > Mostra altre opzioni > Cambia colore.
-Non serve normalmente essere amministratore. Per aggiornare una versione
-precedente, esegui il nuovo Installa.cmd: colori e backup vengono mantenuti.
+Non serve normalmente essere amministratore. Dalla versione 1.3 puoi aggiornare direttamente dall’app.
+Per installazioni precedenti esegui Installa.cmd: colori e backup sono mantenuti.
 
 NOME DELLA CARTELLA
 Modifica il nome in alto. La matita rinomina senza cambiare l’icona.
@@ -96,7 +96,7 @@ ExecutionPolicy Bypass viene usato solo nei processi di avvio, senza cambiare
 permanentemente la policy. L’app non usa account o telemetria. Il controllo
 aggiornamenti legge VERSION su GitHub ed è attivo, ma si può disattivare.
 La finestra dell’aggiornamento legge note e metadati della release da GitHub;
-Scarica preleva il pacchetto su richiesta e lo verifica prima di prepararlo.
+Aggiorna adesso scarica, verifica e installa il pacchetto su richiesta.
 
 Il file MANIFEST-SHA256.txt elenca i checksum dei file del pacchetto.
 La licenza completa e' nel file LICENSE. CartelleColorate non e' un prodotto
@@ -124,9 +124,8 @@ Il campo HEX cambia il colore del simbolo. I simboli sono contrassegni visivi.
 Aspetto e vetro permette di regolare opacità e rilievo e scegliere il tema.
 Il tema del sistema segue anche i cambiamenti di Windows mentre l’app è aperta.
 Chiudere le impostazioni senza salvare annulla la loro anteprima.
-Gli aggiornamenti non vengono installati automaticamente. La finestra mostra
-le novità della release; Scarica verifica il pacchetto prima di estrarlo.
-Premi Installa aggiornamento per avviare l’installazione e chiudere l’app.
+La finestra mostra le novità della release. Dalla 1.3, Aggiorna adesso
+scarica e verifica il pacchetto, installa e riapre l’app automaticamente.
 
 FUNZIONI DELLA VERSIONE 0.9
 Preset nel tasto destro: apri ⋯ > Preset completi, seleziona un preset e premi
@@ -160,7 +159,7 @@ e riutilizzate durante la ricerca e alla riapertura, per alleggerire l’interfa
 RELEASE UFFICIALE 1.0
 Questa release comprende tutte le funzioni della versione 0.10, con installazione
 e aggiornamento che mantengono colori, preset, preferenze e backup esistenti.
-Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.3.0
+Download e note: https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.4.0
 
 NOVITÀ 1.1 — SFONDI E MENU
 Dal menu ⋯ scegli Sfondo: colore uniforme con selettore grafico e HEX,
@@ -187,3 +186,13 @@ Colori e preferenze vengono conservati. Se l’installazione fallisce, viene ten
 il ripristino dei file precedenti. È necessaria la connessione Internet.
 Dalla 1.2 e precedenti installa la 1.3 manualmente una volta con Installa.cmd;
 gli aggiornamenti successivi usano il nuovo sistema integrato.
+
+NOVITÀ 1.4
+Anteprima della cartella: ⋯ → Icone → Anteprima della cartella oppure Ctrl+P.
+Confronto tra icona attuale e proposta senza modificare la cartella.
+Preferiti subito nel tasto destro, con tutti gli altri in Altri colori.
+Contrasto automatico su sfondi e pulsanti, colori di sistema con contrasto elevato.
+Ctrl+Enter applica, Ctrl+S salva, Ctrl+F cerca, Ctrl+Z annulla, Ctrl+Shift+Z ripete.
+Nei campi di testo Ctrl+Z annulla il testo. Focus visibile con Tab e Shift+Tab.
+Download con velocità, tempo stimato e Riprova. Nessun browser richiesto.
+Ripristina aspetto iniziale in Aspetto e vetro conserva colori, lingua e cartelle.

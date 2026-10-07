@@ -8,7 +8,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 ## Scaricare e installare
 
-Scarica [CartelleColorate 1.3 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.3.0/CartelleColorate-1.3.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.3.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.3.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
+Scarica [CartelleColorate 1.4 per Windows](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/download/v1.4.0/CartelleColorate-1.4.0-windows.zip). La [pagina della release ufficiale](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v1.4.0) contiene note e allegati. È disponibile anche il [download dal repository](downloads/CartelleColorate-1.4.0-windows.zip?raw=true). Il pacchetto pronto contiene tutto il necessario; **Code → Download ZIP** scarica invece il progetto sorgente. Il [checksum SHA-256](downloads/SHA256SUMS.txt) permette di verificare il pacchetto.
 
 1. Estrai tutto lo ZIP in una cartella normale.
 2. Chiudi eventuali finestre di CartelleColorate ed esegui **Installa.cmd**.
@@ -79,7 +79,7 @@ Il pulsante in alto apre la scelta Windows/macOS. La sfocatura del desktop appar
 
 ## Requisiti e stato della release
 
-**Versione 1.3: release ufficiale con aggiornamento automatico integrato.** Verifiche automatiche nelle 15 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
+**Versione 1.4: anteprima della cartella, contrasto e accessibilità migliorati.** Verifiche automatiche nelle 15 lingue, avvio nascosto, integrazione del menu Windows, gestione delle immagini, annullamento, ripetizione e backup. Il comportamento di Esplora file e dell’effetto vetro dipende anche dalle impostazioni del PC.
 
 Richiede Windows 11 con Windows PowerShell 5.1, .NET Framework/WPF, Windows Script Host e componente VBScript funzionanti. PC aziendali o installazioni dove questi componenti sono disabilitati possono impedirne l'uso. Non è un'app MSIX né un'app firmata digitalmente. Non richiede programmi aggiuntivi se i componenti indicati sono già presenti.
 
@@ -110,3 +110,13 @@ Se Windows o l'antivirus bloccano il pacchetto, non disattivare le protezioni. V
 Vedi [BUILD.md](BUILD.md) per creare il pacchetto dai sorgenti e [TESTING.md](TESTING.md) per le verifiche. Segnala problemi nella sezione **Issues**, indicando versione Windows, versione dell'app e passaggi per riprodurre il problema, senza allegare dati personali.
 
 Distribuito sotto [licenza MIT](LICENSE). Non è un prodotto Microsoft.
+
+## Novità 1.4
+
+⋯ → Icone → Anteprima della cartella (Ctrl+P) confronta l’icona attuale con quella proposta senza modificare la cartella. Nel menu del tasto destro i preferiti compaiono subito; gli altri sono in Altri colori. Senza preferiti, i primi cinque colori salvati sono mostrati direttamente.
+
+Il contrasto protegge testi e pulsanti anche su immagini molto chiare o scure. La velatura delle immagini ha un minimo automatico per mantenere leggibili i testi; i colori uniformi scelgono testo nero o bianco. Il contrasto elevato usa le impostazioni di Windows. Le animazioni dei menu seguono le preferenze del sistema.
+
+Scorciatoie: Ctrl+Enter applica, Ctrl+S salva il colore, Ctrl+F cerca, Ctrl+Z annulla, Ctrl+Shift+Z ripete e Ctrl+P apre il confronto. Nei campi di testo Ctrl+Z mantiene l’annullamento del testo. Tab e Shift+Tab spostano il focus, reso visibile anche sul selettore del colore e sui cursori.
+
+Gli aggiornamenti mostrano velocità e tempo residuo stimato, con Riprova dopo un errore. Da ⋯ → Aspetto e vetro → Ripristina aspetto iniziale puoi ripristinare stile, tema e sfondi senza modificare colori, preset, lingua o cartelle personalizzate.

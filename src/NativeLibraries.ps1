@@ -5,7 +5,7 @@
         # Build both first. Newly generated local DLLs do not inherit the ZIP's Internet zone.
         foreach ($name in @('FolderShell','DesktopPicker')) {
             $source=Join-Path $SourceDirectory ($name+'.cs')
-            Add-Type -TypeDefinition ([IO.File]::ReadAllText($source)) -OutputAssembly (Join-Path $buildDirectory ($name+'.dll')) -OutputType Library
+            Add-Type -TypeDefinition ([IO.File]::ReadAllText($source)) -OutputAssembly (Join-Path $buildDirectory ($name+'.dll')) -OutputType Library -ReferencedAssemblies System.dll,System.Core.dll,System.Drawing.dll
         }
         foreach ($name in @('FolderShell','DesktopPicker')) {
             $target=Join-Path $DestinationDirectory ($name+'.dll')

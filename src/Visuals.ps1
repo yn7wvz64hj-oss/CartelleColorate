@@ -44,17 +44,17 @@ function Read-PortableBackgrounds($Entries,$Archive,[hashtable]$Assets) {
 function Apply-PersonalBackground {
     if (!$ui.PersonalBackground) { return }
     $ui.PersonalBackground.Background=$null; $ui.BackgroundShade.Background=$null; $window.Resources['BackdropText']=$window.Resources['Text']
-    $entry=if ($script:backgroundDraft -and $script:backgroundDraft.Style -eq $script:appearance) { $script:backgroundDraft } else { (Read-BackgroundChoices)[$script:appearance] }; if (!$entry -or $entry.Mode -eq 'Default') { return }
+    if ([Windows.SystemParameters]::HighContrast) { return }; $entry=if ($script:backgroundDraft -and $script:backgroundDraft.Style -eq $script:appearance) { $script:backgroundDraft } else { (Read-BackgroundChoices)[$script:appearance] }; if (!$entry -or $entry.Mode -eq 'Default') { return }
     try {
         if ($entry.Mode -eq 'Color') {
             $ui.PersonalBackground.Background=Brush $entry.Hex; $c=[Drawing.ColorTranslator]::FromHtml($entry.Hex); $luma=0
             $weights=@(0.2126,0.7152,0.0722); $channels=@($c.R,$c.G,$c.B); for ($i=0;$i -lt 3;$i++) { $value=$channels[$i]/255.0; $linear=if ($value -le 0.04045) { $value/12.92 } else { [Math]::Pow(($value+0.055)/1.055,2.4) }; $luma+=$linear*$weights[$i] }
-            $window.Resources['BackdropText']=Brush $(if ($luma -gt 0.179) { '#171717' } else { '#FFFFFF' })
+            $window.Resources['BackdropText']=Brush $(if ($luma -gt 0.179) { '#000000' } else { '#FFFFFF' })
         } elseif ([IO.File]::Exists($entry.Image)) {
             $ui.PersonalBackground.Background=New-BackgroundBrush $entry
-            $alpha=[byte][Math]::Round(255*(Get-BackgroundValue $entry Veil 70)/100.0); $color=if ($script:dark) { [Windows.Media.Color]::FromArgb($alpha,0,0,0) } else { [Windows.Media.Color]::FromArgb($alpha,255,255,255) }; $shade=[Windows.Media.SolidColorBrush]::new($color); $shade.Freeze(); $ui.BackgroundShade.Background=$shade
+            $safeVeil=if ($script:dark) { 80 } else { 90 }; $alpha=[byte][Math]::Round(255*[Math]::Max($safeVeil,(Get-BackgroundValue $entry Veil 70))/100.0); $color=if ($script:dark) { [Windows.Media.Color]::FromArgb($alpha,0,0,0) } else { [Windows.Media.Color]::FromArgb($alpha,255,255,255) }; $shade=[Windows.Media.SolidColorBrush]::new($color); $shade.Freeze(); $ui.BackgroundShade.Background=$shade
         }
-        if ($script:appearance -eq 'MacOS') { $brush=$window.Resources['Card'].Clone(); foreach ($stop in $brush.GradientStops) { $color=$stop.Color; $color.A=[byte][Math]::Max(210,$color.A); $stop.Color=$color }; $brush.Freeze(); $window.Resources['Card']=$brush }
+        if ($script:appearance -eq 'MacOS') { $brush=$window.Resources['Card'].Clone(); foreach ($stop in $brush.GradientStops) { $color=$stop.Color; $minimum=if ($entry.Mode -eq 'Color') { 248 } else { 210 }; $color.A=[byte][Math]::Max($minimum,$color.A); $stop.Color=$color }; $brush.Freeze(); $window.Resources['Card']=$brush; $inputBrush=$window.Resources['Input'].Clone(); $inputColor=$inputBrush.Color; $inputColor.A=255; $inputBrush.Color=$inputColor; $inputBrush.Freeze(); $window.Resources['Input']=$inputBrush }
     } catch { $ui.PersonalBackground.Background=$null; $ui.BackgroundShade.Background=$null; $window.Resources['BackdropText']=$window.Resources['Text'] }
 }
 function Initialize-ModernControls {
@@ -91,7 +91,7 @@ function Initialize-ModernControls {
  </Grid><ControlTemplate.Triggers><Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="Frame" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.4"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
 </ResourceDictionary>
 '@
-    $dictionary=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($markup)); $window.Resources.MergedDictionaries.Add($dictionary)
+    if (![Windows.SystemParameters]::ClientAreaAnimation) { $markup.InnerXml=$markup.InnerXml.Replace('PopupAnimation="Fade"','PopupAnimation="None"') }; $dictionary=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($markup)); $window.Resources.MergedDictionaries.Add($dictionary)
 }
 function Update-ModernMenuResources {
     $window.Resources['MenuSurface']=Brush $(if ($script:dark) { '#FF292929' } else { '#FFF9F9F9' }); $window.Resources['MenuText']=Brush $(if ($script:dark) { '#FFF5F5F5' } else { '#FF202020' }); $window.Resources['MenuLine']=Brush $(if ($script:dark) { '#FF424242' } else { '#FFE3E3E3' }); $window.Resources['MenuHover']=Brush $(if ($script:dark) { '#FF3A3A3A' } else { '#FFEDEDED' })

@@ -107,3 +107,7 @@ Il confronto dei sorgenti accetta soltanto le differenze CRLF/LF applicate dal c
 ## Aggiornamento automatico 1.3
 
 TestTransfer.ps1 verifica download a flusso, avanzamento intermedio monotono, dimensione attesa e annullamento. Il test applicativo verifica manifest, dati personali conservati e ripristino dopo un’installazione parziale. TestAutoInstall.ps1 esegue il vero installer nascosto su un ambiente isolato nel runner GitHub, verifica VERSION e conservazione esatta di palette e preferenze; la riapertura grafica viene esclusa in questo test.
+
+## Interfaccia 1.4
+
+La suite apre il confronto e verifica che desktop.ini resti identico; controlla il contrasto minimo 4.5 dei pulsanti e dei testi su sfondi immagine chiari/scuri, la ricerca da tastiera e il ripristino dell’aspetto senza cambiare palette e lingua. Il runner Windows controlla preferiti, sottomenu Altri colori e comandi di applicazione. Le verifiche vengono eseguite nelle 15 lingue.

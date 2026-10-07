@@ -14,7 +14,7 @@ if ($Theme -eq 'Dark') { $dark=$true }
 elseif ($Theme -eq 'System') {
     try { $dark=(Get-ItemPropertyValue 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' -Name AppsUseLightTheme) -eq 0 } catch {}
 }
-$tokens=@{Page='#F1F5FA';Card='#B3FFFFFF';Text='#18212F';Secondary='#526174';Line='#300D2440';Hover='#DCFFFFFF';Selected='#350078EA';Accent='#007AFF';AccentHover='#0068DF';OnAccent='#FFFFFF';Input='#A6FFFFFF'}
+$tokens=@{Page='#F1F5FA';Card='#B3FFFFFF';Text='#18212F';Secondary='#526174';Line='#300D2440';Hover='#DCFFFFFF';Selected='#350078EA';Accent='#006BD6';AccentHover='#0068DF';OnAccent='#FFFFFF';Input='#A6FFFFFF'}
 if ($dark) { $tokens=@{Page='#202832';Card='#493F5066';Text='#F6F8FC';Secondary='#BBC7D8';Line='#38FFFFFF';Hover='#65556B85';Selected='#554D9EFF';Accent='#65B5FF';AccentHover='#85C6FF';OnAccent='#071C31';Input='#503E5067'} }
 $script:glassEnabled=$false
 [xml]$xaml=@'
@@ -103,6 +103,7 @@ $script:glassEnabled=$false
          <Ellipse x:Name="ColorPointer" Width="14" Height="14" Stroke="White" StrokeThickness="2" IsHitTestVisible="False"><Ellipse.Effect><DropShadowEffect ShadowDepth="0" BlurRadius="3" Opacity="0.8"/></Ellipse.Effect></Ellipse>
          <Grid x:Name="HoverPoint" Width="16" Height="16" IsHitTestVisible="False" Visibility="Collapsed"><Ellipse Margin="1" Stroke="Black" StrokeThickness="3"/><Ellipse Margin="1" Stroke="White" StrokeThickness="1"/><Ellipse Width="3" Height="3" Fill="White" Stroke="Black" StrokeThickness="1"/></Grid>
         </Canvas>
+        <Rectangle Stroke="{DynamicResource Accent}" StrokeThickness="2" RadiusX="4" RadiusY="4" IsHitTestVisible="False"><Rectangle.Style><Style TargetType="Rectangle"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding IsKeyboardFocused, ElementName=ColorPlane}" Value="True"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></Rectangle.Style></Rectangle>
        </Grid>
        <Grid Margin="0,6,0,0" Height="24" FlowDirection="LeftToRight">
         <Border Height="10" VerticalAlignment="Center" CornerRadius="{DynamicResource ControlRadius}"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="Red" Offset="0"/><GradientStop Color="Yellow" Offset="0.1667"/><GradientStop Color="Lime" Offset="0.3333"/><GradientStop Color="Cyan" Offset="0.5"/><GradientStop Color="Blue" Offset="0.6667"/><GradientStop Color="Magenta" Offset="0.8333"/><GradientStop Color="Red" Offset="1"/></LinearGradientBrush></Border.Background></Border>
@@ -491,7 +492,7 @@ function Set-AppearanceMaterial {
 }
 function Apply-Appearance([ValidateSet('Windows','MacOS')][string]$Style) {
     $script:appearance=$Style; $mac=$Style -eq 'MacOS'
-    $colors=if ($mac) { if ($dark) { @{Page='#292C35';Card='#704A5060';Text='#F6F8FC';Secondary='#C0C6D4';Line='#55FFFFFF';Hover='#80556378';Selected='#605799DA';Accent='#74BCFF';AccentHover='#92CDFF';OnAccent='#092039';Input='#603B4353'} } else { @{Page='#F1F5FA';Card='#B3FFFFFF';Text='#18212F';Secondary='#526174';Line='#300D2440';Hover='#DCFFFFFF';Selected='#350078EA';Accent='#007AFF';AccentHover='#0068DF';OnAccent='#FFFFFF';Input='#A6FFFFFF'} } } else { if ($dark) { @{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#ADADAD';Line='#414141';Hover='#383838';Selected='#344452';Accent='#60CDFF';AccentHover='#78D5FF';OnAccent='#00304A';Input='#333333'} } else { @{Page='#F3F3F3';Card='#FFFFFF';Text='#1A1A1A';Secondary='#666666';Line='#E4E4E4';Hover='#F0F0F0';Selected='#E8F0FB';Accent='#0067C0';AccentHover='#005AAB';OnAccent='#FFFFFF';Input='#FAFAFA'} } }
+    $colors=if ($mac) { if ($dark) { @{Page='#292C35';Card='#704A5060';Text='#F6F8FC';Secondary='#C0C6D4';Line='#55FFFFFF';Hover='#80556378';Selected='#605799DA';Accent='#74BCFF';AccentHover='#92CDFF';OnAccent='#092039';Input='#603B4353'} } else { @{Page='#F1F5FA';Card='#B3FFFFFF';Text='#18212F';Secondary='#526174';Line='#300D2440';Hover='#DCFFFFFF';Selected='#350078EA';Accent='#006BD6';AccentHover='#0068DF';OnAccent='#FFFFFF';Input='#A6FFFFFF'} } } else { if ($dark) { @{Page='#202020';Card='#2B2B2B';Text='#F5F5F5';Secondary='#ADADAD';Line='#414141';Hover='#383838';Selected='#344452';Accent='#60CDFF';AccentHover='#78D5FF';OnAccent='#00304A';Input='#333333'} } else { @{Page='#F3F3F3';Card='#FFFFFF';Text='#1A1A1A';Secondary='#666666';Line='#E4E4E4';Hover='#F0F0F0';Selected='#E8F0FB';Accent='#0067C0';AccentHover='#005AAB';OnAccent='#FFFFFF';Input='#FAFAFA'} } }
     foreach ($key in $colors.Keys) { $window.Resources[$key]=[Windows.Media.BrushConverter]::new().ConvertFromString($colors[$key]) }
     $window.Resources['ControlRadius']=[Windows.CornerRadius]::new($(if ($mac) { 12 } else { 5 }))
     $window.Resources['CardRadius']=[Windows.CornerRadius]::new($(if ($mac) { 20 } else { 8 }))
@@ -503,7 +504,7 @@ function Apply-Appearance([ValidateSet('Windows','MacOS')][string]$Style) {
     if ($mac) {
         foreach ($surface in @('Card','Line','PrimaryFill')) {
             $gradient=[Windows.Media.LinearGradientBrush]::new(); $gradient.StartPoint=[Windows.Point]::new(0,0); $gradient.EndPoint=[Windows.Point]::new(0,1)
-            $stops=switch ($surface) { 'Card' { if ($dark) { @('#9A626877','#45404A5A') } else { @('#ECFFFFFF','#80FFFFFF') } } 'Line' { if ($dark) { @('#A0FFFFFF','#28FFFFFF') } else { @('#FFFFFFFF','#350D2440') } } 'PrimaryFill' { if ($dark) { @('#A1D3FF','#69B4FA') } else { @('#47A2FF','#087CF5') } } }
+            $stops=switch ($surface) { 'Card' { if ($dark) { @('#9A454C5A','#45303644') } else { @('#ECFFFFFF','#80FFFFFF') } } 'Line' { if ($dark) { @('#A0FFFFFF','#28FFFFFF') } else { @('#FFFFFFFF','#350D2440') } } 'PrimaryFill' { if ($dark) { @('#A1D3FF','#69B4FA') } else { @('#0070DF','#0056BC') } } }
             $gradient.GradientStops.Add([Windows.Media.GradientStop]::new([Windows.Media.ColorConverter]::ConvertFromString($stops[0]),0)); $gradient.GradientStops.Add([Windows.Media.GradientStop]::new([Windows.Media.ColorConverter]::ConvertFromString($stops[1]),1)); $gradient.Freeze(); $window.Resources[$surface]=$gradient
         }
         Set-GlassSurface $false
@@ -511,7 +512,7 @@ function Apply-Appearance([ValidateSet('Windows','MacOS')][string]$Style) {
     $ui.AppearanceName.Text=if ($mac) { T 'macStyle' } else { T 'windowsStyle' }
     $ui.AppearanceButton.ToolTip=(T 'appearance')+': '+$ui.AppearanceName.Text
     Set-AppearanceMaterial
-    Update-ModernMenuResources; Apply-PersonalBackground
+    Update-ModernMenuResources; Apply-PersonalBackground; Apply-AccessibleAppearance
 }
 $ui.AppearanceButton.Add_Click({
     $menu=New-ModernMenu $ui.AppearanceButton
@@ -525,6 +526,7 @@ Initialize-AdvancedInterface
 Initialize-ProductInterface
 Initialize-VisualInterface
 Initialize-AdaptiveLayout
+Initialize-ComfortInterface
 $ui.Colors.ContextMenu=New-ModernMenu $ui.Colors
 Order-Colors
 Apply-Appearance (Read-AppearancePreference)

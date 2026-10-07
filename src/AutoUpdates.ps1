@@ -38,6 +38,7 @@ function Start-AutoInstallation($Context) {
 function Set-DownloadProgress($Context) {
     if (!$Context.Transfer) { return }; $received=$Context.Transfer.Received; $total=$Context.Offer.Size; $percent=[Math]::Min(100,[Math]::Floor($received*100.0/$total)); $Context.Progress.Value=$percent
     $Context.ProgressText.Text=T 'downloadProgress' @($percent,[Math]::Round($received/1024.0,1),[Math]::Round($total/1024.0,1))
+    if ($Context.Started) { $seconds=([DateTime]::UtcNow-$Context.Started).TotalSeconds; if ($seconds -ge 1 -and $received -gt 0) { $rate=$received/$seconds; $remaining=[Math]::Ceiling([Math]::Max(0,$total-$received)/$rate); $Context.ProgressText.Text+=' · '+(T 'downloadTiming' @([Math]::Round($rate/1024.0,1),$remaining)) } }
 }
 function Test-AutoUpdateBackend {
     Initialize-Transfer

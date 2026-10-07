@@ -14,7 +14,7 @@ $files=@('CartelleColorate.ps1','Advanced.ps1','Productivity.ps1','Enhancements.
 foreach ($file in $files) { Copy-Item -LiteralPath (Join-Path $repo ('src\'+$file)) -Destination $package }
 foreach ($name in @('FolderShell','DesktopPicker')) {
     $source=Join-Path $package ($name+'.cs')
-    Add-Type -TypeDefinition ([IO.File]::ReadAllText($source)) -OutputAssembly (Join-Path $package ($name+'.dll')) -OutputType Library
+    Add-Type -TypeDefinition ([IO.File]::ReadAllText($source)) -OutputAssembly (Join-Path $package ($name+'.dll')) -OutputType Library -ReferencedAssemblies System.dll,System.Core.dll,System.Drawing.dll
 }
 Copy-Item -LiteralPath (Join-Path $repo 'LICENSE') -Destination $package
 Copy-Item -LiteralPath (Join-Path $repo 'docs\LEGGIMI.txt') -Destination $package

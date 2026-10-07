@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +12,7 @@ namespace CartelleColorate {
   public Transfer(HttpMessageHandler handler) { client = new HttpClient(handler); }
   public async Task<byte[]> DownloadAsync(string url,long expected) {
    if(expected<1 || expected>33554432) throw new InvalidDataException("Invalid download size");
+   cancel.CancelAfter(TimeSpan.FromMinutes(2));
    using(var response=await client.GetAsync(url,HttpCompletionOption.ResponseHeadersRead,cancel.Token).ConfigureAwait(false)) {
     response.EnsureSuccessStatusCode();
     if(response.Content.Headers.ContentLength.HasValue && response.Content.Headers.ContentLength.Value!=expected) throw new InvalidDataException("Download size differs");

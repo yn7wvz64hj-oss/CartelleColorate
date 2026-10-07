@@ -33,7 +33,7 @@ function Read-Palette {
 function Get-MenuEntries {
     $index=0
     foreach ($c in @(Read-Palette)) {
-        [pscustomobject]@{ Key=('c{0:D8}' -f $index); Name=[string]$c.Name; Hex=$c.Hex.ToUpperInvariant() }
+        [pscustomobject]@{ Key=('c{0:D8}' -f $index); Name=[string]$c.Name; Hex=$c.Hex.ToUpperInvariant(); Favorite=[bool]$c.Favorite }
         $index++
     }
 }
@@ -55,8 +55,10 @@ function Update-Menu {
     $hostPath=Join-Path $env:SystemRoot 'System32\wscript.exe'
     $base='"{0}" //B //Nologo "{1}" "%1"' -f $hostPath,$app
     $fast=Join-Path $root 'Rapido.vbs'
+    $other=@($entries | Where-Object { !$_.Favorite }); $direct=@($entries | Where-Object { $_.Favorite }); if (!$direct.Count) { $direct=@($other | Select-Object -First 5); $other=@($other | Select-Object -Skip 5) }
+    if ($other.Count) { $more="$shell\xMore"; New-Item -Path "$more\shell" -Force|Out-Null; New-ItemProperty -LiteralPath $more -Name MUIVerb -Value (T 'moreColors') -Force|Out-Null; New-ItemProperty -LiteralPath $more -Name SubCommands -Value '' -Force|Out-Null }
     foreach ($entry in $entries) {
-        $child="$shell\$($entry.Key)"
+        $child=if (@($direct.Key) -contains $entry.Key) { "$shell\$($entry.Key)" } else { "$more\shell\$($entry.Key)" }
         $icon=Join-Path $root ('verticale-grande-'+$entry.Hex.TrimStart('#')+'.ico')
         if (!(Test-Path -LiteralPath $icon)) { New-ColorIcon $entry.Hex $icon }
         New-Item -Path "$child\command" -Force | Out-Null
