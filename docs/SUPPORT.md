@@ -9,7 +9,7 @@ CartelleColorate è gratuita e open source. Se ti è utile, puoi aiutare il prog
 - [Segnala un problema](https://github.com/yn7wvz64hj-oss/CartelleColorate/issues) indicando versione e passaggi per riprodurlo, senza dati personali.
 - Migliora una traduzione usando la [guida ai pacchetti lingua](LANGUAGE-PACKS.md).
 
-Le donazioni saranno completamente facoltative. Al momento non è configurato un canale di pagamento ufficiale: questa pagina non raccoglie denaro. Quando sarà disponibile, il link verificato del creatore verrà pubblicato qui e nel pulsante Sponsor del repository.
+Puoi anche [sostenere il progetto tramite PayPal](https://paypal.me/al398), con un importo a tua scelta. Il contributo è completamente facoltativo e non sblocca funzioni aggiuntive. Il pagamento avviene sul sito di PayPal.
 
 L'app rimane utilizzabile anche senza contribuire. Il progetto punta prima di tutto a rendere affidabili installazione, aggiornamenti e personalizzazione delle cartelle.
 
@@ -22,6 +22,6 @@ CartelleColorate is free and open source. If you find it useful, you can help:
 - [Report a problem](https://github.com/yn7wvz64hj-oss/CartelleColorate/issues) with the version and reproduction steps, without personal information.
 - Improve a translation using the [language-pack guide](LANGUAGE-PACKS.md).
 
-Financial support will be entirely optional. No official payment channel is configured yet; this page does not collect money. Once available, the creator's verified link will appear here and in the repository's Sponsor button.
+You can also [support the project through PayPal](https://paypal.me/al398) with an amount of your choice. Contributions are entirely optional and do not unlock additional features. Payment takes place on PayPal's website.
 
 You can continue using the app without contributing. Reliable installation, updates and folder customization come first.

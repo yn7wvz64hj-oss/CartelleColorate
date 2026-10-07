@@ -4,7 +4,7 @@ Colori personalizzati e icone PNG per le cartelle di Windows 11, dal menu del ta
 
 **Gratuito · Open source · Senza account nell'app · Funzionamento locale**
 
-[Scarica / Download](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/latest) · [Supporta / Support](docs/SUPPORT.md) · [Segnala un problema / Report an issue](https://github.com/yn7wvz64hj-oss/CartelleColorate/issues)
+[Scarica / Download](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/latest) · [Supporta / Support](docs/SUPPORT.md) · [PayPal ♥](https://paypal.me/al398) · [Segnala un problema / Report an issue](https://github.com/yn7wvz64hj-oss/CartelleColorate/issues)
 
 **English:** Customize Windows 11 folder colors and PNG icons from the right-click menu. Free and open source, with local settings, 35 selectable languages and optional community language packs. Windows and macOS refer to visual styles; the app runs on Windows.
 
