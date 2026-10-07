@@ -1,5 +1,6 @@
 ﻿param([Parameter(Mandatory=$true)][string]$Package)
 $ErrorActionPreference='Stop'
+$Package=(Resolve-Path -LiteralPath $Package).Path
 if ($env:GITHUB_ACTIONS -ne 'true') { throw 'This installation test requires the isolated GitHub runner.' }
 $previousLocal=$env:LOCALAPPDATA; $case=Join-Path $Package ('test-data/auto-install-'+[Guid]::NewGuid().ToString('N')); $environment=Join-Path $case 'local'; $installed=Join-Path $environment 'CartelleColorate'; [IO.Directory]::CreateDirectory($installed)|Out-Null
 $env:LOCALAPPDATA=$environment; $ps=Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'

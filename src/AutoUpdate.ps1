@@ -18,7 +18,7 @@ $window.Show(); $window.UpdateLayout()
 $runner={ param($package,$installedRoot)
     $ps=Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'; $arguments='-NoProfile -NonInteractive -STA -WindowStyle Hidden -ExecutionPolicy Bypass -File "'+(Join-Path $package 'Setup.ps1')+'"'
     $child=Start-Process -FilePath $ps -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $package 'install.log') -RedirectStandardError (Join-Path $package 'install-error.log')
-    while (!$child.HasExited) { [Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Background); Start-Sleep -Milliseconds 80 }; $child.WaitForExit(); return $child.ExitCode
+    $null=$child.Handle; while (!$child.HasExited) { [Windows.Threading.Dispatcher]::CurrentDispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Background); Start-Sleep -Milliseconds 80 }; $child.WaitForExit(); return $child.ExitCode
 }
 try {
     Invoke-AutoInstallCore $PSScriptRoot $root $resume.Version $runner
