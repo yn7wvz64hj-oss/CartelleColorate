@@ -34,7 +34,10 @@ internal static class Launcher {
                     ps.Runspace = runspace;
                     ps.AddCommand(Path.Combine(home, "CartelleColorate.ps1"));
                     if (test) ps.AddParameter("SelfTest").AddParameter("NoConsoleTest");
-                    else if (preview) ps.AddParameter("Folder", home).AddParameter("Preview", args[2]);
+                    else if (preview) {
+                        string demo = Path.Combine(home, "Progetti"); Directory.CreateDirectory(demo);
+                        ps.AddParameter("Folder", demo).AddParameter("Preview", args[2]);
+                    }
                     else ps.AddParameter("Folder", folders[0]).AddParameter("SelectedFolders", folders);
                     ps.Invoke();
                     if (ps.Streams.Error.Count > 0) throw new Exception(string.Join(Environment.NewLine, ps.Streams.Error.Select(x => x.ToString()).ToArray()));
