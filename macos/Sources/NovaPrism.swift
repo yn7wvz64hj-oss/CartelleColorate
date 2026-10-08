@@ -157,7 +157,7 @@ struct FolderScene: NSViewRepresentable {
         guard let folder = view.folder else { return }; folder.childNodes.forEach { $0.removeFromParentNode() }
         if let png = png, let image = NSImage(data: png) { let plane = SCNPlane(width: 230,height: 230*image.size.height/image.size.width); plane.firstMaterial?.diffuse.contents = image; plane.firstMaterial?.isDoubleSided = true; folder.addChildNode(SCNNode(geometry: plane)); return }
         for (path,depth,z,dark) in [(FolderArtwork.back(),CGFloat(9),CGFloat(-7),true),(FolderArtwork.front(),CGFloat(9),CGFloat(0),false)] {
-            let geometry = SCNShape(path: path,extrusionDepth: depth); geometry.chamferRadius = 1.2; geometry.chamferSegmentCount = 3
+            let geometry = SCNShape(path: path,extrusionDepth: depth); geometry.chamferRadius = 1.2
             let material = SCNMaterial(); material.lightingModel = .physicallyBased; material.diffuse.contents = dark ? NSColor(hex: hex).blended(withFraction:0.22,of:.black) : NSColor(hex: hex); material.metalness.contents = 0.15; material.roughness.contents = 0.32; geometry.materials = [material]
             let node = SCNNode(geometry: geometry); node.position = SCNVector3(-128,-128,z); folder.addChildNode(node)
         }
@@ -230,3 +230,4 @@ enum SelfTest {
         let shape = SCNShape(path:FolderArtwork.front(),extrusionDepth:9); guard shape.extrusionDepth == 9 else { throw PrismError.message("3D extrusion failed") }
     }
 }
+
