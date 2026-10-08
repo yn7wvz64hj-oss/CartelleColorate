@@ -6,20 +6,20 @@ on:
     inputs:
       package_name:
         description: Exact Package/Identity/Name from Partner Center
-        default: NovaPrism.Development
+        default: NovaPrism.NovaPrism
         required: true
       publisher:
         description: Exact Package/Identity/Publisher from Partner Center
-        default: CN=NovaPrismDevelopment
+        default: CN=6E12F60D-58A8-45CA-A5AB-C9147C9FD2DE
         required: true
       publisher_display_name:
         description: Exact PublisherDisplayName from Partner Center
-        default: Nova Prism Development
+        default: Nova Prism
         required: true
       submission:
         description: Build for submission (requires actual Store identity)
         type: boolean
-        default: false
+        default: true
 permissions:
   contents: read
 jobs:
@@ -33,10 +33,10 @@ jobs:
       - name: Build validated unsigned MSIX
         shell: powershell
         env:
-          STORE_NAME: ${{ inputs.package_name || 'NovaPrism.Development' }}
-          STORE_PUBLISHER: ${{ inputs.publisher || 'CN=NovaPrismDevelopment' }}
-          STORE_DISPLAY: ${{ inputs.publisher_display_name || 'Nova Prism Development' }}
-          STORE_SUBMISSION: ${{ inputs.submission }}
+          STORE_NAME: ${{ inputs.package_name || 'NovaPrism.NovaPrism' }}
+          STORE_PUBLISHER: ${{ inputs.publisher || 'CN=6E12F60D-58A8-45CA-A5AB-C9147C9FD2DE' }}
+          STORE_DISPLAY: ${{ inputs.publisher_display_name || 'Nova Prism' }}
+          STORE_SUBMISSION: ${{ github.event_name == 'push' || inputs.submission }}
         run: |
           & ./store/Build-Store.ps1 -PackageName $env:STORE_NAME -Publisher $env:STORE_PUBLISHER -PublisherDisplayName $env:STORE_DISPLAY -Submission:($env:STORE_SUBMISSION -eq 'true')
       - name: Test launcher, folder operations, UI and native COM factory
