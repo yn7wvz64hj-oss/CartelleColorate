@@ -27,6 +27,7 @@ $content=$content.Replace(". (Join-Path `$PSScriptRoot 'Interfaccia.ps1')", ". (
 $uiFile=Join-Path $payload 'Interfaccia.ps1'
 $content=[IO.File]::ReadAllText($uiFile)
 $content=$content.Replace('Initialize-ProductInterface', "Initialize-ProductInterface`r`nif (`$SelectedFolders.Count -gt 0) { Select-ProductFolders `$SelectedFolders }")
+$content=$content.Replace('$window.Show(); $window.UpdateLayout()', '$window.Width=1440; $window.Show(); $window.UpdateLayout()')
 [IO.File]::WriteAllText($uiFile,$content,$utf8)
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'StoreOverrides.ps1') -Destination $payload
 foreach($name in @('FolderShell','DesktopPicker')) {
