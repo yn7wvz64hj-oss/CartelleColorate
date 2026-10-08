@@ -1,1 +1,2 @@
-88350f43faff433e61745114827846cf5fc6a009afd5b13e97c6f0675c72cfc3  CartelleColorate-2.0.0-windows.zip
+59254dc7ebe396e10cf18e1bb9ab864144b8d3ccec7f2972b779ded0e3bbbe59  CartelleColorate-3.0.0-windows.zip
+0baf65e063413ef6f4b3a5517a5476d279d119b5e87bc94b9f9cafceb49f5d2a  NovaPrism-3.0.0-installer-windows.zip

@@ -61,7 +61,7 @@ function Update-Menu {
     if ($other.Count) { $more="$shell\xMore"; New-Item -Path "$more\shell" -Force|Out-Null; New-ItemProperty -LiteralPath $more -Name MUIVerb -Value (T 'moreColors') -Force|Out-Null; New-ItemProperty -LiteralPath $more -Name SubCommands -Value '' -Force|Out-Null }
     foreach ($entry in $entries) {
         $child=if (@($direct.Key) -contains $entry.Key) { "$shell\$($entry.Key)" } else { "$more\shell\$($entry.Key)" }
-        $icon=Join-Path $root ('verticale-grande-'+$entry.Hex.TrimStart('#')+'.ico')
+        $icon=Join-Path $root ('nova-future-balanced-'+$entry.Hex.TrimStart('#')+'.ico')
         if (!(Test-Path -LiteralPath $icon)) { New-ColorIcon $entry.Hex $icon }
         New-Item -Path "$child\command" -Force | Out-Null
         New-ItemProperty -LiteralPath $child -Name MUIVerb -Value ($entry.Name.Replace('&','&&')) -Force | Out-Null
@@ -104,14 +104,22 @@ function New-ColorIcon([string]$Hex, [string]$Path) {
     $g.SmoothingMode = [Drawing.Drawing2D.SmoothingMode]::AntiAlias
     $g.Clear([Drawing.Color]::Transparent)
     $bounds=[Drawing.Rectangle]::new(16,54,224,168)
-    $back=[Drawing.Drawing2D.LinearGradientBrush]::new($bounds,(Get-FolderShade $color 0.4),(Get-FolderShade $color 0.12),90.0)
-    $front=[Drawing.Drawing2D.LinearGradientBrush]::new($bounds,(Get-FolderShade $color 0.18),(Get-FolderShade $color -0.08),90.0)
-    $blend=[Drawing.Drawing2D.ColorBlend]::new(3);$blend.Positions=[single[]]@(0,0.55,1);$blend.Colors=[Drawing.Color[]]@((Get-FolderShade $color 0.18),$color,(Get-FolderShade $color -0.08));$front.InterpolationColors=$blend
+    $back=[Drawing.Drawing2D.LinearGradientBrush]::new($bounds,(Get-FolderShade $color -0.16),(Get-FolderShade $color -0.28),90.0)
+    $front=[Drawing.Drawing2D.LinearGradientBrush]::new($bounds,(Get-FolderShade $color 0.16),(Get-FolderShade $color -0.10),90.0)
+    $blend=[Drawing.Drawing2D.ColorBlend]::new(3);$blend.Positions=[single[]]@(0,0.55,1);$blend.Colors=[Drawing.Color[]]@((Get-FolderShade $color 0.16),$color,(Get-FolderShade $color -0.10));$front.InterpolationColors=$blend
     $face=[Drawing.Drawing2D.GraphicsPath]::new();$fold=[Drawing.Drawing2D.GraphicsPath]::new()
     try {
-        $fold.AddLine(24,88,24,68);$fold.AddBezier(24,68,24,56,24,56,36,56);$fold.AddLine(36,56,96,56);$fold.AddBezier(96,56,102,56,102,56,107,62);$fold.AddLine(107,62,122,78);$fold.AddBezier(122,78,126,81,126,81,134,81);$fold.AddLine(134,81,220,81);$fold.AddBezier(220,81,232,81,232,81,232,94);$fold.AddLine(232,94,232,200);$fold.AddBezier(232,200,232,214,232,214,218,214);$fold.AddLine(218,214,38,214);$fold.AddBezier(38,214,24,214,24,214,24,200);$fold.CloseFigure()
-        $face.AddLine(32,94,229,94);$face.AddBezier(229,94,240,94,240,94,238,106);$face.AddLine(238,106,230,204);$face.AddBezier(230,204,229,218,229,218,215,218);$face.AddLine(215,218,41,218);$face.AddBezier(41,218,27,218,27,218,26,204);$face.AddLine(26,204,19,107);$face.AddBezier(19,107,17,94,17,94,32,94);$face.CloseFigure()
+        $fold.AddLine(26,110,26,64);$fold.AddBezier(26,64,26,54,26,54,37,54);$fold.AddLine(37,54,97,54);$fold.AddBezier(97,54,103,54,103,54,107,59);$fold.AddLine(107,59,123,76);$fold.AddBezier(123,76,126,80,126,80,133,80);$fold.AddLine(133,80,218,80);$fold.AddBezier(218,80,230,80,230,80,230,92);$fold.AddLine(230,92,230,110);$fold.CloseFigure()
+        $face.AddLine(30,101,233,101);$face.AddBezier(233,101,243,101,243,101,241,112);$face.AddLine(241,112,225,202);$face.AddBezier(225,202,223,215,223,215,210,215);$face.AddLine(210,215,40,215);$face.AddBezier(40,215,29,215,29,215,28,203);$face.AddLine(28,203,20,113);$face.AddBezier(20,113,19,101,19,101,30,101);$face.CloseFigure()
+        $shapeTransform=[Drawing.Drawing2D.Matrix]::new(1,0,0,0.92,0,10.8)
+        try{$fold.Transform($shapeTransform);$face.Transform($shapeTransform)}finally{$shapeTransform.Dispose()}
         $g.FillPath($back,$fold);$g.FillPath($front,$face)
+        $edge=[Drawing.Pen]::new([Drawing.Color]::FromArgb(35,0,0,0),1);$light=[Drawing.Pen]::new([Drawing.Color]::FromArgb(100,255,255,255),1)
+        try{$g.DrawPath($edge,$fold);$g.DrawLine($light,[single]33,[single]105.56,[single]230,[single]105.56)}finally{$edge.Dispose();$light.Dispose()}
+        $glint=[Drawing.Pen]::new([Drawing.Color]::FromArgb(150,235,255,255),1);$accent=[Drawing.Pen]::new([Drawing.Color]::FromArgb(100,175,160,255),1)
+        $sheen=[Drawing.Drawing2D.LinearGradientBrush]::new([Drawing.Rectangle]::new(20,105,220,45),[Drawing.Color]::FromArgb(50,255,255,255),[Drawing.Color]::FromArgb(0,255,255,255),90.0)
+        $saved=$g.Save()
+        try{$g.SetClip($face);$g.FillRectangle($sheen,20,105,220,45);$g.DrawLine($glint,31,119,38,189);$g.DrawLine($accent,233,118,222,189);$g.DrawLine($glint,47,185,64,185);$g.DrawLine($glint,47,189,58,189)}finally{$g.Restore($saved);$glint.Dispose();$accent.Dispose();$sheen.Dispose()}
         $png = New-Object IO.MemoryStream
         try {
             $bmp.Save($png,[Drawing.Imaging.ImageFormat]::Png)
@@ -139,7 +147,7 @@ function Update-FolderIcon([string]$Target) {
     if ($parent) { [FolderShell]::SHChangeNotify(0x00001000,0x00003005,$parent.FullName,[IntPtr]::Zero) }
 }
 function Set-FolderColor([string]$Target,[string]$Hex) {
-    $iconPath = Join-Path $root ('verticale-grande-'+$Hex.TrimStart('#') + '.ico')
+    $iconPath = Join-Path $root ('nova-future-balanced-'+$Hex.TrimStart('#') + '.ico')
     if (!(Test-Path -LiteralPath $iconPath)) { New-ColorIcon $Hex $iconPath }
     Set-FolderIcon $Target $iconPath
     try { Save-RecentColor $Hex } catch {}
@@ -369,7 +377,7 @@ if ($SelfTest) {
     $before = [IO.File]::ReadAllBytes($ini)
     $attributes = (Get-Item -LiteralPath $target -Force).Attributes
     Set-FolderColor $target '#12ABEF'
-    $icon = New-Object Drawing.Icon (Join-Path $root 'verticale-grande-12ABEF.ico')
+    $icon = New-Object Drawing.Icon (Join-Path $root 'nova-future-balanced-12ABEF.ico')
     if ($icon.Width -ne 256) { throw 'Dimensione icona errata' }; $icon.Dispose()
     if (!(Get-Content -LiteralPath $ini -Raw).Contains('InfoTip=Test originale')) { throw 'Metadati persi' }
     Set-FolderColor $target '#FF0000'

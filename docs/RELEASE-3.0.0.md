@@ -1,15 +1,3 @@
-# Nova Prism
-
-**CartelleColorate diventa Nova Prism. / CartelleColorate becomes Nova Prism.**
-
-Colora e personalizza le cartelle Windows con una palette animata e anteprima 3D. Tutte le funzioni sono gratuite.
-
-Color and customize Windows folders with an animated palette and 3D preview. All features are free.
-
-[Download / Scarica 3.0](https://github.com/yn7wvz64hj-oss/CartelleColorate/releases/tag/v3.0.0)
-
-![Nova Prism](docs/images/interfaccia.png)
-
 # Nova Prism 3.0 — Futuristic folder colors / Colori delle cartelle, nuova dimensione
 
 ## Italiano
