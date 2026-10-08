@@ -1,0 +1,9 @@
+import pathlib,plistlib,sys
+root=pathlib.Path(sys.argv[1])/'Nova Prism.workflow'/'Contents'
+root.mkdir(parents=True,exist_ok=True)
+script='/usr/bin/open -a "Nova Prism" "$@"'
+action={'AMActionVersion':'2.0.3','AMApplication':['Automator'],'AMParameterProperties':{},'AMProvides':{'Container':'List','Types':['com.apple.cocoa.string']},'AMRequiredResources':[],'AMResults':{},'AMAccepts':{'Container':'List','Types':['com.apple.cocoa.string'],'Optional':False},'ActionBundlePath':'/System/Library/Automator/Run Shell Script.action','ActionName':'Run Shell Script','ActionParameters':{'COMMAND_STRING':script,'CheckedForUserDefaultShell':True,'inputMethod':1,'shell':'/bin/bash','source':script},'BundleIdentifier':'com.apple.RunShellScript','ClassName':'RunShellScriptAction','InputUUID':'754A7D54-52EC-4870-87D2-88C05D359331','OutputUUID':'1DDF4082-5544-4B37-821B-214E8664F371','UUID':'D17FB9E8-3804-46A6-A978-B763B62490E5','isViewVisible':1}
+workflow={'AMApplicationBuild':'523','AMApplicationVersion':'2.10','AMDocumentVersion':'2','actions':[{'action':action,'isViewVisible':1}],'connectors':[],'workflowMetaData':{'serviceApplicationBundleID':'com.apple.finder','serviceApplicationPath':'/System/Library/CoreServices/Finder.app','serviceInputTypeIdentifier':'com.apple.Automator.fileSystemObject.folder','serviceOutputTypeIdentifier':'com.apple.Automator.nothing','serviceProcessesInput':0,'workflowTypeIdentifier':'com.apple.Automator.servicesMenu'}}
+info={'CFBundleIdentifier':'com.novaprism.quickaction','CFBundleName':'Nova Prism','NSServices':[{'NSMenuItem':{'default':'Nova Prism — Cambia colore / Change color'},'NSMessage':'runWorkflowAsService','NSRequiredContext':{'NSApplicationIdentifier':'com.apple.finder'},'NSSendFileTypes':['public.folder'],'NSSendTypes':['NSFilenamesPboardType']}]}
+for name,value in [('document.wflow',workflow),('Info.plist',info)]:
+ with (root/name).open('wb') as f:plistlib.dump(value,f)

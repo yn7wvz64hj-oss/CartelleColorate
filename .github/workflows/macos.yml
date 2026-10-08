@@ -1,0 +1,24 @@
+name: Nova Prism macOS
+on:
+  push:
+    branches: [main]
+    paths: ['macos/**', '.github/workflows/macos.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build universal app and test native folder icons
+        run: bash macos/scripts/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NovaPrism-3.0.0-macOS-universal
+          path: macos/dist/*
+      - name: Attach Mac downloads to release 3.0
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload v3.0.0 macos/dist/NovaPrism-3.0.0-macOS-universal.dmg macos/dist/NovaPrism-3.0.0-macOS-universal.zip macos/dist/SHA256SUMS-macOS.txt --repo "$GITHUB_REPOSITORY" --clobber
