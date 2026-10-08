@@ -1,0 +1,25 @@
+Name: Nova Prism
+Short description: Personal colors, images and styles for your Windows folders.
+
+Description:
+Give your folders a unique identity with Nova Prism. Pick an exact color, create your own palette or turn a PNG image into a custom folder icon.
+
+Rotate the three-dimensional preview with your mouse and explore your favorite colors through an animated palette. Open Nova Prism from a folder's context menu or from Start.
+
+Features:
+- Custom colors, precise color picker and screen eyedropper.
+- Named palettes and saved styles.
+- Custom icons from PNG images and visual personalization.
+- Multiple-folder editing, renaming, history and undo.
+- Light and dark interface, animations and 3D preview.
+- Palette import and export.
+- All features free, with no Nova Prism account required.
+
+Changes apply to folders you select. File Explorer may take a moment to refresh an icon. Protected folders and folders without write permissions cannot always be customized.
+
+Suggested category: Personalization (choose the closest available Partner Center category).
+Price: Free.
+Website and support: https://github.com/yn7wvz64hj-oss/CartelleColorate
+Support: https://github.com/yn7wvz64hj-oss/CartelleColorate/issues
+Privacy: https://github.com/yn7wvz64hj-oss/CartelleColorate/blob/main/store/PRIVACY.md
+Keywords: folders; colors; icons; personalization; palette

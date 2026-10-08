@@ -1,0 +1,25 @@
+Nome: Nova Prism
+Descrizione breve: Colori, immagini e stili personali per le tue cartelle Windows.
+
+Descrizione:
+Dai alle tue cartelle un carattere unico con Nova Prism. Scegli un colore preciso, crea una palette personale oppure usa una tua immagine PNG come icona.
+
+L'anteprima tridimensionale ruota con il mouse e ti aiuta a esplorare il colore. La palette animata rende immediata la scelta dei tuoi preferiti. Puoi aprire Nova Prism dal menu delle cartelle o dal menu Start.
+
+Funzioni:
+- Colori personalizzati, selettore preciso e pipetta per lo schermo.
+- Palette e stili salvabili con nomi personali.
+- Icone da immagini PNG e personalizzazioni grafiche.
+- Modifica di piu cartelle, rinomina, cronologia e annullamento.
+- Interfaccia chiara e scura, animazioni e anteprima 3D.
+- Importazione ed esportazione delle palette.
+- Tutte le funzioni disponibili gratuitamente, senza account Nova Prism.
+
+Le modifiche si applicano alle cartelle scelte da te. Esplora file puo impiegare un momento ad aggiornare l'icona. Alcune cartelle protette dal sistema o prive di permesso di scrittura non possono essere personalizzate.
+
+Categoria suggerita: Personalizzazione (scegli la categoria disponibile piu adatta in Partner Center).
+Prezzo: Gratis.
+Sito e supporto: https://github.com/yn7wvz64hj-oss/CartelleColorate
+Supporto: https://github.com/yn7wvz64hj-oss/CartelleColorate/issues
+Privacy: https://github.com/yn7wvz64hj-oss/CartelleColorate/blob/main/store/PRIVACY.md
+Parole chiave: cartelle; colori; icone; personalizzazione; palette

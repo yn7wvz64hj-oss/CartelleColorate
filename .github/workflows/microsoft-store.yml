@@ -1,0 +1,62 @@
+name: Microsoft Store MSIX
+on:
+  push:
+    paths: ['store/**', '.github/workflows/microsoft-store.yml']
+  workflow_dispatch:
+    inputs:
+      package_name:
+        description: Exact Package/Identity/Name from Partner Center
+        default: NovaPrism.Development
+        required: true
+      publisher:
+        description: Exact Package/Identity/Publisher from Partner Center
+        default: CN=NovaPrismDevelopment
+        required: true
+      publisher_display_name:
+        description: Exact PublisherDisplayName from Partner Center
+        default: Nova Prism Development
+        required: true
+      submission:
+        description: Build for submission (requires actual Store identity)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  msix:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Build validated unsigned MSIX
+        shell: powershell
+        env:
+          STORE_NAME: ${{ inputs.package_name || 'NovaPrism.Development' }}
+          STORE_PUBLISHER: ${{ inputs.publisher || 'CN=NovaPrismDevelopment' }}
+          STORE_DISPLAY: ${{ inputs.publisher_display_name || 'Nova Prism Development' }}
+          STORE_SUBMISSION: ${{ inputs.submission }}
+        run: |
+          & ./store/Build-Store.ps1 -PackageName $env:STORE_NAME -Publisher $env:STORE_PUBLISHER -PublisherDisplayName $env:STORE_DISPLAY -Submission:($env:STORE_SUBMISSION -eq 'true')
+      - name: Test launcher, folder operations, UI and native COM factory
+        shell: powershell
+        run: ./store/Test-Store.ps1 -Output ./dist/store -Native
+      - name: Prepare Store submission materials
+        shell: powershell
+        run: |
+          Copy-Item ./store/listing ./dist/store/listing -Recurse
+          Copy-Item ./store/README-IT.md ./dist/store/LEGGIMI.md
+          Copy-Item ./store/PRIVACY.md ./dist/store/PRIVACY.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NovaPrism-Microsoft-Store-x64
+          path: |
+            dist/store/*.msix
+            dist/store/SHA256SUMS.txt
+            dist/store/BUILD-INFO.json
+            dist/store/Store-Screenshot.png
+            dist/store/LEGGIMI.md
+            dist/store/PRIVACY.md
+            dist/store/listing/**
+          if-no-files-found: error
