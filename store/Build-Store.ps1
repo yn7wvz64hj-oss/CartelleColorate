@@ -41,7 +41,7 @@ Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Assets') -Destination $payload 
 if (!$SkipNative) {
     Push-Location $payload
     try {
-        & cl.exe /nologo /LD /MT /EHsc /std:c++17 /W4 (Join-Path $PSScriptRoot 'Command.cpp') /link /OUT:NovaPrismCommand.dll shell32.lib shlwapi.lib ole32.lib runtimeobject.lib uuid.lib
+        & cl.exe /nologo /LD /MT /EHsc /std:c++17 /W4 (Join-Path $PSScriptRoot 'Command.cpp') /link /OUT:NovaPrismCommand.dll ('/DEF:'+(Join-Path $PSScriptRoot 'Command.def')) shell32.lib shlwapi.lib ole32.lib runtimeobject.lib uuid.lib
         if ($LASTEXITCODE -ne 0) { throw 'Explorer command compilation failed.' }
     } finally { Pop-Location }
     foreach ($name in @('Command.obj','NovaPrismCommand.lib','NovaPrismCommand.exp')) { $file=Join-Path $payload $name; if(Test-Path -LiteralPath $file){Remove-Item -LiteralPath $file} }

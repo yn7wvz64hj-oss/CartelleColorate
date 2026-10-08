@@ -83,5 +83,5 @@ public:
     IFACEMETHODIMP LockServer(BOOL lock) override {if(lock)InterlockedIncrement(&objects);else InterlockedDecrement(&objects);return S_OK;}
 };
 BOOL WINAPI DllMain(HINSTANCE h,DWORD reason,LPVOID){if(reason==DLL_PROCESS_ATTACH){module=h;DisableThreadLibraryCalls(h);}return TRUE;}
-extern "C" __declspec(dllexport) HRESULT __stdcall DllCanUnloadNow(){return objects==0?S_OK:S_FALSE;}
-extern "C" __declspec(dllexport) HRESULT __stdcall DllGetClassObject(REFCLSID clsid,REFIID iid,void** p){if(clsid!=CommandId)return CLASS_E_CLASSNOTAVAILABLE;Factory* f=new(std::nothrow)Factory();if(!f)return E_OUTOFMEMORY;HRESULT hr=f->QueryInterface(iid,p);f->Release();return hr;}
+STDAPI DllCanUnloadNow(){return objects==0?S_OK:S_FALSE;}
+STDAPI DllGetClassObject(REFCLSID clsid,REFIID iid,void** p){if(clsid!=CommandId)return CLASS_E_CLASSNOTAVAILABLE;Factory* f=new(std::nothrow)Factory();if(!f)return E_OUTOFMEMORY;HRESULT hr=f->QueryInterface(iid,p);f->Release();return hr;}
